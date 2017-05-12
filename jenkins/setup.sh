@@ -1,4 +1,13 @@
-# Setup users
+# Setup users and turn off ssh login with root account and for all users with passwords (ssh keys only)
+adduser USERNAME
+adduser USERNAME sudo
+echo YOUR-SSH-PUBLIC-KEY > ~/.ssh/authorized_keys
+# at this point try if you can login via ssh with your ssh key loaded into the ssh agent (or pagaeant on windows)
+# once this wors, edit /etc/ssh/sshd_config and disabled password login and login of the root user
+sudo nano /etc/ssh/sshd_config
+# comment out this section: PermitRootLogin without-password
+# UsePAM no
+# PasswordAuthentication no
 
 # Process for installing Jenkins on a standalone server.
 # Start with a base Ubuntu Xenial system
