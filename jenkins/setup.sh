@@ -46,5 +46,7 @@ cat /var/log/jenkins/jenkins.log
 
 
 # add github auth plugin and configure (under "Configure Global Security")
+#    * you need to log in to github and at the OpenRiskNet organization under settings create a new OAuth application
+#      and note the client id and secret
 # add blue ocean plugin
 # add pipeline for test project that can be found here: https://github.com/InformaticsMatters/example-java-servlet
