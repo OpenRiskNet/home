@@ -1,3 +1,5 @@
+# Setup users
+
 # Process for installing Jenkins on a standalone server.
 # Start with a base Ubuntu Xenial system
 # install initial packages, including Java8
