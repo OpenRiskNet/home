@@ -45,6 +45,6 @@ cat /var/log/jenkins/jenkins.log
 # access jenkins on http://<ip>:8080
 
 
-# add github auth plugin and configure
+# add github auth plugin and configure (under "Configure Global Security")
 # add blue ocean plugin
 # add pipeline for test project that can be found here: https://github.com/InformaticsMatters/example-java-servlet
