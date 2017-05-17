@@ -52,3 +52,7 @@ cat /var/log/jenkins/jenkins.log
 #      give everyone the right to see jobs and create new ones)
 # add blue ocean plugin
 # add pipeline for test project that can be found here: https://github.com/InformaticsMatters/example-java-servlet
+
+# Finally, set up nginx with lets encrypt for https access and enable this for jenkins by following these two walkthroughs:
+# https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04
+# https://www.digitalocean.com/community/tutorials/how-to-configure-jenkins-with-ssl-using-an-nginx-reverse-proxy
