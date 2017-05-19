@@ -56,3 +56,18 @@ cat /var/log/jenkins/jenkins.log
 # Finally, set up nginx with lets encrypt for https access and enable this for jenkins by following these two walkthroughs:
 # https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04
 # https://www.digitalocean.com/community/tutorials/how-to-configure-jenkins-with-ssl-using-an-nginx-reverse-proxy
+
+# Mounting second disk
+# Scaleway usually adds a second disk to a machine but does not mount it. Currnetly this disk (and the system disk) are 50G in size.
+# We want to use that disk for Jenkins persistent data so that:
+# 1. all persistent data is in one location
+# 2. this can be backed up
+# 3. it can esily be replaced with a bigger disk if required
+#
+# Steps to mount the disk. It was present as /dev/vdb (this might not always be the case).
+# Scaleway provides instructions here https://www.scaleway.com/docs/attach-and-detach-a-volume-to-an-existing-server/
+sudo mkfs -t ext4 /dev/vdb
+sudo mkdir -p /mnt/data
+sudo mount /dev/vdb /mnt/data
+# to ensure this mounts on restart add this to /etc/fstab
+# /dev/vdb /mnt/data auto  defaults,nobootwait,errors=remount-ro 0 2
