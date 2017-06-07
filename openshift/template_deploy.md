@@ -25,7 +25,7 @@ Deploy application:
 ```sh
 oc new-app --template=django-psql-persistent
 ```
-It takes a few mins to build and deploy. Once done you will see the appl in the web console and can connect to it.
+It takes a few mins to build and deploy. Once done you will see the app in the web console and can connect to it.
 You will see pods for the Postgres database and the Django app.
 
 Alternatively, to load the same app from an external definition try this:
