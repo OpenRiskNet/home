@@ -1,1 +1,7 @@
-# Recipees for getting started with Openshift
+# Recipes for getting started with Openshift
+
+These recipes are created to allow people to try out OpenShift. A typical path to follow is:
+
+1. [minishift_local_machine.md](minishift_local_machine.md) - simple way to get an environment running on your local machine
+1. [promotion_between_projects.md](promotion_between_projects.md) - learn how to deply an app and promote it from a dev to a test environment
+1. [openshift_centos.md](openshift_centos.md) - Set up a simple multi-user server environment
