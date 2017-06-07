@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This recipe builds and deploys a more realistic application from a template. The app is provided by OpenShift and is s Python/Django app
+This recipe builds and deploys a more realistic application from a template. The app is provided by OpenShift and is a Python/Django app
 that uses a PostgreSQL database The template defines both aspects of the application, as well as the services and routes that allow the 
 app to be accesed from the outside. As such it is a reasonably realistic example of an application that could be deployed to an 
 OpenRiskNet (ORN) Virtual Research Environemnt (VRE). 
