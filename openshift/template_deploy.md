@@ -27,3 +27,10 @@ oc new-app --template=django-psql-persistent
 ```
 It takes a few mins to build and deploy. Once done you will see the appl in the web console and can connect to it.
 You will see pods for the Postgres database and the Django app.
+
+## Delete app
+
+If you are finished with this app and want to remove it do this:
+```sh
+oc delete all -l app=django-psql-persistent
+```
