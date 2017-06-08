@@ -10,11 +10,14 @@ Openshift has a number of settings to control this. To edit the setting edit the
 oc login -u system:admin
 oc edit scc restricted
 ```
-Look for the runAsUser section and edit the value of the type property. The possible values are:
+Look for the runAsUser section and edit the value of the type property. 
+More details are [here](https://docs.openshift.org/latest/architecture/additional_concepts/authorization.html#authorization-RunAsUser).
+The possible values are:
 
 * MustRunAsRange (default) - Openshift ALWAYS assigns a user id from within a controlled range
 * MustRunAsNonRoot - Run as the user defined in the image. If this is root it will fail.
 * RunAsAny - Openshift doesn't care, and you are at risk if your image runs as root.
+* MustRunAs - run as a specified userid
 
 Using RunAsAny allows any contianer to run, but comes with obvious risks.
 
