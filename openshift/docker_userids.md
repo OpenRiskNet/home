@@ -1,8 +1,7 @@
 # Understanding how Openshift handles user ids for running containers
 
 Openshift pays specical attention to security, which can cause problems if your containers are not set up to be secure.
-Specifically it prefers to avoid running containers as the root user, as this is a well know risk. Well designed images should 
-not run as root.
+Specifically it prefers to avoid running containers as the root user, as this is a well know risk. Well designed images should not run as root.
 
 Openshift has a number of settings to control this. To edit the setting edit the Security Context Constraints definition:
 
@@ -19,11 +18,11 @@ The possible values are:
 * RunAsAny - Openshift doesn't care, and you are at risk if your image runs as root.
 * MustRunAs - run as a specified userid
 
-Using RunAsAny allows any contianer to run, but comes with obvious risks.
+Using RunAsAny allows any container to run, but comes with obvious risks.
 
 If using MustRunAsRange (the default) then your container must be able to run as an arbitary non-root ID, NOT the user you specify in 
 the Dockerfile. That user will be a member of the root group, so make sure you give suitable read, write, execute permissions to the 
 root group. 
 
-
+**TODO** - understand this better and establish a suitable approach.
 
