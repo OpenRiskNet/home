@@ -39,3 +39,8 @@ If you are finished with this app and want to remove it do this:
 ```sh
 oc delete all -l app=django-psql-persistent
 ```
+
+## Writing templates
+
+An example of how to write OpenShift templates for an app can be found here:
+https://github.com/OpenRiskNet/example-java-servlet/tree/master/openshift/templates
