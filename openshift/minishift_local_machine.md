@@ -11,9 +11,12 @@ The default VM it use is Xhyve which should be present on a modern version of OS
 
 Download minishift from here: https://github.com/minishift/minishift/releases
 
-Download open shift origin client tools from here: https://github.com/openshift/origin/releases
+Unpack both and location to PATH. 
 
-Unpack both and add locations to PATH.
+```sh
+minishift version
+```
+Check all looks good and locate the oc binary that has been downloaded (probably something like .minishift/cache/oc/v1.5.1/) and add that to the PATH. 
 
 Start Minishift:
 ```sh
