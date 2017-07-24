@@ -5,13 +5,10 @@ term experimentations among a group of users in a reasonably secure manner.
 
 Being based on a single server it is not suitable for highly available or highly scaleable setups.
 
-
-
 # Create a centos machine
 
 On AWS subscribe to this image: https://aws.amazon.com/marketplace/pp/B00O7WM7QW?ref=cns_srchrow
-A t2.xlarge machine seems to work fine for experimentation. This has 4 cores and 16GB RAM. Running with less than 8GB RAM is unlikely 
-to work.
+A t2.xlarge machine seems to work fine for experimentation. This has 4 cores and 16GB RAM. Running with less than 8GB RAM is unlikely to work.
 It’s necessary to assign an permanent IP address.
 Other centos images (e.g. the one on Scaleway) are not identical and may need a slightly different procedure.
 
@@ -26,7 +23,7 @@ yum update -y
 yum install -y wget git net-tools bind-utils iptables-services bridge-utils bash-completion docker libcgroup-tools
 ```
 
-Edit /etc/sysconfig/docker and uncomment the INSECURE_REGISTRY options so that it looks like this:
+Edit /etc/sysconfig/docker and uncomment the INSECURE_REGISTRY option so that it looks like this:
 
 INSECURE_REGISTRY='--insecure-registry 172.30.0.0/16'
 
@@ -54,7 +51,7 @@ Add the extracted dir to your path (edit .bash_profile).
 
 ## Run a simple dockerised environment using oc cluster up
 
-Create a dir for os data
+Create a dir for OpenShift data
 ```sh
 mkdir /root/os_data
 ```
@@ -65,7 +62,7 @@ oc cluster up --routing-suffix=34.204.64.211.nip.io --public-hostname=34.204.64.
 ```
 
 If the ip address changes then the system does not work. TODO - work out how to address this
-To re-create with  a new ip address (existing setup is lost):
+To re-create with a new ip address (existing setup is lost):
 ```sh
 cp -r os_data os_data_old
 rm -rf .kube
@@ -73,7 +70,7 @@ mkdir os_data
 oc cluster up --routing-suffix=<new ip>.nip.io --public-hostname=<new ip>.nip.io --host-data-dir=/root/os_data
 ```
 
-Note S2I builds do not work with these options with the scaleway centos image. Need to wok out how to get this working.
+Note S2I builds do not work with these options with the Scaleway centos image. Need to wok out how to get this working.
 
 ## Authentication
 
@@ -115,7 +112,7 @@ oauthConfig:
 Set up an OAUTH app in your GitHub organisation.
 
 The callback URL will be line this:
-`https://<dns or ip>:8443/oauth2callback/github` 
+`https://<fqdn or ip>:8443/oauth2callback/github` 
 (where GitHub is the name of the provider in the master-config.yaml file.
 
 For htpasswd file try this (the users.htpasswd file must be put in /var/lib/origin/openshift.local.config/master/):
@@ -127,6 +124,35 @@ htpasswd users.htpasswd user2
 ```
 
 Supported providers are described here: https://docs.openshift.org/latest/install_config/configuring_authentication.html#identity-providers
+
+When tightening security you need to consider the OpenShift system:admin user. This is the user that has full 
+admin rights across the cluster. If you are logged in as the Linux root user you can login to the cluster
+as this user:
+
+```sh
+oc login -u system:admin
+```
+
+However, if you are not the root user then you cannot do this (the login process will try to authenticate the
+system:admin user against your configured providers). Instead you should add the necessary rights to a user 
+that is authenticated by one of the providers. Two ways of doing this are (change admin for whichever user you
+are wanting to grant these privs):
+
+```sh
+oc adm policy add-cluster-role-to-user cluster-admin admin
+```
+This method grants cluster-admin role to that use, effectively giving them full access.
+A safer approach is:
+
+
+```sh
+oc adm add-cluster-role-to-user sudoer admin1
+```
+This grants sudoer role to your user so that they can imporsonate the system:admin user using the --as flag. e.g.
+
+```sh
+oc get -n default po --as=system:admin
+```
 
 ## Server management
 
