@@ -18,12 +18,12 @@ A video by RedHat on which this recipe is based can be found
 
 Create users developer1, developer2, tester1, tester2. This depends on how secutity is set up. With default security any non-empty 
 username and password is allowed so nothing needs to be done. If you have tightened up security add the users by whatever means is 
-appropriate e.g. addign them to the htpasswd file.
+appropriate e.g. adding them to the htpasswd file.
  
 Create development and testing projects
 ```sh
-oc new-project testing --description="Testing environment”
-oc new-project development --description="Development environment”
+oc new-project testing --description="Testing environment"
+oc new-project development --description="Development environment"
 ```
 
 Switch to development project
@@ -55,7 +55,8 @@ oc policy add-role-to-user edit tester2
 ```
 
 Add developers with view access
-```shoc policy add-role-to-user view developer1
+```sh
+oc policy add-role-to-user view developer1
 oc policy add-role-to-user view developer2
 ```
 
@@ -85,7 +86,7 @@ Look up the image stream id so that it can be tagged
 oc describe is
 ```
 
-Tag the image for promotion
+Look for the image name and tag it for promotion
 ```sh
 oc tag ruby-ex@sha256:b70b03830f84b7ac51c064db2bccdd85188b1ca9e1e22787015b5d752ce71886 development/ruby-ex:promote
 ```
@@ -113,7 +114,7 @@ oc new-app development/ruby-ex:promote
 
 Requires the project to be forked etc.
 
-* In the web console oo to builds and locate the relevant build.
+* In the web console go to builds and locate the relevant build.
 * In Configuration section copy the GitHub web hook url
 * In GitHub go to the project settings and add new web hook
 * Paste in URL. Set content type to application/json. Disable SSL verification.
