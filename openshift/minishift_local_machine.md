@@ -9,9 +9,9 @@ _TODO_ - add instruction for getting running on Windoze
 A machine with 8GB RAM is probably the minimum. With only this don’t try to deploy too much, or setup logging and metrics etc.
 The default VM it use is Xhyve which should be present on a modern version of OSX. 
 
-Download minishift from here: [https://github.com/minishift/minishift/releases]
+Download minishift from here: https://github.com/minishift/minishift/releases
 
-Download open shift origin client tools from here: [https://github.com/openshift/origin/releases]
+Download open shift origin client tools from here: https://github.com/openshift/origin/releases
 
 Unpack both and add locations to PATH.
 
