@@ -10,7 +10,9 @@ A machine with 8GB RAM is probably the minimum. With only this don’t try to de
 The default VM it use is Xhyve which should be present on a modern version of OSX. 
 
 Download minishift from here: [https://github.com/minishift/minishift/releases]
+
 Download open shift origin client tools from here: [https://github.com/openshift/origin/releases]
+
 Unpack both and add locations to PATH.
 
 Start Minishift:
