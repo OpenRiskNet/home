@@ -19,23 +19,26 @@ Perform the following as root
 
 ## Centos setup
 
-Install dependencies
+### Install dependencies
 
 ```sh
 yum update -y
 yum install -y wget git net-tools bind-utils iptables-services bridge-utils bash-completion docker libcgroup-tools
 ```
 
-Edit /etc/sysconfig/docker and add `--insecure-registry 172.30.0.0/16` to the options. e.g.
-OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false --insecure-registry 172.30.0.0/16'
+Edit /etc/sysconfig/docker and uncomment the INSECURE_REGISTRY options so that it looks like this:
 
-Start docker
+INSECURE_REGISTRY='--insecure-registry 172.30.0.0/16'
+
+### Start docker
+
 ```sh
 systemctl enable docker
 systemctl start docker
 ```
 
-Start cgroups 
+### Start cgroups 
+
 ```sh
 systemctl enable  cgconfig.service
 systemctl start cgconfig.service
@@ -45,13 +48,13 @@ systemctl start cgconfig.service
 
 Grab an openshift release from here: https://github.com/openshift/origin/releases
 ```sh
-curl -kL https://github.com/openshift/origin/releases/download/v1.5.0-rc.0/openshift-origin-server-v1.5.0-rc.0-49a4a7a-linux-64bit.tar.gz | tar xvz
+curl -kL https://github.com/openshift/origin/releases/download/v3.6.0-rc.0/openshift-origin-server-v3.6.0-rc.0-98b3d56-linux-64bit.tar.gz | tar xvz
 ```
-Add the extracted dir to your path
+Add the extracted dir to your path (edit .bash_profile).
 
-Run a simple dockerised environment using oc cluster up
+## Run a simple dockerised environment using oc cluster up
 
-Rreate a dir for os data
+Create a dir for os data
 ```sh
 mkdir /root/os_data
 ```
@@ -70,7 +73,7 @@ mkdir os_data
 oc cluster up --routing-suffix=<new ip>.nip.io --public-hostname=<new ip>.nip.io --host-data-dir=/root/os_data
 ```
 
-Note S2I builds do not work with these options with the scaleway centos image. Need to wok out how to get this working
+Note S2I builds do not work with these options with the scaleway centos image. Need to wok out how to get this working.
 
 ## Authentication
 
@@ -111,11 +114,11 @@ oauthConfig:
 
 Set up an OAUTH app in your GitHub organisation.
 
-Callback URL will be line this:
+The callback URL will be line this:
 `https://<dns or ip>:8443/oauth2callback/github` 
 (where GitHub is the name of the provider in the master-config.yaml file.
 
-For htpasswd file try this:
+For htpasswd file try this (the users.htpasswd file must be put in /var/lib/origin/openshift.local.config/master/):
 
 ```sh
 yum install -y httpd-tools
