@@ -3,7 +3,7 @@
 [Keycloak](http://www.keycloak.org/) is Red Hat's single sign on solution, being marketed as 
 [Red Hat SSO](https://access.redhat.com/products/red-hat-single-sign-on).
 
-Information oo running this in OpenShift can be found in these locations:
+Information on running this in OpenShift can be found in these locations:
 
 * Blog/video demonstrating how to set this up [here](https://blog.openshift.com/openshift-commons-briefing-35-sso-best-practices-keycloak-integration-openshift/)
 * Documentation for SSO on OpenShift Enterprise [here](https://docs.openshift.com/enterprise/3.1/using_images/xpaas_images/sso.html)
@@ -15,12 +15,13 @@ This recipe describes how to get SSO running on OpenShift Origin. It uses an app
 from several of the resources listed above.
 
 **IMPORTANT**: this did not work using Minishift on Mac because of some problem with Docker for Mac. 
-Until this is resolved you should do it using OpenShift origin running on a Linux host.  
+Until this is resolved you should do it using OpenShift origin running on a Linux host. This can be done
+using the [openshift_centos recipe](openshift_centos.md).
 
 
 ## Install image streams and templates
 
-Clone the git repo:
+Clone the git repo containing the image stream and template definitions:
 ```
 mkdir git
 cd git
@@ -33,7 +34,7 @@ Install the standard image streams (if not already loaded):
 oc create -f git/openshift-ansible/roles/openshift_examples/files/examples/v3.6/image-streams/image-streams-centos7.json -n openshift
 ```
 
-Install the xpaas images streams which include the SSO templates:
+Install the xpaas images streams which include those needed for SSO:
 ```
 oc create -f git/openshift-ansible/roles/openshift_examples/files/examples/v3.6/xpaas-streams/jboss-image-streams.json -n openshift
 ```
@@ -51,7 +52,7 @@ oc create -f git/openshift-ansible/roles/openshift_examples/files/examples/v3.6/
 ## Generate certificates
 
 At various points here you will be prompted for passwords. Make a note of what you specified.
-You need a full JDK installed to hav the keytool tool. If you don't already have this do:
+You need a full JDK installed to have the keytool tool. If you don't already have this do:
 
 ```
 yum install -y java-1.8.0-openjdk.x86_64
@@ -121,12 +122,12 @@ oc secrets link sso-service-account sso-jgroup-secret sso-ssl-secret
 
 ## Deploy the template
 
-Depending on the parameters used above you will need to update some of the paramters specified here,
-notably the passwords (replace 'password' with whtever you used).
+Depending on the parameters used above you will need to update some of the parameters specified here,
+notably the passwords (replace 'password' with whatever you used).
 May of the values specified below are actually default values so do not actually need to be specified
 as parameters, but are shown for completeness.
-Im particular you might want to change:
-* SSO_SERVICE_USERNAME/SSO_SERVICE_PASSWORD - this is the account applications cna use to register themselves with Keycloak.
+In particular you might want to change:
+* SSO_SERVICE_USERNAME/SSO_SERVICE_PASSWORD - this is the account applications can use to register themselves with Keycloak.
 * SSO_ADMIN_USERNAME/SSO_ADMIN_PASSWORD - this is the admin account that you will use to log in to Keycloak once it running.
 
 For now this example uses the basic sso71-https template that uses an in-memory database for persistence.
@@ -164,9 +165,9 @@ If all goes well you can log into the web console and see the deployment. URLs w
 
 This recipe is work in progress. In particular need to:
 
-1. Run Keycloak with a persistent database (PostgreSQL). Cureently the sso71-postgresql-persistent template
+1. Run Keycloak with a persistent database (PostgreSQL). Currently the sso71-postgresql-persistent template
  is failing as PostgreSQL fails to start because of: `mkdir: cannot create directory '/var/lib/pgsql/data': Permission denied`
- (the non-persitent version of PostgreSQL works OK)
+ (the non-persistent version of PostgreSQL works OK)
 1. Run with a pre-existing PostgreSQL database
 1. Avoid using self-signed certificates
 1. Show how to create an application that uses SSO
