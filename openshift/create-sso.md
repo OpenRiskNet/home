@@ -137,7 +137,7 @@ Those templates can alternatively be loaded into the openshift project as descri
 
 
 ```
-oc process -f git/openshift-ansible/roles/openshift_examples/files/examples/v3.6/xpaas-templates/sso71-https.json\
+oc process -f git/openshift-ansible/roles/openshift_examples/files/examples/v3.6/xpaas-templates/sso71-postgresql-persistent.json\
  -p APPLICATION_NAME=sso\
  -p HTTPS_SECRET=sso-ssl-secret\
  -p HTTPS_PASSWORD=password\
@@ -165,9 +165,7 @@ If all goes well you can log into the web console and see the deployment. URLs w
 
 This recipe is work in progress. In particular need to:
 
-1. Run Keycloak with a persistent database (PostgreSQL). Currently the sso71-postgresql-persistent template
- is failing as PostgreSQL fails to start because of: `mkdir: cannot create directory '/var/lib/pgsql/data': Permission denied`
- (the non-persistent version of PostgreSQL works OK)
 1. Run with a pre-existing PostgreSQL database
+1. Consider removing the http service and route as keycloak only works for https 
 1. Avoid using self-signed certificates
 1. Show how to create an application that uses SSO
