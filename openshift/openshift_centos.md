@@ -69,10 +69,11 @@ To re-create with a new FQDN (existing setup is lost):
 mv os_data os_data_old
 rm -rf .kube
 mkdir os_data
-oc cluster up --routing-suffix=<new fqdn>.nip.io --public-hostname=<new fqdn> --host-data-dir=/root/os_data
+oc cluster up --routing-suffix=<new fqdn>.nip.io --public-hostname=<new fqdn> --host-data-dir=/root/os_data --use-existing-config=true
 ```
+Note: the --use-existing-config=true option is optional.
 
-Note S2I builds do not work with these options with the Scaleway centos image. Need to wok out how to get this working.
+Note: S2I builds do not work with these options with the Scaleway centos image. Need to wok out how to get this working.
 
 ## Authentication
 
