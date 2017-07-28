@@ -60,14 +60,16 @@ Start openshift (replace FQDN with correct value)
 ```sh
 oc cluster up --routing-suffix=34.204.64.211.nip.io --public-hostname=34.204.64.211.nip.io --host-data-dir=/root/os_data --use-existing-config=true
 ```
+Note: using nip.io (or similar) works fine for testing, but you will not be able to generate certificates for a domain
+like this so for more long running setups set up a proper domain name.
 
-If the ip address changes then the system does not work. TODO - work out how to address this
-To re-create with a new ip address (existing setup is lost):
+If the FQDN changes then the system does not work. TODO - work out how to address this
+To re-create with a new FQDN (existing setup is lost):
 ```sh
-cp -r os_data os_data_old
+mv os_data os_data_old
 rm -rf .kube
 mkdir os_data
-oc cluster up --routing-suffix=<new ip>.nip.io --public-hostname=<new ip>.nip.io --host-data-dir=/root/os_data
+oc cluster up --routing-suffix=<new fqdn>.nip.io --public-hostname=<new fqdn> --host-data-dir=/root/os_data
 ```
 
 Note S2I builds do not work with these options with the Scaleway centos image. Need to wok out how to get this working.
