@@ -23,7 +23,13 @@ Start Minishift:
 minishift start
 ```
 The URL to open for the web console will be reported.
-You can login with any non-empty username and password (clearly this is not designed to be secure, just to allow easy experimentation)
+You can login with any non-empty username and password (clearly this is not designed to be secure, just to allow easy experimentation) but if you go with:
+
+```
+username: developer
+password: <anything non empty>
+```
+you get a user that can create projects directly.
 
 Stopping Minishift:
 ```sh
