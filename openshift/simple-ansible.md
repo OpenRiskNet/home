@@ -8,19 +8,23 @@ Preprare master and node from a centos 7.3 machine on Scaleway like this:
 ```
 yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct epel-release
 yum -y update
-yum -y install docker NetworkManager
+yum -y install docker
 
 # skip bit about configuring docker storage - do this for prod
 
 systemctl enable docker
 systemctl start docker
+
+yum -y install NetworkManager
 systemctl enable NetworkManager
 systemctl start NetworkManager
 ```
 
+Best to prepare a snapshot of this images to avoid re-doing this each time.
+
 ## Preparation on the Ansible bastion machine
 
-This machine is use to mange the Openshift nodes.
+This machine is use to manage the Openshift nodes.
 
 From a centos 7.3 machine on Scaleway
 ```
