@@ -5,7 +5,7 @@
 ## Node preparation
 
 Preprare master and node from a centos 7.3 machine on Scaleway as decribed in the
-[centos_machine.md] recipe.
+[centos_machine.md](centos_machine.md) recipe.
 
 
 ## Preparation on the Ansible bastion machine
@@ -67,9 +67,9 @@ NODE_PRIVATE_FQDN openshift_node_labels="{'region': 'infra'}"
 
 ```
 ansible-playbook -i <Path_to_inventory_file> openshift-ansible/playbooks/byo/config.yml
-
+```
 ... tons of output taking about 30 mins ...
-
+```
 PLAY RECAP ********************************************************************************************************************************
 c21a833e-6c52-4217-8c63-88735c8f2453.priv.cloud.scaleway.com : ok=464  changed=167  unreachable=0    failed=0   
 d2a499a9-0fb9-4a44-8921-16ddbc55fb8b.priv.cloud.scaleway.com : ok=163  changed=55   unreachable=0    failed=0   
