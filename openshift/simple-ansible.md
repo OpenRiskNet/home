@@ -1,26 +1,12 @@
 # Create a simple 2 node Openshift installation using the Ansible installer
 
-**Note:** this is work in progress and not working yet
+**Note:** this is work in progress and not working yet. The node does not join the cluster.
 
 ## Node preparation
 
-Preprare master and node from a centos 7.3 machine on Scaleway like this:
-```
-yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct epel-release
-yum -y update
-yum -y install docker
+Preprare master and node from a centos 7.3 machine on Scaleway as decribed in the
+[centos_machine.md] recipe.
 
-# skip bit about configuring docker storage - do this for prod
-
-systemctl enable docker
-systemctl start docker
-
-yum -y install NetworkManager
-systemctl enable NetworkManager
-systemctl start NetworkManager
-```
-
-Best to prepare a snapshot of this images to avoid re-doing this each time.
 
 ## Preparation on the Ansible bastion machine
 
