@@ -15,7 +15,7 @@ TODO - work out how to avoid this.
 ### Server
 
 Preprare master and node from a centos 7.3 machine on Scaleway as described in the
-[centos_machine.md] recipe.
+[centos_machine.md](centos_machine.md) recipe.
 
 ### Extra packages
 
