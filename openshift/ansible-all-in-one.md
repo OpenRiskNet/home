@@ -14,8 +14,8 @@ TODO - work out how to avoid this.
 
 ### Server
 
-Preprare master and node from a centos 7.3 machine on Scaleway as described in the
-[centos_machine.md](centos_machine.md) recipe.
+Preprare master and node from a centos 7.3 machine as described in the
+[centos_machine.md](centos_machine.md) recipe. Note: Problems have been found using Scaleway machines, so stick with EC2 for present.
 
 ### Extra packages
 
@@ -85,6 +85,7 @@ log_path = ~/ansible.log
 
 ```
 ansible-playbook -i <Path_to_inventory_file> openshift-ansible/playbooks/byo/config.yml
+```
 
 ... tons of output taking about 20 mins ... ending with something like this:
 
@@ -152,6 +153,7 @@ you set in the DNS record (e.g. master.example.com).
 
 ```
 ansible-playbook -i <Path_to_inventory_file> openshift-ansible/playbooks/byo/config.yml
+```
 
 ... tons of output taking about 20 mins ... ending with something like this:
 
