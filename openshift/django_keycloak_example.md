@@ -3,6 +3,18 @@ In this recipe we will set up Keycloak authentication for a Python Django projec
 
 ## Starting Keycloak service on MiniShift
 
+```
+$ oc new-build jboss/keycloak-postgres:latest --name=keycloak --dockerfile='FROM jboss/keycloak-postgres:latest
+ 
+USER root
+
+#Give correct permissions when used in an OpenShift environment.
+RUN chown -R jboss:0 $JBOSS_HOME/standalone && \
+    chmod -R g+rw $JBOSS_HOME/standalone
+
+USER jboss'
+```
+
 ## Getting a sample Django project and modify it to use Keycloak for authentication
 OpenShift comes with a sample Django template and [repository](https://github.com/openshift/django-ex). 
 We are going to need to edit the Django project so start by cloning it into your own Github account and 
