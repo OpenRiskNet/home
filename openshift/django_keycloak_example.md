@@ -2,7 +2,7 @@
 In this recipe we will set up Keycloak authentication for a Python Django project and run it in MiniShift.
 
 ## Starting Keycloak service on MiniShift
-
+We create a build from an inline dockerfile:
 ```
 $ oc new-build jboss/keycloak-postgres:latest --name=keycloak --dockerfile='FROM jboss/keycloak-postgres:latest
  
