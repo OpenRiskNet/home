@@ -171,14 +171,14 @@ systemctl list-units --all | grep -i origin
 ## TODO 
 
 1. Work out why node is not joining cluster
-1. Add athentication (htpasswd initially?)
+1. Add authentication (htpasswd initially?)
 1. Add custom certificates
 1. Configure persistence (glusterfs?)
-1. Configure persistence for docker repository (glusterfs?)
+1. Configure persistence for docker repository
 1. Add non-infrastructure nodes
 1. Add logging
 1. Add metrics
-1. Define a HA cluster would look like
+1. Define what a HA cluster would look like
 
 
 
