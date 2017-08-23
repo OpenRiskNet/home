@@ -14,6 +14,21 @@ RUN chown -R jboss:0 $JBOSS_HOME/standalone && \
 
 USER jboss'
 ```
+Then we deploy that build, from UI: **Add to Project**, **Deploy Image** and find it in Image Stram tag.
+Let's create a Postgresql database, from UI: **Add to Project**, **Browse Catalog**, **Data Stores**, **PostgreSQL (Persistent)**
+Database Service Name: postgresql-keycloak
+PostgreSQL Connection Username: keycloak
+PostgreSQL Database Name: keycloak
+
+#TODO: figure out how to run the postgresql 
+
+
+We need to set some environment variables:
+
+POSTGRES_PORT_5432_TCP_ADDR  postgresql.test.svc
+POSTGRES_PASSWORD
+
+### Create route
 
 ## Getting a sample Django project and modify it to use Keycloak for authentication
 OpenShift comes with a sample Django template and [repository](https://github.com/openshift/django-ex). 
