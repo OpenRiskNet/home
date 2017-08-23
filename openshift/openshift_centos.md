@@ -5,6 +5,8 @@ term experimentations among a group of users in a reasonably secure manner.
 
 Being based on a single server it is not suitable for highly available or highly scaleable setups.
 
+This uses the `oc cluster up` method which does not provide much ability to configure teh Openshift environment. Using the Advanced (Ansible) installer is more suited for real deployments. 
+
 # Create a centos machine
 
 On AWS subscribe to this image: https://aws.amazon.com/marketplace/pp/B00O7WM7QW?ref=cns_srchrow
