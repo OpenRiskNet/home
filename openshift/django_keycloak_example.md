@@ -115,6 +115,10 @@ from django.contrib.auth.decorators import login_required
 def secure(request):
     return HttpResponse('This page is only visible for the logged in user. <a href="/openid/logout">Logout</a>')
 ```
+### Configuring Keycloak 
+We need to create a **Realm** in Keycloak, we will call it **sample**. Then we need to create a user. I nthe left menu choose **Users** and then in the upper right corner **Add user**. Give the user a username and a password.
+
+We also need to create a Client, which we will give the **Client id**: webapp, and then give it the **Valid Redirect URI**: `django-psql-persistent.myproject.svc/*`
 
 ### Deploying our modified Django app
 We will use the OpenShift Django + PostgreSQL template and point it to our modified Django source code.
@@ -124,7 +128,5 @@ Now point it to your **Git repository URL** (I will use https://github.com/jonal
 
 And click **Create**
 
-### Configuring Keycloak 
 
-**TODO** create realm and user in Keycloak
 
