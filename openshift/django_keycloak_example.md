@@ -14,8 +14,7 @@ RUN chown -R jboss:0 $JBOSS_HOME/standalone && \
 
 USER jboss'
 ```
-We will also be needing a Postgresql database:
-
+This might take a little while to build. In the meantime, we will also be needing a Postgresql database:
 ```
 $ oc new-app -e POSTGRESQL_ADMIN_PASSWORD=foo \
              -e POSTGRESQL_USER=keycloak \
@@ -24,7 +23,7 @@ $ oc new-app -e POSTGRESQL_ADMIN_PASSWORD=foo \
              centos/postgresql-95-centos7 --name postgres-95
 ```
 
-Then we deploy the Keycloak build, from UI: **Add to Project**, **Deploy Image** and find it in Image Stream tag.
+Then (once the Keycloak build is completed, to see progress check **Builds** -> **Builds** in the left menu) we deploy the Keycloak build, from UI: **Add to Project**, **Deploy Image** and find it in Image Stream tag.
 For me it was under: `myproject / keycloak : latest`
 
 We need to set some environment variables for `keycloak`:
