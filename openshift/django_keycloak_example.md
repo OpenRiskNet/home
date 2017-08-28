@@ -22,7 +22,7 @@ $ oc new-app -e POSTGRESQL_ADMIN_PASSWORD=foo \
              -e POSTGRESQL_DATABASE=keycloak \
              centos/postgresql-95-centos7 --name postgres-95
 ```
-<div style="text-align: right">(Notice that secrets should probably be used for passwords in production)</div>
+(Notice that secrets should probably be used for passwords in production)
 
 Then (once the Keycloak build is completed, to see progress check **Builds** -> **Builds** in the left menu) we deploy the Keycloak build, from UI: **Add to Project**, **Deploy Image** and find it in Image Stream tag.
 For me it was under: `myproject / keycloak : latest`
@@ -34,7 +34,7 @@ POSTGRES_PASSWORD keycloak
 KEYCLOAK_USER=test
 KEYCLOAK_PASSWORD=test
 ```
-<div style="text-align: right">(Notice that secrets should probably be used for passwords in production)</div>
+(Notice that secrets should probably be used for passwords in production)
 
 ### Create route for Keycloak
 Under **Applications** in the left menu select **Routes** and then **Create Route** in the upper right corner. 
