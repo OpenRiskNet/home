@@ -106,6 +106,10 @@ urlpatterns = [
 ```
 and add the following view to `welcome/views.py`:
 ```
+from django.contrib.auth.decorators import login_required
+
+[...]
+
 @login_required
 def secure(request):
     return HttpResponse('This page is only visible for the logged in user. <a href="/openid/logout">Logout</a>')
