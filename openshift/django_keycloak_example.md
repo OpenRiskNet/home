@@ -50,4 +50,48 @@ We are going to need to edit the Django project so start by cloning it into your
 check it out to your machine. I have done so and my [repository](https://github.com/jonalv/django-ex)
 contains a version of _django-ex_ with all the changes described in this text.
 
+### Modifications needed in our Django app
+We will be using the [Django OIDC libraries](https://github.com/jhuapl-boss/boss-oidc) (see also this [excellent blog post](http://blog.jonharrington.org/static/integrate-django-with-keycloak/) if you want some more information)
+We need to add the following lines `requirements.txt`:
+```
+git+https://github.com/jhuapl-boss/django-oidc.git
+git+https://github.com/jhuapl-boss/drf-oidc-auth.git
+git+https://github.com/jhuapl-boss/boss-oidc.git
+```
+Then in `settings.py` we need to add the applications:
+```
+    'bossoidc',
+    'djangooidc',
+```
+specify our authentication backends:
+```
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'bossoidc.backend.OpenIdConnectBackend',
+)
+```
+and finally add some configuration code:
+```
+auth_uri = "http://keycloak.myproject.svc:8080/auth/realms/sample"
+client_id = "webapp"
+public_uri = "http://keycloak.myproject.svc:8000"
+
+from bossoidc.settings import *
+configure_oidc(auth_uri, client_id, public_uri)
+```
+
+I had some trouble with Django 1.8 so I went ahead and changed version in requirements.txt:
+
+```
+django>=1.11
+```
+
+
+### Deploying our modified Django app
+We will use the OpenShift Django + PostgreSQL template and point it to our modified Django source code.
+Click **Add to Project**, **Browse Catalog**, **Python**, and then Select **Django + PostgreSQL(Persistent)**
+
+Now point it to your **Git repository URL** (I will use https://github.com/jonalv/django-ex.git)
+
+And click **Create**
 
