@@ -85,7 +85,31 @@ I had some trouble with Django 1.8 so I went ahead and changed version in requir
 ```
 django>=1.11
 ```
+Finally, let's make som modifications so that we have a page that requires the user to be authenticated as well as the one which does not. Make the `url.py` look like:
 
+```
+from django.conf.urls import include, url
+from django.contrib import admin
+
+from welcome.views import index, health, secure
+
+urlpatterns = [
+    # Examples:
+    # url(r'^$', 'project.views.home', name='home'),
+    # url(r'^blog/', include('blog.urls')),
+
+    url(r'^$', index),
+    url(r'^secure$', secure),
+    url(r'^health$', health),
+    url(r'^admin/', include(admin.site.urls)),
+]
+```
+and add the following view to `welcome/views.py`:
+```
+@login_required
+def secure(request):
+    return HttpResponse('This page is only visible for the logged in user. <a href="/openid/logout">Logout</a>')
+```
 
 ### Deploying our modified Django app
 We will use the OpenShift Django + PostgreSQL template and point it to our modified Django source code.
@@ -94,4 +118,8 @@ Click **Add to Project**, **Browse Catalog**, **Python**, and then Select **Djan
 Now point it to your **Git repository URL** (I will use https://github.com/jonalv/django-ex.git)
 
 And click **Create**
+
+### Configuring Keycloak 
+
+**TODO** create realm and user in Keycloak
 
