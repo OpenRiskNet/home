@@ -25,7 +25,8 @@ $ oc new-app -e POSTGRESQL_ADMIN_PASSWORD=foo \
 (Notice that secrets should probably be used for passwords in production)
 
 Then (once the Keycloak build is completed, to see progress check **Builds** -> **Builds** in the left menu) we deploy the Keycloak build, from UI: **Add to Project**, **Deploy Image** and find it in Image Stream tag.
-For me it was under: `myproject / keycloak : latest`
+
+(For me it was under: `myproject / keycloak : latest`)
 
 We need to set some environment variables for `keycloak`:
 ```
