@@ -37,6 +37,8 @@ KEYCLOAK_PASSWORD=test
 ```
 (Notice that secrets should probably be used for passwords in production)
 
+Now you can click **Create**.
+
 ### Create route for Keycloak
 Under **Applications** in the left menu select **Routes** and then **Create Route** in the upper right corner. 
 
