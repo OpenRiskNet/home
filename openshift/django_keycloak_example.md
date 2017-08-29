@@ -48,7 +48,7 @@ Name your route, _e.g._ keycloakroute, make sure that the service is set to your
 OpenShift comes with a sample Django template and [repository](https://github.com/openshift/django-ex). 
 We are going to need to edit the Django project so start by cloning it into your own Github account and 
 check it out to your machine. I have done so and my [repository](https://github.com/jonalv/django-ex)
-contains a version of _django-ex_ with all the changes described in this text.
+contains a version of _django-ex_ with all the changes described in this text so go ahead and use it if you don't feel like programming Python right now :)
 
 ### Modifications needed in our Django app
 We will be using the [Django OIDC libraries](https://github.com/jhuapl-boss/boss-oidc) (see also this [excellent blog post](http://blog.jonharrington.org/static/integrate-django-with-keycloak/) if you want some more information)
