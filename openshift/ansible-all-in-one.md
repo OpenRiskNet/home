@@ -52,11 +52,12 @@ nodes
 ansible_ssh_user=root
 openshift_deployment_type=origin
 openshift_disable_check=docker_storage,memory_availability
-openshift_hostname=MASTER_PRIVATE_FQDN
-openshift_master_cluster_hostname=MASTER_PRIVATE_FQDN
+
 openshift_master_cluster_public_hostname=MASTER_PUBLIC_FQDN
 openshift_master_default_subdomain=MASTER_PUBLIC_FQDN
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/users.htpasswd'}]
+# make sure this htpasswd file exists
+openshift_master_htpasswd_file=/home/centos/users.htpasswd
 
 # host group for masters
 [masters]
@@ -184,8 +185,9 @@ This is work in progress. Ignore for now.
 
 ### Extra packages
 
+On the ansible machine install these:
 ```
-yum -y install python-passlib java-1.8.0-openjdk-headless
+yum -y install python-passlib java-1.8.0-openjdk-headless httpd-tools
 ```
 
 
