@@ -11,3 +11,4 @@ A typical path to follow is:
 1. [openshift_centos.md](openshift_centos.md) - set up a simple multi-user server environment
 1. [template_deploy.md](template_deploy.md) - deploy a more relistic app from a built in or external template
 1. [jenkins.md](jenkins.md) - demonstrate how Jenkins can be deployed and a pipeline run
+1. [django_keycloak_example.md](django_keycloak_example.md) - Set up Keycloak and a Django app that uses it for authentication
