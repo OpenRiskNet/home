@@ -118,7 +118,7 @@ def secure(request):
 ### Configuring Keycloak 
 Log in to the **Administration console** of Keycloak with the admin username and password you gave when configuring Keycloak (test, test). We need to create a **Realm** in Keycloak, we will call it **sample**. Then we need to create a user, in the left menu choose **Users** and then in the upper right corner **Add user**. Give the new user a username and a password (in the **Credentials** tab).
 
-We also need to create a Client, which we will give the **Client id**: webapp, and then give it the **Valid Redirect URI**: `django-psql-persistent.myproject.svc/*`
+We also need to create a Client, which we will give the **Client id**: webapp, and then give it the **Valid Redirect URI**: `http://django-psql-persistent-myproject.192.168.64.2.nip.io/*`
 
 ### Deploying our modified Django app
 We will use the OpenShift Django + PostgreSQL template and point it to our modified Django source code.
