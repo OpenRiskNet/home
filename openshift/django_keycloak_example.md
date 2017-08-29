@@ -128,5 +128,5 @@ Now point it to your **Git repository URL** (I will use https://github.com/jonal
 
 And click **Create**
 
-
+This might take a little while but once it is all up you should be able to visit the Django web page.
 
