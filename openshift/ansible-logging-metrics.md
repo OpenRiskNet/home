@@ -3,6 +3,8 @@
 Adding Logging and Metrics to an Ansible install. This is an extension of 
 [ansible-simple.md](ansible-simple.md).
 
+**WARNING:** Metrics is not yet working correctly.
+
 ## Ansible machine requirements
 
 Metrics needs some extra packages on the Ansible machine:
@@ -48,7 +50,6 @@ openshift_master_htpasswd_file=/home/centos/users.htpasswd
 openshift_master_cluster_public_hostname=MASTER_PUBLIC_FQDN
 openshift_master_default_subdomain=MASTER_PUBLIC_FQDN
 
-openshift_metrics_install_metrics=true
 openshift_hosted_metrics_deploy=true
 openshift_hosted_metrics_storage_kind=nfs
 openshift_hosted_metrics_storage_access_modes=['ReadWriteOnce']
@@ -92,30 +93,7 @@ ansible-playbook -i <Path_to_inventory_file> openshift-ansible/playbooks/byo/con
 PLAY RECAP *************************************************************************************************************************************************************************************************************************
 ip-10-0-208-182.eu-west-1.compute.internal : ok=737  changed=113  unreachable=0    failed=0   
 ip-10-0-254-96.eu-west-1.compute.internal : ok=147  changed=12   unreachable=0    failed=0   
-localhost                  : ok=13   changed=0    unreachable=0    failed=0   
-
-Tuesday 29 August 2017  10:28:25 +0000 (0:00:00.237)       0:07:54.057 ******** 
-=============================================================================== 
-openshift_hosted : Ensure OpenShift router correctly rolls out (best-effort today) -- 16.62s
-openshift_hosted : Ensure OpenShift registry correctly rolls out (best-effort today) -- 16.37s
-openshift_master : Wait for master controller service to start on first master -- 15.05s
-openshift_health_check ------------------------------------------------- 12.73s
-openshift_logging_fluentd : Create Fluentd service account -------------- 7.56s
-openshift_logging : Gather OpenShift Logging Facts ---------------------- 5.87s
-openshift_metrics : Start Hawkular Cassandra ---------------------------- 4.07s
-openshift_logging_elasticsearch : Create ES service account ------------- 3.65s
-openshift_manageiq : Configure role/user permissions -------------------- 3.48s
-openshift_logging_elasticsearch : Set logging-es-cluster service -------- 3.32s
-openshift_logging_elasticsearch : Set logging-elasticsearch-view-role role --- 3.17s
-openshift_metrics : Stop Hawkular Metrics ------------------------------- 2.97s
-openshift_node_facts : Set node facts ----------------------------------- 2.96s
-openshift_docker_facts : Set docker facts ------------------------------- 2.68s
-openshift_node : Set node facts ----------------------------------------- 2.65s
-openshift_docker_facts : Set docker facts ------------------------------- 2.63s
-openshift_docker_facts : Set docker facts ------------------------------- 2.62s
-openshift_docker_facts : Set docker facts ------------------------------- 2.62s
-openshift_docker_facts : Set docker facts ------------------------------- 2.62s
-openshift_logging_elasticsearch : Set logging-es service ---------------- 2.52s
+localhost                  : ok=13   changed=0    unreachable=0    failed=0
 ```
 
 SSH to the master and check things are running.
@@ -174,10 +152,6 @@ po/logging-fluentd-nkn83                     1/1       Running   0          1h
 po/logging-fluentd-vlln7                     1/1       Running   0          1h
 po/logging-kibana-1-dvhhh                    2/2       Running   0          1h
 ```
-
-
-
-
 
 ## Post install
 
