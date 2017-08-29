@@ -128,5 +128,11 @@ Now point it to your **Git repository URL** (I will use https://github.com/jonal
 
 And click **Create**
 
-This might take a little while but once it is all up you should be able to visit the Django web page.
+This might take a little while but once it is all up we just need to make migrations and migrate the database for our Django app and then we are done. In OpenShift click **Applications**, **Pods** and locate the running `django-psql-persistent-X-XXXX` pod. Click it and then click on the **Terminal** tab and run:
+```
+$ python manage.py makemigrations bossoidc
+$ python manage.py migrate bossoidc
+```
+
+you should be able to visit the Django web page, and if you try, _i.e._ http://django-psql-persistent-myproject.192.168.64.2.nip.io/secure you should first have to sign in to Keycloak before you are allowed to continue.
 
