@@ -28,7 +28,7 @@ Then (once the Keycloak build is completed, to see progress check **Builds** -> 
 
 (For me it was under: `myproject / keycloak : latest`)
 
-We need to set some environment variables for `keycloak`:
+We need to set some **Environment Variables** for `keycloak`:
 ```
 POSTGRES_PORT_5432_TCP_ADDR  postgres-95.myproject.svc
 POSTGRES_PASSWORD keycloak
