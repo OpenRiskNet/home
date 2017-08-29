@@ -30,8 +30,8 @@ Then (once the Keycloak build is completed, to see progress check **Builds** -> 
 
 We need to set some **Environment Variables** for `keycloak`:
 ```
-POSTGRES_PORT_5432_TCP_ADDR  postgres-95.myproject.svc
-POSTGRES_PASSWORD keycloak
+POSTGRES_PORT_5432_TCP_ADDR=postgres-95.myproject.svc
+POSTGRES_PASSWORD=keycloak
 KEYCLOAK_USER=test
 KEYCLOAK_PASSWORD=test
 ```
