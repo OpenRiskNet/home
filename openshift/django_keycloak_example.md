@@ -72,9 +72,9 @@ AUTHENTICATION_BACKENDS = (
 ```
 and finally add some configuration code:
 ```
-auth_uri = "http://keycloak.myproject.svc:8080/auth/realms/sample"
+auth_uri = "http://keycloakroute-myproject.192.168.64.2.nip.io/auth/realms/sample"
 client_id = "webapp"
-public_uri = "http://keycloak.myproject.svc:8000"
+public_uri = "http://keycloakroute-myproject.192.168.64.2.nip.io"
 
 from bossoidc.settings import *
 configure_oidc(auth_uri, client_id, public_uri)
