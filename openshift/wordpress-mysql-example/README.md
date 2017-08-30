@@ -95,7 +95,12 @@ Edit the route-wp.yaml to define the correct hostname which will apply to the ro
 oc create -f route-wp.yaml
 ```
 
+## Post install
+
 Access Wordpress at something like: https://wordpress.example.com/
+
+Look in the `/home/data/pv0001` and `/home/data/pv0002` directories to see the wordpress
+and mysql files.
 
 ## Notes
 
