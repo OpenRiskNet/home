@@ -8,7 +8,6 @@ A typical path to follow is:
 Fist learn how to setup an OpenShift cluster
 
 1. [Minishift](minishift_local_machine.md) - simple way to get an environment running on your local machine
-1. [Deploy CDK Depict](CDK_depict.md) - build and run the small web service application for generating chemical structure depictions CDK Depict
 1. [openshift_centos.md](openshift_centos.md) - set up a simple multi-user server environment using `oc cluster up`
 1. [Ansible single node](ansible-all-in-one.md) - Simple single server install using Ansible
 1. [Ansible simple](ansible-simple.md) - Simple one master, one node setup using Ansible
@@ -16,6 +15,7 @@ Fist learn how to setup an OpenShift cluster
 
 Then learn about deploying applications
 
+1. [Deploy CDK Depict](CDK_depict.md) - build and run the small web service application for generating chemical structure depictions CDK Depict
 1. [Wordpress + MySQL](wordpress-mysql-example/README.md) - Deploy Wordpress with a MySQL back end usign NFS for persistent storage
 1. [Template deploy](template_deploy.md) - deploy a more relistic app from a built in or external template
 1. [Postgres database](create-postgres.md) - Deploy a postgres database
