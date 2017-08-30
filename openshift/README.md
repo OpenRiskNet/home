@@ -5,12 +5,12 @@ These recipes are created to allow people to try out OpenShift. The hope is to m
 
 A typical path to follow is:
 
-Fist learn how to setup an OpenShift cluster
+First learn how to setup an OpenShift cluster
 
 1. [Minishift](minishift_local_machine.md) - simple way to get an environment running on your local machine
-1. [openshift_centos.md](openshift_centos.md) - set up a simple multi-user server environment using `oc cluster up`
+1. [Cluster up](openshift_centos.md) - set up a simple multi-user server environment using `oc cluster up`
 1. [Ansible single node](ansible-all-in-one.md) - Simple single server install using Ansible
-1. [Ansible simple](ansible-simple.md) - Simple one master, one node setup using Ansible
+1. [Ansible two node](ansible-simple.md) - Simple one master, one node setup using Ansible
 1. [Ansible metrics + logging](ansible-logging-metrics.md) - Deploy logging and metrics backed by NFS
 
 Then learn about deploying applications
