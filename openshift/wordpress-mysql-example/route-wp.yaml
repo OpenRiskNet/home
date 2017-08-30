@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Route
+metadata:
+  name: wordpress
+  namespace: wordpress
+spec:
+  host: wordpress.os.informaticsmatters.com
+  tls:
+    termination: passthrough
+  to:
+    kind: Service
+    name: wpfrontend
+  wildcardPolicy: None
+
