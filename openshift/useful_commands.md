@@ -17,3 +17,9 @@ Access docker registry
 ```sh
 eval $(minishift docker-env)
 ```
+Managing roles etc.
+
+```
+oc adm policy add-cluster-role-to-user sudoer user1
+```
+This adds sudoer role to the user so that they can add `--as system:admin` or similar to their commands.
