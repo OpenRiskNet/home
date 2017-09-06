@@ -75,7 +75,8 @@ First learn how to setup an OpenShift cluster
 
 Then learn about deploying applications
 
-1. [Deploy CDK Depict](CDK_depict/CDK_depict.md) - build and run the small web service application for generating chemical structure depictions CDK Depict
+1. [Manual deploy CDK Depict](CDK_depict/CDK_depict.md) - use the web console to build and run the small web service application for generating chemical structure depictions CDK Depict
+1. [Template deploy CDK Depict](CDK_depict/templates.md) - same as above but using templates and the CLI
 1. [Wordpress + MySQL](wordpress-mysql-example/README.md) - Deploy Wordpress with a MySQL back end using NFS for persistent storage
 1. [Template deploy](template_deploy.md) - deploy a more relistic app from a built in or external template
 1. [Postgres database](create-postgres.md) - Deploy a postgres database

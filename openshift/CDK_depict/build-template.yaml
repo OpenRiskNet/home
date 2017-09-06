@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: cdkdepict
+  annotations:
+    description: CDK Depict servlet
+    iconClass: icon-wildfly
+    tags: "servlet,java,openrisknet,cdk,depict"
+labels:
+  app: cdkdepict
+  template: cdkdepict
+message: "CDK Depict build config has been deployed."
+
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: ${APP_NAME}
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: ${APP_NAME}
+    name: ${APP_NAME}
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${APP_NAME}:latest
+    runPolicy: Serial
+    source:
+      git:
+        ref: master
+        uri: https://github.com/cdk/depict.git
+      type: Git
+    strategy:
+      sourceStrategy:
+        env:
+        - name: MAVEN_ARGS
+          value: compile war:war -Popenshift -DskipTests -B
+        from:
+          kind: ImageStreamTag
+          name: wildfly:10.1
+          namespace: openshift
+    triggers:
+    - type: GitHub
+      github:
+        secret: ${GITHUB_SECRET}
+    - type: ImageChange
+    - type: ConfigChange
+
+parameters:
+- description: Application name
+  name: APP_NAME
+  value: cdkdepict
+  required: true
+- description: GitHub secret token
+  name: GITHUB_SECRET
+  from: '[A-Za-z0-9]{16}'
+  generate: expression
