@@ -1,16 +1,16 @@
-# Deploy CDK Depick using templates
+# Deploy CDK Depict using templates
 
-[This recipe](CDK_depict.md) shows how to build and deploy an app using the web console.
+[This recipe](CDK_depict.md) showed how to build and deploy an app using the web console.
 For true autmation and re-use the web console is not the way to go. In this recipe we walk through
-how to deploy the same application using templates.
+how to build and deploy the same application using templates.
 
-Appart from allowing this to be done from teh command line, so aiding automation, this approach breaks
+Appart from allowing this to be done from the command line, so aiding automation, this approach breaks
 the process down into two parts, first a template that allows the CDK Depict application to be built and
 pushed to the Docker repository, and second one that deploys the image to an OpenShift environment. 
 This way we (OpenRiskNet) can build the application image, but adminstrators of other OpenRiskNet Virtual 
 Research Environments can deloy that image to their own environment without having to worry about how to build it.
 
-The underlying process is much the same as when using the we console, but the procedure looks quite different.
+The underlying process is much the same as when using the web console, but the procedure looks quite different.
 
 ## Building the application
 
@@ -20,7 +20,7 @@ For this we need:
 2. An image stream into which the image is pushed once it is built.
 
 We create these from a template that we use to build the build config and image stream definitions.
-We assume you have clone this repository and are in this openshift/cdkdepict directory wihc contains the
+We assume you have cloned this repository and are in this openshift/cdkdepict directory which contains the
 templates.
 
 Create a new project:
@@ -34,7 +34,7 @@ Take a look at the template:
 $ cat build-template.yaml
 ```
 In it you will see the build config and image stream objects. There are parameters for the application name and an
-automatically generated secret that us used for the GitHub build trigger. You typically do not need to override these.
+automatically generated secret that is used for the GitHub build trigger. You typically do not need to override these.
 
 Take a look at the processed template:
 
