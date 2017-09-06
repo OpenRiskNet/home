@@ -9,7 +9,7 @@ repository aims to help people on the OpenRiskNet project and others to quickly 
 OpenShift is Red Hat's container orchestration platform. It is based on Kubernetes which is a project led by 
 Google that is putting together an Open Source container orchestration platform based on their many years of 
 experience with running containers at high scale, using the systems they refer to as Borg. Kubernetes can be
-thought of as the next generate of Borg, and OpenShift as Red Hat's distribution of Kebernetes that adds 
+thought of as the next generate of Borg, and OpenShift as Red Hat's distribution of Kubernetes that adds 
 additional developer related services and security features. OpenShift Origin (which is what OpenRiskNet is 
 using for development) is RedHat's upstream project from their OpenShift Enterpise commercial version for which
 you can get paid support, similar to the way the Red Hat Enterperise Linux (RHEL) is their commercial supported
