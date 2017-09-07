@@ -21,22 +21,35 @@ from the OpenShift logging and metrics services etc.
 	A number are available. The default VM it uses is `xhyve` but you can also
 	use `VirtualBox` or `VMWare Fusion`, amongst others. Installation 
 
->	This guide has been used with `xhyve` v1.5.26 on macOS Sierra. 
+>	This guide has been verified with `xhyve` (using the latest/HEAD commit 
+	from 9th August 2016) and `VirtualBox` (v1.5.26) on macOS Sierra. 
 
->	This guide has been used with `Chrome` v 60.0.3112.113 on macOS Sierra.
-	There are stability issues with the Safari browser so it might be
-	advisable to avoid Safari.
+>	This guide has been verified with `Chrome` v 60.0.3112.113 on macOS Sierra.
+	There appear to be stability issues with the Safari browser (using
+	v10.1.2 on macOS Sierra) so, at the moment, the best advice is to use Chrome.
 	
-To install `xhyve` on OSX you can use `brew` to install it and the Docker
+To install `xhyve` on OSX you can use `brew` to install both it and the Docker
 machine driver:
 
 ```
-brew install --HEAD xhyve
+$ brew install --HEAD xhyve
 ```
 
-And follow instructions in _setting up the driver plugin_ for xhyve at
+then follow instructions in _setting up the driver plugin_ for xhyve at
 https://docs.openshift.org/latest/minishift/getting-started/setting-up-driver-plugin.html
 
+...which essentially requires you to also install the driver using brew...
+
+```
+$ brew install docker-machine-driver-xhyve
+```
+
+...and then adjust some fiel attributes...
+
+```
+$ sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+$ sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+```
 Download minishift from here: https://github.com/minishift/minishift/releases
 
 _TODO_ - add instructions for users of `brew` on OSX
@@ -55,12 +68,12 @@ also download more material and utilities.
 
 Start minishift (with the default `xhyve` hypervisor):
 ```sh
-minishift start
+$ minishift start
 ```
 
 Or, to start with `VirtualBox`:
 ```sh
-minishift start --vm-driver virtualbox
+$ minishift start --vm-driver virtualbox
 ```
 
 This starts a minishift _cluster_ and minishift will download a number of files.
@@ -107,7 +120,7 @@ You can experiment with start options, which can be seen with the following
 command:
 
 ```sh
-minishift start --help
+$ minishift start --help
 ```
 
 You can create a larger VM with the `--cpu` and `--memory` options.
@@ -116,7 +129,7 @@ You can create a larger VM with the `--cpu` and `--memory` options.
 
 Stopping Minishift:
 ```sh
-minishift stop
+$ minishift stop
 ```
 
 The service is simply suspended in the VM allowing you to quickly restart it
@@ -137,7 +150,7 @@ that minishift relies on) and `~/.minishift` directories.
 
 Getting minishift status:
 ```sh
-minishift status
+$ minishift status
 ```
 
 *	When deleted you should see it respond with `Does Not Exist`.
@@ -149,7 +162,7 @@ This should be set in your `/etc/hosts` and should be the address of the
 hypervisor.
 
 So, if your `VirtualBox` hypervisor IP is `192.168.99.1`, add it along with
-a suitable hostname to your `/etc/hosts`:
+a suitable `.local` hostname to your `/etc/hosts`:
 ```
 192.168.99.1	virtualbox.local
 ```
@@ -159,7 +172,7 @@ hostname and routing capabilities. the following starts a service with
 4 cores and 8GB RAM using VirtualBox (the line is wrapped for clarity):
 
 ```
-minishift start
+$ minishift start
 	--vm-driver virtualbox
 	--routing-suffix virtualbox.local
 	--public-hostname virtualbox.local
