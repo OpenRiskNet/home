@@ -146,8 +146,7 @@ minishift status
 ## Configuring a hostname and routing
 You should provide a name that can be resolved by the minishift cluster.
 This should be set in your `/etc/hosts` and should be the address of the
-hypervisor if you're using `VirtualBox` or localhost (`127.0.0.1` if you're
-using `xhyve`)
+hypervisor.
 
 So, if your `VirtualBox` hypervisor IP is `192.168.99.1`, add it along with
 a suitable hostname to your `/etc/hosts`:
@@ -155,12 +154,7 @@ a suitable hostname to your `/etc/hosts`:
 192.168.99.1	virtualbox.local
 ```
 
-Or add something like this if you're using ``xhyve`:
-```
-127.0.0.1		xhyve.local
-```
-
-With this set you can start your minishift service and provide usable
+With an entry in `/etc/hosts` you can start your minishift service and provide usable
 hostname and routing capabilities. the following starts a service with
 4 cores and 8GB RAM using VirtualBox (the line is wrapped for clarity):
 
