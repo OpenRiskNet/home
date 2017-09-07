@@ -21,9 +21,21 @@ from the OpenShift logging and metrics services etc.
 	A number are available. The default VM it uses is `xhyve` but you can also
 	use `VirtualBox` or `VMWare Fusion`, amongst others. Installation 
 
->	This guide has been used with `VirtualBox` v1.5.26 on macOS Sierra. 
+>	This guide has been used with `xhyve` v1.5.26 on macOS Sierra. 
 
-_TODO_ - add instructions for installation of `xhyve`.
+>	This guide has been used with `Chrome` v 60.0.3112.113 on macOS Sierra.
+	There are stability issues with the Safari browser so it might be
+	advisable to avoid Safari.
+	
+To install `xhyve` on OSX you can use `brew` to install it and the Docker
+machine driver:
+
+```
+brew install --HEAD xhyve
+```
+
+And follow instructions in _setting up the driver plugin_ for xhyve at
+https://docs.openshift.org/latest/minishift/getting-started/setting-up-driver-plugin.html
 
 Download minishift from here: https://github.com/minishift/minishift/releases
 
@@ -41,7 +53,7 @@ also download more material and utilities.
 
 ## Starting the minishift service
 
-Start Minishift (with the default `xhyve` hypervisor):
+Start minishift (with the default `xhyve` hypervisor):
 ```sh
 minishift start
 ```
@@ -70,14 +82,14 @@ To login as administrator:
 	oc login -u system:admin
 ```
 
->	Minishift installes material to the `~/.minishift` directory. There you will
-	find the `oc` binary that has been downloaded
-	(probably something like .minishift/cache/oc/v3.6.0/). This directory
-	needs to be and added to your `PATH`. The actual path
-	is reported with the command `minishift oc-env`.
+>	Minishift installes material to `~/.minishift` and `~/.kube` directories,
+	which it will create. You will find the `oc` binary that has been downloaded
+	(probably in `.minishift/cache/oc/v3.6.0/`). This directory
+	needs to be added to your `PATH`. The actual path is reported with the
+	convenient command `minishift oc-env`.
 
->	Add this to your path or follow the instructions to add it to your
-	existing shell, e.g. `eval $(minishift oc-env)`.
+>	Add this the path to your PATH or follow the `minishift oc-env` instructions
+	to add it to your existing shell, e.g. `eval $(minishift oc-env)`.
   
 The URL to open for the web console was be reported when you started minishift's
 cluster. You can login with any non-empty username and password
@@ -134,17 +146,23 @@ minishift status
 ## Configuring a hostname and routing
 You should provide a name that can be resolved by the minishift cluster.
 This should be set in your `/etc/hosts` and should be the address of the
-hypervisor (i.e. `VirtualBox`).
+hypervisor if you're using `VirtualBox` or localhost (`127.0.0.1` if you're
+using `xhyve`)
 
-If your hypervisor IP is `192.168.99.1`, add it along with a suitable
-hostname to your `/etc/hosts`:
+So, if your `VirtualBox` hypervisor IP is `192.168.99.1`, add it along with
+a suitable hostname to your `/etc/hosts`:
 ```
 192.168.99.1	virtualbox.local
 ```
 
+Or add something like this if you're using ``xhyve`:
+```
+127.0.0.1		xhyve.local
+```
+
 With this set you can start your minishift service and provide usable
 hostname and routing capabilities. the following starts a service with
-4 cores and 8GB RAM (the line is wrapped for clarity):
+4 cores and 8GB RAM using VirtualBox (the line is wrapped for clarity):
 
 ```
 minishift start
@@ -157,7 +175,7 @@ minishift start
 
 # Troubleshooting
 
----
+1. Unknown authority
 
 I see `Error: The server uses a certificate signed by unknown authority.`
 when I try to start the service.
@@ -165,21 +183,3 @@ when I try to start the service.
 This might be the result of of prior service execution.
 Execute `minishift delete --clear-cache` and then try starting
 the service again.
-
----
-
-I see `Error during post cluster up configuration: Unable to add sudoer role`
-when I try to start the service.
-	
-You are probably trying to set the `--routing-suffix` and/or the `--public-hostname`
-and are using the wrong IP address. rather than the IP of the host you may need
-the address of your hypervisor.
-
-If you're using VirtualBox  you will needs its address. The following output
-from `ifconfig` shows that its address is `192.168.99.1`:
-
-```
-vboxnet0: flags=8943<UP,BROADCAST,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
-	ether 0a:00:27:00:00:00 
-	inet 192.168.99.1 netmask 0xffffff00 broadcast 192.168.99.255
-```
