@@ -15,19 +15,20 @@ will result in the creation of one VM using 2 cores, 20GiB disk image space
 and 2GB RAM. With only this don’t try to deploy too much, or expect too much
 from the OpenShift logging and metrics services etc.
 
->	In order to run minishift it needs a hypervisor to start the virtual machines
-	that it will create. You therefore need to make sure that your hypervisor of choice
-	is installed and enabled before you execute `minishift start` later in this guide.
-	A number are available. The default VM it uses is `xhyve` but you can also
-	use `VirtualBox` or `VMWare Fusion`, amongst others. Installation 
-
 >	This guide has been verified with `xhyve` (using the latest/HEAD commit 
 	from 9th August 2016) and `VirtualBox` (v1.5.26) on macOS Sierra. 
 
->	This guide has been verified with `Chrome` v 60.0.3112.113 on macOS Sierra.
-	There appear to be stability issues with the Safari browser (using
-	v10.1.2 on macOS Sierra) so, at the moment, the best advice is to use Chrome.
+>	This guide has been verified with `Chrome` v 60.0.3112.113 and `Firefox`
+    v49.0.1 on macOS Sierra. We have experienced stability issues with the
+    Safari browser (using v10.1.2 on macOS Sierra) so, at the moment,
+    recommend avoiding it for now.
 	
+In order to run minishift it needs a hypervisor to start the virtual machines
+that it will create. You therefore need to make sure that your hypervisor of choice
+is installed and enabled before you execute `minishift start` later in this guide.
+A number are available. The default VM it uses is `xhyve` but you can also
+use `VirtualBox` or `VMWare Fusion`.
+
 To install `xhyve` on OSX you can use `brew` to install both it and the Docker
 machine driver:
 
@@ -44,24 +45,31 @@ https://docs.openshift.org/latest/minishift/getting-started/setting-up-driver-pl
 $ brew install docker-machine-driver-xhyve
 ```
 
-...and then adjust some fiel attributes...
+...and then adjust some file attributes...
 
 ```
 $ sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
 $ sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
 ```
-Download minishift from here: https://github.com/minishift/minishift/releases
 
-_TODO_ - add instructions for users of `brew` on OSX
+With a suitable hypervisor installed let's now install Minishift.
+
+Download minishift from here: https://github.com/minishift/minishift/releases
 
 Unpack it and place the `minishift` binary in a suitable directory
 (i.e. `~/bin/minishift`) and add the directory to your PATH. 
+
+>	If you're on macOS and prefer using `brew` you can install Minishift
+	with the command `brew cask install minishift`
+
+Once installed you should be able to check it's basic operation by querying
+the version...
 
 ```sh
 minishift version
 ```
 
-Check all looks good. The next step will not only start minishift but
+The next step will not only start a basic minishift but it will
 also download more material and utilities.
 
 ## Starting the minishift service
@@ -116,8 +124,8 @@ password: <anything non empty>
 
 ...you get a user that can create projects directly.
 
-You can experiment with start options, which can be seen with the following
-command:
+You can experiment with other start options, which can be seen with the
+following command:
 
 ```sh
 $ minishift start --help
@@ -140,7 +148,7 @@ you will need to delete the minishift service.
 
 Deleting everything, including the VM it created, in order to start again:
 ```sh
-minishift delete
+$ minishift delete --clear-cache
 ```
 
 To really delete absolutely everything delete the `~/.kube` (bits of Kubernetes
