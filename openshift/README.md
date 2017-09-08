@@ -70,6 +70,7 @@ First learn how to setup an OpenShift cluster
 1. [Minishift](minishift_local_machine.md) - simple way to get an environment running on your local machine
 1. [Cluster up](openshift_centos.md) - set up a simple multi-user server environment using `oc cluster up`
 1. [Ansible single node](ansible-all-in-one.md) - Simple single server install using Ansible
+1. [Ansible one node](ansible-simple-one.md) - Simple joint master and node using Ansible
 1. [Ansible two node](ansible-simple.md) - Simple one master, one node setup using Ansible
 1. [Ansible metrics + logging](ansible-logging-metrics.md) - Deploy logging and metrics backed by NFS
 
