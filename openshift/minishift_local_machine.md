@@ -29,8 +29,8 @@ is installed and enabled before you execute `minishift start` later in this guid
 A number are available. The default VM it uses is `xhyve` but you can also
 use `VirtualBox` or `VMWare Fusion`.
 
-To install `xhyve` on OSX you can use `brew` to install both it and the Docker
-machine driver:
+To install `xhyve` on OSX you can use `brew` to install both it and the
+`docker-machine` driver:
 
 ```
 $ brew install --HEAD xhyve
@@ -62,14 +62,14 @@ Unpack it and place the `minishift` binary in a suitable directory
 >	If you're on macOS and prefer using `brew` you can install Minishift
 	with the command `brew cask install minishift`
 
-Once installed you should be able to check it's basic operation by querying
+Once installed you should be able to check its basic operation by querying
 the version...
 
 ```sh
 minishift version
 ```
 
-The next step will not only start a basic minishift but it will
+The next step will not only start a basic `minishift` service but it will
 also download more material and utilities.
 
 ## Starting the minishift service
@@ -109,10 +109,10 @@ To login as administrator:
 	needs to be added to your `PATH`. The actual path is reported with the
 	convenient command `minishift oc-env`.
 
->	Add this the path to your PATH or follow the `minishift oc-env` instructions
+>	Add this path to your PATH or follow the `minishift oc-env` instructions
 	to add it to your existing shell, e.g. `eval $(minishift oc-env)`.
   
-The URL to open for the web console was be reported when you started minishift's
+The URL to open for the web console was reported when you started minishift's
 cluster. You can login with any non-empty username and password
 (clearly this is not designed to be secure, just to allow easy experimentation)
 but if you go with:
@@ -140,8 +140,8 @@ Stopping Minishift:
 $ minishift stop
 ```
 
-The service is simply suspended in the VM allowing you to quickly restart it
-without the overhead of reconstructing the VM. In order to remove the VM
+The service is simply suspended in the VM, allowing you to quickly restart it
+without the overhead of reconstructing the image. In order to remove the VM
 you will need to delete the minishift service.
 
 ## Deleting the minishift service
@@ -180,11 +180,11 @@ hostname and routing capabilities. the following starts a service with
 4 cores and 8GB RAM using VirtualBox (the line is wrapped for clarity):
 
 ```
-$ minishift start
-	--vm-driver virtualbox
-	--routing-suffix virtualbox.local
-	--public-hostname virtualbox.local
-	--memory 8GB
+$ minishift start \
+	--vm-driver virtualbox \
+	--routing-suffix virtualbox.local \
+	--public-hostname virtualbox.local \
+	--memory 8GB \
 	--cpus 4
 ```
 
