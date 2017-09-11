@@ -275,7 +275,8 @@ to the OpenShift server so the Ansible installation can continue
 without stopping (hopefully).
 
 From the Ansible server using the **Private DNS** IP address assigned to the
-OpenShift server (change the IP address accordingly)...
+OpenShift server by the EC2 service (change the IP address in the following
+example accordingly)...
 
     $ ssh -i .ssh/osone.pem centos@ip-10-0-0-101.eu-west-1.compute.internal
 
