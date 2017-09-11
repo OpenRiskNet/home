@@ -1,5 +1,5 @@
 # Integrating Keycloak and Python Django on OpenShift
-In this recipe we will set up Keycloak authentication for a Python Django project and run it in MiniShift. If using minishift I suggest increasing memory by first doing: `minishift config set memory 4096`
+In this recipe we will set up Keycloak authentication for a Python Django project and run it in MiniShift. If using minishift I suggest increasing memory by first doing: `minishift config set memory 4096`. The recipe sets up a build of vanillla Keycloak but it should be possible to use Redhat SSO if you already have that set up. 
 
 ## Starting Keycloak service on MiniShift
 We create a build from an inline dockerfile:
