@@ -29,6 +29,11 @@ git clone https://github.com/openshift/openshift-ansible.git
 cd
 ```
 
+Login as `system:admin`:
+```
+oc login -u system:admin
+```
+
 Install the standard image streams (if not already loaded):
 ```
 oc create -f git/openshift-ansible/roles/openshift_examples/files/examples/v3.6/image-streams/image-streams-centos7.json -n openshift
