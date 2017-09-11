@@ -225,53 +225,6 @@ If you have a domain you can create a human-readable form of the IP address
 (i.e. `openshift.informaticsmatters.com`) and assign it to the Elastic IP address
 using your provider tools.
 
-### Create the OpenShift inventory file
-This file, used by Ansible, defines the configuration of the OpenShift
-server that it will setup. An example is illustrated below:
-
-On your Ansible server...
-
-*   Create a a file (`~/osone-inventory.txt`) and replace instances of
-    **ip-10-0-0-170.eu-west-1.compute.internal** in the example below
-    with the **Private DNS** address Amazon assigned to _your_ 2nd
-    (`openshift-one-master`) server. 
-
-*   Replace `abc.informaticsmatters.com` with your own DNS name
- 
-```
-# Create an OSEv3 group that contains the masters and nodes groups
-[OSEv3:children]
-masters
-nodes
-
-# Set variables common for all OSEv3 hosts
-[OSEv3:vars]
-# SSH user, this user should allow ssh based auth without requiring a password
-ansible_ssh_user=centos
-ansible_become=yes
-openshift_deployment_type=origin
-openshift_release=v3.6
-openshift_disable_check=docker_storage,memory_availability,disk_availability
-
-openshift_master_cluster_public_hostname=abc.informaticsmatters.com
-openshift_master_default_subdomain=abc.informaticsmatters.com
-openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/users.htpasswd'}]
-# make sure this htpasswd file exists
-openshift_master_htpasswd_file=/home/centos/users.htpasswd
-
-# host group for masters
-[masters]
-ip-10-0-0-170.eu-west-1.compute.internal
-
-# host group for etcd
-[etcd]
-ip-10-0-0-170.eu-west-1.compute.internal
-
-# host group for nodes,
-[nodes]
-ip-10-0-0-170.eu-west-1.compute.internal openshift_node_labels="{'region': 'infra'}" openshift_schedulable=true
-```
-
 ### Create user passwords
 >   This file, that you create on the Ansible server, will be transferred
     to the OneShift server by Ansible. The password you provide will form the
@@ -328,6 +281,53 @@ OpenShift server (change the IP address accordingly)...
 
 Once the exchange is over `exit` the session to return you to the Ansible
 server.
+
+### Create the OpenShift inventory file
+This file, used by Ansible, defines the configuration of the OpenShift
+server that it will setup. An example is illustrated below:
+
+On your Ansible server...
+
+*   Create a a file (`~/osone-inventory.txt`) and replace instances of
+    **ip-10-0-0-170.eu-west-1.compute.internal** in the example below
+    with the **Private DNS** address Amazon assigned to _your_ 2nd
+    (`openshift-one-master`) server. 
+
+*   Replace `abc.informaticsmatters.com` with your own DNS name
+ 
+```
+# Create an OSEv3 group that contains the masters and nodes groups
+[OSEv3:children]
+masters
+nodes
+
+# Set variables common for all OSEv3 hosts
+[OSEv3:vars]
+# SSH user, this user should allow ssh based auth without requiring a password
+ansible_ssh_user=centos
+ansible_become=yes
+openshift_deployment_type=origin
+openshift_release=v3.6
+openshift_disable_check=docker_storage,memory_availability,disk_availability
+
+openshift_master_cluster_public_hostname=abc.informaticsmatters.com
+openshift_master_default_subdomain=abc.informaticsmatters.com
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/users.htpasswd'}]
+# make sure this htpasswd file exists
+openshift_master_htpasswd_file=/home/centos/users.htpasswd
+
+# host group for masters
+[masters]
+ip-10-0-0-170.eu-west-1.compute.internal
+
+# host group for etcd
+[etcd]
+ip-10-0-0-170.eu-west-1.compute.internal
+
+# host group for nodes,
+[nodes]
+ip-10-0-0-170.eu-west-1.compute.internal openshift_node_labels="{'region': 'infra'}" openshift_schedulable=true
+```
 
 We're nearly ready to go...
     
