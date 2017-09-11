@@ -52,6 +52,7 @@ We need two (one for Ansible, one for the OpenShift host). Goto the
 **EC2 Dashboard** and click the **Launch Instance** button. You are then
 guided through a number of steps before the server instance gets created.
 
+## Creating the Ansible host
 Firstly, let's creatie the instance that will act as our Ansible host that
 will be used to configure the 2nd (OpenShift) server instance.
 
@@ -141,6 +142,7 @@ Brilliant! You're now on the Ansible server. Let's now create an EC2 instance
 that will act as our OpenShift server. Keep this SSH session, you'll need it
 later.
 
+## Creating the OpenShift host
 Repeat the above steps (1..6) in order to create another server instance to
 act as our OpenShift instance, with the following adjustments:
 
