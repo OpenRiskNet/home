@@ -44,6 +44,11 @@ Add the essential Inbound Rules to the group. We need:-
 * Type: `HTTPS (443)`, Source: `0.0.0.0/0`
 * Type: `SSH (22)`, Source: `0.0.0.0/0`
 * Type: `Custom TCP Rule`, Source: `0.0.0.0/0`
+* Type: `All traffic`, Source: `<self-referenced security group ID>`
+
+The final rule (`All traffic`) permits internal routing between all instances
+in the same group. The source needs to be the ID of the security group itself.
+If the group ID is `sg-172c7d6f` then the **Source** should be `sg-172c7d6f`.
 
 Once done save the rules.
 
