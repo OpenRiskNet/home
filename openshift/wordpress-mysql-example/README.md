@@ -79,6 +79,14 @@ oc policy add-role-to-user edit orn1
 
 ## Persistent Volumes (PV) and Claim (PVC) creation
 
+>   If you are using a multi-node cluster rather than a single node or minishift
+    you will need to modify the `pv-NNNN.yaml` files. Replace
+    the `nfs: server:` value with the **Private DNS** value of the master.
+    Something like `ip-10-0-0-207.eu-west-1.compute.internal`. Wtihout this
+    change, pods started on the application node will not be able to connect to
+    NFS, usually emitting the error
+    **requested NFS version or transport protocol is not supported**
+
 ```
 oc create -f pv-0001.yaml
 oc create -f pv-0002.yaml
