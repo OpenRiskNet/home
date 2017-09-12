@@ -7,6 +7,27 @@ where 'appName' is listed in 'Labels' of 'oc describe [resource] [resource name]
 oc delete all -l app=appName
 ```
 
+That may not remove _everything_. You might also need to delete
+secrets, persistent volume claims and persistent volumes.
+
+```
+oc get secrets
+oc delete secrets/<secret>
+oc get pvc
+oc delete pvc/<pvc>
+oc get pv --as system:admin
+oc delete pv/<pv> -- as system:admin
+```
+
+For these latter commands you will need privileges which you can grant
+a user from the master node admin account (see **Managing Roles** below).
+
+```
+ssh -i .ssh/<keyfile>.pem centos@<addr>
+oc login -u system:admin
+oc adm policy add-cluster-role-to-user sudoer <user>
+```
+
 ## Listing default templates and images streams
 ```sh
 oc get templates -n openshift
