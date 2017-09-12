@@ -151,7 +151,7 @@ oc process -f git/openshift-ansible/roles/openshift_examples/files/examples/v3.6
  -p JGROUPS_ENCRYPT_PASSWORD=password\
  -p JGROUPS_ENCRYPT_SECRET=sso-jgroup-secret\
  -p SERVICE_ACCOUNT_NAME=sso-service-account\
- -p SSO_REALM=demorealm\
+ -p SSO_REALM=openrisknet\
  -p SSO_SERVICE_USERNAME=manager\
  -p SSO_SERVICE_PASSWORD=password\
  -p SSO_ADMIN_USERNAME=admin\
