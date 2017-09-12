@@ -28,6 +28,13 @@ oc login -u system:admin
 oc adm policy add-cluster-role-to-user sudoer <user>
 ```
 
+## Getting information on a pod
+This displays significant information about a pod including and
+`Events`.
+```sh
+oc describe pods <name>
+```
+
 ## Listing default templates and images streams
 ```sh
 oc get templates -n openshift

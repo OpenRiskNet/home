@@ -88,6 +88,8 @@ oc create -f pod-mysql.yaml
 oc create -f pod-wp.yaml
 ```
 Creating the pods may take a few mins as the Docker images need to be pulled.
+You can interrogate the pods using `oc get po` (`oc get pods`) and wait
+until the `STATUS` value becomes `Running` for both.
 
 ### Services
 
