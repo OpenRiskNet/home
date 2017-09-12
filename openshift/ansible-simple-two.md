@@ -49,7 +49,8 @@ server that it will setup. An example is illustrated below:
 On your Ansible server...
 
 *   Create a a file (`~/osone-inventory.txt`) and replace instances of
-    **ip-10-0-0-170.eu-west-1.compute.internal** in the example below
+    **ip-10-0-0-126.eu-west-1.compute.internal** and
+    **ip-10-0-0-236.eu-west-1.compute.internal** in the example below
     with the **Private DNS** address Amazon assigned to _your_ 2nd and 3rd
     (`openshift-one-master` and `openshift-one-app`) servers. 
 
@@ -61,6 +62,7 @@ On your Ansible server...
 masters
 nodes
 etcd
+nfs
 
 # Set variables common for all OSEv3 hosts
 [OSEv3:vars]
@@ -90,6 +92,10 @@ ip-10-0-0-126.eu-west-1.compute.internal
 [nodes]
 ip-10-0-0-126.eu-west-1.compute.internal openshift_node_labels="{'region': 'infra'}" openshift_schedulable=true
 ip-10-0-0-236.eu-west-1.compute.internal openshift_node_labels="{'region': 'infra'}"
+
+# NFS hosts
+[nfs]
+ip-10-0-0-126.eu-west-1.compute.internal
 ```
 
 We're nearly ready to go...

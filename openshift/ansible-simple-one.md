@@ -306,6 +306,7 @@ On your Ansible server...
 [OSEv3:children]
 masters
 nodes
+nfs
 
 # Set variables common for all OSEv3 hosts
 [OSEv3:vars]
@@ -333,6 +334,10 @@ ip-10-0-0-170.eu-west-1.compute.internal
 # host group for nodes,
 [nodes]
 ip-10-0-0-170.eu-west-1.compute.internal openshift_node_labels="{'region': 'infra'}" openshift_schedulable=true
+
+# NFS hosts
+[nfs]
+ip-10-0-0-170.eu-west-1.compute.internal
 ```
 
 We're nearly ready to go...
