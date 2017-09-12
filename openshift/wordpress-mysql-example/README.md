@@ -15,7 +15,8 @@ Create a standard Openshift setup using
 or [Ansible isntaller](https://github.com/OpenRiskNet/home/blob/master/openshift/ansible-all-in-one.md)
 
 Make sure you have provisioned NFS by adding a \[nfs\] section and adding the master to
-it:
+it. Inventories in our other examples should already have an NFS definition,
+as illustrated below:
 
     [OSEv3:children]
     ...
@@ -34,12 +35,12 @@ SSH to the master as the centos user.
 Do these as root or using sudo.
 
 ```
-mkdir -p /home/data/pv0001
-mkdir -p /home/data/pv0002
-chmod -R 777 /home/data/
+$ mkdir -p /home/data/pv0001
+$ mkdir -p /home/data/pv0002
+$ chmod -R 777 /home/data/
 ```
 
-Create /etc/exports.d/persitent-volumes.exports and make its contents as:
+Create `/etc/exports.d/persitent-volumes.exports` and make its contents as:
 ```
 /home/data/pv0001 *(rw,root_squash)
 /home/data/pv0002 *(rw,root_squash)
@@ -48,8 +49,12 @@ Create /etc/exports.d/persitent-volumes.exports and make its contents as:
 As root or using sudo, restart NFS to pick up the changes and check that
 the new exports are present.:
 ```
-systemctl restart nfs-server
-showmount -e localhost
+$ systemctl restart nfs-server
+$ showmount -e localhost
+Export list for localhost:
+/home/data/pv0002       *
+/home/data/pv0001       *
+...
 ```
 
 ## Clone repo
@@ -72,7 +77,7 @@ oc new-project wordpress
 oc policy add-role-to-user edit orn1
 ```
 
-## PC and PVC creation
+## Persistent Volumes (PV) and Claim (PVC) creation
 
 ```
 oc create -f pv-0001.yaml
@@ -81,6 +86,16 @@ oc create -f pvc-mysql.yaml
 oc create -f pvc-wp.yaml
 ```
 
+Check that the claims have `bound` to the persistent volumes with the
+`oc get` command:
+
+```
+$ oc get pv
+NAME      CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS    CLAIM                   STORAGECLASS   REASON    AGE
+pv0001    1Gi        RWO,RWX       Recycle         Bound     wordpress/claim-wp                               2m
+pv0002    5Gi        RWO           Recycle         Bound     wordpress/claim-mysql                            2m
+```
+    
 ### Pods
 
 ```

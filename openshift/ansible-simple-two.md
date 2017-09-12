@@ -105,7 +105,7 @@ As we've reused filenames, to get you two-node OpenShift cluster running,
 you can follow the steps described in the **Deploy OpenShift** section of the
 [Ansible one node](ansible-simple-one.md) sister document.
 
-This step is likely to take a few minutes.
+The above orchestration step is likely to take about 15 minutes.
 
 ### After installation
 You should be able to `ssh` to the master node and use the command-line
