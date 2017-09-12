@@ -121,8 +121,17 @@ oc create -f svc-mysql.yaml
 oc create -f svc-wp.yaml
 ```
 Show that the Wordpress service is working by using `oc get svc` to find the wpfrontend
-and get its IP address and port. Then check it is serving content with something like this:
-`curl -L http://172.29.187.206:5055`
+and get its IP address and port.
+
+```
+$ oc get svc
+NAME         CLUSTER-IP       EXTERNAL-IP                     PORT(S)          AGE
+mysql        172.30.114.106   <none>                          3306/TCP         25s
+wpfrontend   172.30.99.31     172.29.146.244,172.29.146.244   5055:31151/TCP   17s
+```
+
+Then check it is serving content with something like this:
+`curl -L http://172.29.146.244:5055`
 
 ### Route
 
@@ -135,8 +144,8 @@ oc create -f route-wp.yaml
 
 Access Wordpress at something like: https://wordpress.example.com/
 
-Look in the `/home/data/pv0001` and `/home/data/pv0002` directories to see the wordpress
-and mysql files.
+Look in the `/home/data/pv0001` and `/home/data/pv0002` directories
+to see the wordpress and mysql files.
 
 ## Notes
 
