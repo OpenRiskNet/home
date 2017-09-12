@@ -35,9 +35,9 @@ SSH to the master as the centos user.
 Do these as root or using sudo.
 
 ```
-$ mkdir -p /home/data/pv0001
-$ mkdir -p /home/data/pv0002
-$ chmod -R 777 /home/data/
+mkdir -p /home/data/pv0001
+mkdir -p /home/data/pv0002
+chmod -R 777 /home/data/
 ```
 
 Create `/etc/exports.d/persitent-volumes.exports` and make its contents as:
@@ -87,7 +87,7 @@ oc create -f pvc-wp.yaml
 ```
 
 Check that the claims have `bound` to the persistent volumes with the
-`oc get` command:
+`oc get pv` command:
 
 ```
 $ oc get pv
@@ -102,9 +102,17 @@ pv0002    5Gi        RWO           Recycle         Bound     wordpress/claim-mys
 oc create -f pod-mysql.yaml
 oc create -f pod-wp.yaml
 ```
-Creating the pods may take a few mins as the Docker images need to be pulled.
-You can interrogate the pods using `oc get po` (`oc get pods`) and wait
-until the `STATUS` value becomes `Running` for both.
+Creating the pods may take a few moments as the Docker images need to be pulled
+from the appropriate registry. While you wait you can interrogate the pods using
+`oc get po` (`oc get pods`), waiting until the `STATUS` value
+becomes `Running` for both...
+
+```
+$ oc get po
+NAME        READY     STATUS         RESTARTS   AGE
+mysql       1/1       Running        0          11m
+wordpress   1/1       Running        0          10m
+```
 
 ### Services
 
