@@ -81,7 +81,7 @@ Then learn about deploying applications
 1. [Wordpress + MySQL](wordpress-mysql-example/README.md) - Deploy Wordpress with a MySQL back end using NFS for persistent storage
 1. [Template deploy](template_deploy.md) - deploy a more relistic app from a built in or external template
 1. [Postgres database](create-postgres.md) - Deploy a postgres database
-1. [Keycloak for SSO](sso/create-sso.md) - Deploy Keycloak for SSO
+1. [Keycloak for SSO](sso/README.md) - Deploy Keycloak for SSO
 1. [Django App using Keycloak](django_keycloak_example.md) - Set up Keycloak and a Django app that uses it for authentication
 1. [TLS for routes](certificates/README.md) - securing routes using TLS/HTTPS
 
