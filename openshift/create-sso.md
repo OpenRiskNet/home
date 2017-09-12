@@ -60,7 +60,7 @@ At various points here you will be prompted for passwords. Make a note of what y
 You need a full JDK installed to have the keytool tool. If you don't already have this do:
 
 ```
-yum install -y java-1.8.0-openjdk.x86_64
+yum install -y java-1.8.0-openjdk
 ```
 
 Generate a CA certificate:
