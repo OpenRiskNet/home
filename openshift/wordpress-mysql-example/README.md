@@ -15,7 +15,17 @@ Create a standard Openshift setup using
 or [Ansible isntaller](https://github.com/OpenRiskNet/home/blob/master/openshift/ansible-all-in-one.md)
 
 Make sure you have provisioned NFS by adding a \[nfs\] section and adding the master to
-it.
+it:
+
+    [OSEv3:children]
+    ...
+    nfs
+    
+    [...]
+    
+    [nfs]
+    MASTER_PRIVATE_FQDN
+
 
 SSH to the master as the centos user. 
 
@@ -35,15 +45,16 @@ Create /etc/exports.d/persitent-volumes.exports and make its contents as:
 /home/data/pv0002 *(rw,root_squash)
 ```
 
-Restart NFS to pick up the changes and check that the new exports are present.:
+As root or using sudo, restart NFS to pick up the changes and check that
+the new exports are present.:
 ```
 systemctl restart nfs-server
 showmount -e localhost
 ```
 
 ## Clone repo
-
-Clone this repo and move into the dir with these contents:
+On the master (as a user that can create persistent volumes i.e. `system:admin`)
+clone this repo and move into the dir with these contents:
 ```
 mkdir openrisknet
 cd openrisknet/
