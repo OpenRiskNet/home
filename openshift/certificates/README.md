@@ -148,7 +148,7 @@ This example has a route definition but it only uses HTTP. We will see that once
 it is very simple to add TLS to the route.
 
 1. From the OpenShift console login as a normal user and create a new project for your app.  
-1. Use the **Add to project** function and choose the JavaScript section from the Catalog.
+1. Use the **Add to project** function and choose the **JavaScript** section from the **Browse Catalog**.
 1. Select the NODE.js section and choose the nodejs-ex example (link present in the page you see).
 1. Deploy the app.
 
