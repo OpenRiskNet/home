@@ -273,24 +273,21 @@ pipelining=True
 >   Note: `hostfile` is a deprecated setting since 1.9. You should
     switch to using `inventory` if you can.
     
-## Prime the SSH connection
-This serves simply to avoid the Ansible installer getting stopped
-at the connection stage, it primes the SSH connection from the Ansible server
-to the OpenShift server so the Ansible installation can continue
-without stopping (hopefully).
+## Start and/or add to ssh-agent
+`ssh-agent` takes care of the ssh authentication that Ansible will need
+when connecting to your OpenShift nodes. On your Ansible server start
+and and the ssh credentials.
 
-From the Ansible server using the **Private DNS** IP address assigned to the
-OpenShift server by the EC2 service (change the IP address in the following
-example accordingly)...
-
-    $ ssh -i .ssh/osone.pem centos@ip-10-0-0-101.eu-west-1.compute.internal
-
-Once the exchange is over `exit` the session to return you to the Ansible
-server.
+    # Start agent (if not already started)
+    eval `ssh-agent -s`
+    # Add your private key to agent
+    # (i.e. .ssh/osone.pem)
+    ssh-add "/path to your/private/ssh-key"
 
 ### Create the OpenShift inventory file
 This file, used by Ansible, defines the configuration of the OpenShift
-server that it will setup. An example is illustrated below:
+server that it will setup. The file must match the `hostfile` setting
+you put in the `ansible.cfg` above.
 
 On your Ansible server...
 
@@ -345,9 +342,7 @@ We're nearly ready to go...
 ## Deploy OpenShift
 From your Ansible SSH session you should now be able to setup the 2nd server...
 
-    $ ansible-playbook -i osone-inventory.txt \
-        openshift-ansible/playbooks/byo/config.yml \
-        --private-key ~/.ssh/osone.pem
+    $ ansible-playbook openshift-ansible/playbooks/byo/config.yml
         
 This takes a few minutes.
 

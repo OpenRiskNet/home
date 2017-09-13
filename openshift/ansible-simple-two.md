@@ -39,12 +39,11 @@ This step is essentially the same as that described in the
 Follow the steps up to but not including the
 **Create the OpenShift inventory file** section.
 
->   Remembering to prime the master and application server
-    from the Ansible host.
+>   Remembering to configure `ssh-agent` as described.
 
 ### Create the OpenShift inventory file
-This file, used by Ansible, defines the configuration of the OpenShift
-server that it will setup. An example is illustrated below:
+This file, declared as the `hostfile` in your `ansible.cfg`,
+defines the configuration of the OpenShift server that Ansible will setup.
 
 On your Ansible server...
 
