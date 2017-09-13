@@ -181,18 +181,17 @@ oc secrets link sso-service-account sso-jgroup-secret sso-ssl-secret
 ## Deploy the template
 
 Depending on the parameters used above you will need to update some of the parameters specified here,
-notably the passwords (replace 'password' with whatever you used).
+notably the passwords (replace `password` with whatever you used).
 Many of the values specified below are actually default values so do not actually need to be specified
 as parameters, but are shown for completeness.
 In particular you might want to change:
 * SSO_SERVICE_USERNAME/SSO_SERVICE_PASSWORD - this is the account applications can use to register themselves with Keycloak.
 * SSO_ADMIN_USERNAME/SSO_ADMIN_PASSWORD - this is the admin account that you will use to log in to Keycloak once it running.
 
-For now this example uses the basic sso71-https template that uses an in-memory database for persistence.
+For now this example uses the basic `sso71-https` template that uses an in-memory database for persistence.
 
-This template is loaded from the GitHub checkout (using the -f argument to oc process).
+This template is loaded from the GitHub checkout (using the `-f` argument to `oc process`).
 Those templates can alternatively be loaded into the openshift project as described earlier.
-
 
 ```
 oc process -f git/openshift-ansible/roles/openshift_examples/files/examples/v3.6/xpaas-templates/sso71-https.json\
@@ -215,9 +214,37 @@ oc process -f git/openshift-ansible/roles/openshift_examples/files/examples/v3.6
  | oc create -n sso-app-demo -f -
 ```
 
-If all goes well you can log into the web console and see the deployment. URLs will be something like:
-* Web console - https://34.193.87.117.nip.io:8443/console/
-* keycloak - https://secure-sso-sso-app-demo.34.193.87.117.nip.io/auth/
+If all goes well you should see successful creation of items:
+
+```
+service "sso" created
+service "secure-sso" created
+route "sso" created
+route "secure-sso" created
+deploymentconfig "sso" created
+```
+
+You can log into the web console and see the deployment.
+
+Use `oc get all` to get information about the deployment and you should
+see somthing like this:
+
+```
+$ oc get all
+[...]
+NAME                HOST/PORT                                            PATH      SERVICES     PORT      TERMINATION   WILDCARD
+routes/secure-sso   secure-sso-sso-app-demo.abc.informaticsmatters.com             secure-sso   <all>     passthrough   None
+routes/sso          sso-sso-app-demo.abc.informaticsmatters.com                    sso          <all>                   None
+[...]
+```
+
+URLs will be something like:
+* Web console - https://abc.informaticsmatters.com:8443/console/
+* keycloak - https://secure-sso-sso-app-demo.abc.informaticsmatters.com/auth/
+
+Unless you changes the passqword for the application you shoulld be able
+to login to the Single-Sign-On URL using `admin` and `password` as the
+username and passwords.
 
 ## Using Persistent Volumes
 
