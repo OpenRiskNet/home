@@ -10,7 +10,7 @@ may be OK for your needs, but in today's world a professional application is exp
 but nothing scares users more that the dreaded "This site is not secure" page that you get when 
 you access a site using HTTPS but the certificate is not valid.
 
-We will will be using Let's Encrypt certificates that are free to obtain and trusted by most browsers.
+We will will be using **Let's Encrypt** certificates that are free to obtain and trusted by most browsers.
 Information can be obtained [here](https://letsencrypt.org/).
 
 A key aspect of Let's Encrypt is that the process of generating and renewing certificates is designed to
@@ -27,14 +27,14 @@ These secure the OpenShift infrastructure internally e.g. the communications wit
 This traffic is not public facing and OpenShift can be its own certification authority (CA) and does not
 need a chain of trust to a public CA.
 
-The OpenShift Ansible installer provides mechanisms for creating and maintaining these certificates.
-See [here](https://docs.openshift.org/latest/install_config/certificate_customization.html)
-and [here](https://docs.openshift.org/latest/install_config/redeploying_certificates.html)
-for details. Currently this document does not cover this aspect. TODO - describe this.
+>   The OpenShift Ansible installer provides mechanisms for creating and maintaining these certificates.
+    See [here](https://docs.openshift.org/latest/install_config/certificate_customization.html)
+    and [here](https://docs.openshift.org/latest/install_config/redeploying_certificates.html)
+    for details. Currently this document does not cover this aspect. TODO - describe this.
 
 ### 2. External use
 
-OpenShift Routes allow Services to be accessed from the outside through HTTP or HTTPS.
+OpenShift **Routes** allow **Services** to be accessed from the outside through HTTP or HTTPS.
 As it is these routes that end users will be accessing it is important that these routes use certificates
 that are trusted by a recognised CA such as Let's Encrypt and that these certificates are actively
 managed to ensure they do not expire. This document currently just describes how to handle these public routes.
@@ -48,7 +48,8 @@ To handle the public facing routes we use
 controller that you deploy to your OpenShift cluster that actively manages the certificates for public 
 facing routes.
 
-Note: the ACME part of the name comes from the "ACME challenge" that is part of obtaining Let's Encrypt certificates.
+>   Note: the ACME part of the name comes from the "ACME challenge"
+    that is part of obtaining Let's Encrypt certificates.
 
 In short it works like this:
 
@@ -65,8 +66,8 @@ an abreviated description of what happens:
 1. OpenShift ACME also creates a secret for the certificate so that it can be used for other purposes (this secret is not currently used directly by the route).
 1. OpenShift ACME updates the certificate before it expires and updates the route definition and secrets.
 
-The net effect of this it is very simple to get your routes secured using TLS. You don't need to do anything 
-other than add the appropriate annotation to your route definition.
+The net effect of this is that it is very simple to get your routes secured using TLS.
+You don't need to do anything other than add the appropriate annotation to your route definition.
 
 ## Deploy OpenShift ACME
 
@@ -81,9 +82,12 @@ Alternatively the files can be accessed directly from GitHub.
 
 Perform these steps as system:admin or equivalent user.
 
-Create a new project for OpenShift ACME.
+Login and create a new project for OpenShift ACME. You wil need administrator
+privileges. Here we're loggin in as `system:admin` but it would be more
+sensible to grant privileges to specific users.
  
 ```
+$ oc login -u developer
 $ oc new-project acme-controller
 ```
 
@@ -91,11 +95,13 @@ Create a cluster role named 'acme-controller' that is needed to grant extra priv
 it needs to access assets across all projects. 
 ```
 $ oc create -f openshift-acme/deploy/clusterrole.yaml
+clusterrole "acme-controller" created
 ```
 
 Grant that acme-controller role to the service account for your project. 
 ```
 $ oc adm policy add-cluster-role-to-user acme-controller system:serviceaccount:acme-controller:default
+cluster role "acme-controller" added: "system:serviceaccount:acme-controller:default"
 ```
 Adjust serviceaccount:acme-controller if you did not name the project acme-controller.
 
@@ -111,9 +117,11 @@ $ oc create -f openshift-acme/deploy/deploymentconfig-letsencrypt-staging.yaml -
 To deploy the live version:
 ```
 $ oc create -f openshift-acme/deploy/deploymentconfig-letsencrypt-live.yaml -f openshift-acme/deploy/service.yaml
+deploymentconfig "acme-controller" created
+service "acme-controller" created
 ```
-Note: both the deployment config and the service need to be deployed together.
 
+>   Note: both the deployment config and the service need to be deployed together.
 
 Check everything is running OK:
 ```
