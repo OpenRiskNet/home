@@ -15,29 +15,44 @@ and loaded from there (e.g. corresponding to a non-official ORN app that could b
 
 You should be able to do this with any Openshift environment, including Minishift. 
 
-Switch to appropriate user and project:
+Login
 ```sh
-oc login -u developer1
-oc project development
+$ oc login -u developer
 ```
 
-Deploy application:
+Then, either join an existing project...
 ```sh
-oc new-app --template=django-psql-persistent
+$ oc project development
 ```
-It takes a few mins to build and deploy. Once done you will see the app in the web console and can connect to it.
+
+Or create a new one...
+```sh
+$ oc new-project development
+```
+
+Deploy the templated application:
+```sh
+$ oc new-app --template=django-psql-persistent
+[...]
+--> Success
+    Build scheduled, use 'oc logs -f bc/django-psql-persistent' to track its progress.
+    Run 'oc status' to view your app.
+```
+
+It takes a few mins to build and deploy.
+Once done you will see the app in the web console and can connect to it.
 You will see pods for the Postgres database and the Django app.
 
 Alternatively, to load the same app from an external definition try this:
 ```sh
-oc new-app -f https://raw.githubusercontent.com/openshift/library/master/official/django/templates/django-psql-persistent.json
+$ oc new-app -f https://raw.githubusercontent.com/openshift/library/master/official/django/templates/django-psql-persistent.json
 ```
 
 ## Delete app
 
-If you are finished with this app and want to remove it do this:
+Once you are finished with the app and want to remove it do this:
 ```sh
-oc delete all -l app=django-psql-persistent
+$ oc delete all -l app=django-psql-persistent
 ```
 
 ## Writing templates
