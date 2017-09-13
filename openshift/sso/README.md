@@ -242,8 +242,8 @@ URLs will be something like:
 * Web console - https://abc.informaticsmatters.com:8443/console/
 * keycloak - https://secure-sso-sso-app-demo.abc.informaticsmatters.com/auth/
 
-Unless you changes the passqword for the application you shoulld be able
-to login to the Single-Sign-On URL using `admin` and `password` as the
+Unless you changed the password for the application you shoulld be able
+to login to the Keycloak URL using `admin` and `password` as the
 username and passwords.
 
 ## Using Persistent Volumes
