@@ -75,7 +75,9 @@ $ sudo yum install -y java-1.8.0-openjdk.x86_64
     
 Generate a CA certificate and provide a passphrase of more than 3 characters:
 ```
-$ sudo openssl req -new -newkey rsa:4096 -x509 -keyout xpaas.key -out xpaas.crt -days 365 -subj "/CN=xpaas-sso-demo.ca"
+$ sudo openssl req -new -newkey rsa:4096 -x509 \
+    -keyout xpaas.key -out xpaas.crt -days 365 \
+    -subj "/CN=xpaas-sso-demo.ca"
 [...]
 writing new private key to 'xpaas.key'
 Enter PEM pass phrase:
@@ -85,7 +87,9 @@ Verifying - Enter PEM pass phrase:
 Generate a Certificate for the SSL keystore and provide passwords of more than
 5 characters:
 ```
-$ keytool -genkeypair -keyalg RSA -keysize 2048 -dname "CN=secure-sso-sso-app-demo.openshift32.example.com" -alias sso-https-key -keystore sso-https.jks
+$ keytool -genkeypair -keyalg RSA -keysize 2048 \
+    -dname "CN=secure-sso-sso-app-demo.openshift32.example.com" \
+    -alias sso-https-key -keystore sso-https.jks
 Enter keystore password:  
 Re-enter new password: 
 Enter key password for <sso-https-key>
@@ -95,14 +99,17 @@ Enter key password for <sso-https-key>
 Generate a Certificate Sign Request for the SSL keystore.
 Here you'll be asked to enter the keystore password you entered earlier:
 ```
-$ keytool -certreq -keyalg rsa -alias sso-https-key -keystore sso-https.jks -file sso.csr
+$ keytool -certreq -keyalg rsa \
+    -alias sso-https-key -keystore sso-https.jks -file sso.csr
 Enter keystore password:  
 ```
 
 Sign the Certificate Sign Request with the CA certificate.
 Here you'll need to re-enter the xpaas pass phrase you entered earlier.
 ```
-$ openssl x509 -req -CA xpaas.crt -CAkey xpaas.key -in sso.csr -out sso.crt -days 365 -CAcreateserial
+$ openssl x509 -req -CA xpaas.crt \
+    -CAkey xpaas.key -in sso.csr \
+    -out sso.crt -days 365 -CAcreateserial
 Signature ok
 subject=/CN=secure-sso-sso-app-demo.openshift32.example.com
 Getting CA Private Key
@@ -112,7 +119,8 @@ Enter pass phrase for xpaas.key:
 Import the CA into the SSL keystore (re-entering your keystore password)
 and saying `yes` to `Trust this certificate?`:
 ```
-$ keytool -import -file xpaas.crt -alias xpaas.ca -keystore sso-https.jks
+$ keytool -import -file xpaas.crt \
+    -alias xpaas.ca -keystore sso-https.jks
 [...]
 Trust this certificate? [no]: yes
 Certificate was added to keystore
@@ -121,7 +129,8 @@ Certificate was added to keystore
 Import the signed Certificate Sign Request into the SSL keystore,
 again entering your keystore password:
 ```
-$ keytool -import -file sso.crt -alias sso-https-key -keystore sso-https.jks
+$ keytool -import -file sso.crt \
+    -alias sso-https-key -keystore sso-https.jks
 Enter keystore password:  
 Certificate reply was installed in keystore
 ```
@@ -130,7 +139,8 @@ Import the CA into a new truststore keystore,
 again, entering your keystore password and confirming that the
 certificate can be trusted:
 ```
-$ keytool -import -file xpaas.crt -alias xpaas.ca -keystore truststore.jks
+$ keytool -import -file xpaas.crt \
+    -alias xpaas.ca -keystore truststore.jks
 [...]
 Trust this certificate? [no]:  yes
 Certificate was added to keystore
@@ -138,7 +148,8 @@ Certificate was added to keystore
 
 Generate a secure key for the JGroups keystore:
 ```
-$ keytool -genseckey -alias jgroups -storetype JCEKS -keystore jgroups.jceks
+$ keytool -genseckey \
+    -alias jgroups -storetype JCEKS -keystore jgroups.jceks
 Enter keystore password:  
 Re-enter new password: 
 Enter key password for <jgroups>
