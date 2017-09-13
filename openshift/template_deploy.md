@@ -46,6 +46,10 @@ You will see pods for the Postgres database and the Django app.
 Alternatively, to load the same app from an external definition try this:
 ```sh
 $ oc new-app -f https://raw.githubusercontent.com/openshift/library/master/official/django/templates/django-psql-persistent.json
+[...]
+--> Success
+    Build scheduled, use 'oc logs -f bc/django-psql-persistent' to track its progress.
+    Run 'oc status' to view your app.
 ```
 
 ## Delete app
