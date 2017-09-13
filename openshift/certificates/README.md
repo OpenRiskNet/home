@@ -87,7 +87,7 @@ privileges. Here we're loggin in as `system:admin` but it would be more
 sensible to grant privileges to specific users.
  
 ```
-$ oc login -u developer
+$ oc login -u system:admin
 $ oc new-project acme-controller
 ```
 
@@ -113,6 +113,8 @@ is suitable for testing.
 To deploy the staging version:
 ```
 $ oc create -f openshift-acme/deploy/deploymentconfig-letsencrypt-staging.yaml -f openshift-acme/deploy/service.yaml
+deploymentconfig "acme-controller" created
+service "acme-controller" created
 ```
 To deploy the live version:
 ```
@@ -146,11 +148,16 @@ This example has a route definition but it only uses HTTP. We will see that once
 it is very simple to add TLS to the route.
 
 1. From the OpenShift console login as a normal user and create a new project for your app.  
-1. Use the "Add to project" function and choose the Javascript section from the Catalog.
+1. Use the **Add to project** function and choose the JavaScript section from the Catalog.
 1. Select the NODE.js section and choose the nodejs-ex example (link present in the page you see).
-1. Deploy the app. After a few seconds you will see the app and you will notice that it has a basic HTTP route.
-1. Navigate to the route definition and edit its YAML definition. You will notice that there is nothing there releated to TLS or HTTPS.
-1. Edit the YAML to add this extra annotation to the metadata section at the top: `openshift.io/host.generated: "true"` (note: the quotes around the true are necessary).
+1. Deploy the app.
+
+After a while you will see the app's **pod** and you will notice that it has a basic HTTP route.
+
+1. Navigate to the route definition by clicking on the route's `Name`.
+1. In `Actions` select `Edit YAML`. You will notice that there is nothing there releated to TLS or HTTPS.
+1. Add this extra annotation to the metadata section at the top: `openshift.io/host.generated: "true"` andf click **Save**.
+   (note: the quotes around the true are necessary).
 1. After a few seconds you will notice that the route description now has a TLS Settings section.
 1. If you edit the YAML again you will see a tls section containing the certificate and key.
 1. The route is now secured with TLS. Try it in your browser (if using the staging implementation the certificates will not be trusted, but they are present).
