@@ -8,6 +8,15 @@ The assumption here is that your project needs a central PostgreSQL database tha
 used by other apps in the project. We need to first create postgres and then to manage it 
 e.g. create databases and users that an application will use.
 
+## Login and create a project
+You need a project. if you do not modify the example here you will need
+a `myproject` project in OpenShift:
+
+```
+$ oc login -u developer
+$ oc new-project myproject
+```
+
 ## Creating the database
 
 Note: this can also all be done from the web console.
@@ -36,6 +45,33 @@ $ oc process postgresql-persistent -n openshift\
  -p POSTGRESQL_VERSION=9.5\
  -p MEMORY_LIMIT=250Mi \
   | oc create -n myproject -f -
+```
+
+>   Basic users may not have permission to create projects from templates
+    in certain projects. If you are presented with the error
+    **error: error processing the template "postgresql-persistent":
+    User "developer" cannot create processedtemplates in project "openshift"**
+    you will need to add a suitable `role` to the user, as a system aminstrator
+    (see below).
+
+If successful you should be presented with a brief summary:
+```
+secret "postgresql" created
+service "postgresql" created
+persistentvolumeclaim "postgresql" created
+deploymentconfig "postgresql" created
+```
+   
+### Adding admin role to a user
+As system administrator you can add roles to users. To give a user
+`admin` rights to the `developer` user in the `openshift` project
+you can do this (as the `system:admin` from the OpenShift server's command-line)...
+
+```
+$ oc login -u system:admin
+[...]
+$ oadm policy add-role-to-user admin developer -n openshift
+role "admin" added: "developer"
 ```
 
 Here we are providing the parameters needed by the template.
