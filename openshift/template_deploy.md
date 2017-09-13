@@ -39,8 +39,8 @@ $ oc new-app --template=django-psql-persistent
     Run 'oc status' to view your app.
 ```
 
-It takes a few mins to build and deploy.
-Once done you will see the app in the web console and can connect to it.
+It takes a few mins to build and deploy, you can use `oc status` to review its
+progress. Once done you will see the app in the web console and can connect to it.
 You will see pods for the Postgres database and the Django app.
 
 Alternatively, to load the same app from an external definition try this:
