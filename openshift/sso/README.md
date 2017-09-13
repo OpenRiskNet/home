@@ -34,10 +34,12 @@ Login as `system:admin`:
 oc login -u system:admin
 ```
 
-Install the standard image streams (if not already loaded):
+Install the standard image streams:
 ```
 oc create -f git/openshift-ansible/roles/openshift_examples/files/examples/v3.6/image-streams/image-streams-centos7.json -n openshift
 ```
+>   If the streams are already loaded you will see an **Error** detailing the
+    stream and telling you that it is **already exists**
 
 Install the xpaas images streams which include those needed for SSO:
 ```
@@ -48,59 +50,99 @@ Install the database templates:
 ```
 oc create -f git/openshift-ansible/roles/openshift_examples/files/examples/v3.6/db-templates -n openshift
 ```
+>   As with the standard image streams you might again be told **already exists**.
 
 Install the quickstart templates:
 ```
 oc create -f git/openshift-ansible/roles/openshift_examples/files/examples/v3.6/quickstart-templates -n openshift
 ```
+>   As with the standard image streams you might again be told **already exists**.
 
 ## Generate certificates
 
 At various points here you will be prompted for passwords. Make a note of what you specified.
-You need a full JDK installed to have the keytool tool. If you don't already have this do:
+You need a full JDK installed to have the Keycloak tool.
+If you don't already have this do (as root or using sudo):
 
 ```
-yum install -y java-1.8.0-openjdk.x86_64
+$ sudo yum install -y java-1.8.0-openjdk.x86_64
 ```
 
-Generate a CA certificate:
+>   If you use `password` as the password (I know it isn't terribly secure)
+    each time you're prompted over the next few commands you will at least be
+    able to cut-and-paste the text from the **Deploy template** later in this
+    recipe without being forced to make any changes.
+    
+Generate a CA certificate and provide a passphrase of more than 3 characters:
 ```
-openssl req -new -newkey rsa:4096 -x509 -keyout xpaas.key -out xpaas.crt -days 365 -subj "/CN=xpaas-sso-demo.ca"
-```
-
-Generate a Certificate for the SSL keystore:
-```
-keytool -genkeypair -keyalg RSA -keysize 2048 -dname "CN=secure-sso-sso-app-demo.openshift32.example.com" -alias sso-https-key -keystore sso-https.jks
-```
-
-Generate a Certificate Sign Request for the SSL keystore:
-```
-keytool -certreq -keyalg rsa -alias sso-https-key -keystore sso-https.jks -file sso.csr
-```
-
-Sign the Certificate Sign Request with the CA certificate:
-```
-openssl x509 -req -CA xpaas.crt -CAkey xpaas.key -in sso.csr -out sso.crt -days 365 -CAcreateserial
+$ sudo openssl req -new -newkey rsa:4096 -x509 -keyout xpaas.key -out xpaas.crt -days 365 -subj "/CN=xpaas-sso-demo.ca"
+[...]
+writing new private key to 'xpaas.key'
+Enter PEM pass phrase:
+Verifying - Enter PEM pass phrase:
 ```
 
-Import the CA into the SSL keystore:
+Generate a Certificate for the SSL keystore and provide passwords of more than
+5 characters:
 ```
-keytool -import -file xpaas.crt -alias xpaas.ca -keystore sso-https.jks
+$ keytool -genkeypair -keyalg RSA -keysize 2048 -dname "CN=secure-sso-sso-app-demo.openshift32.example.com" -alias sso-https-key -keystore sso-https.jks
+Enter keystore password:  
+Re-enter new password: 
+Enter key password for <sso-https-key>
+	(RETURN if same as keystore password):  
 ```
 
-Import the signed Certificate Sign Request into the SSL keystore:
+Generate a Certificate Sign Request for the SSL keystore.
+Here you'll be asked to enter the keystore password you entered earlier:
 ```
-keytool -import -file sso.crt -alias sso-https-key -keystore sso-https.jks
+$ keytool -certreq -keyalg rsa -alias sso-https-key -keystore sso-https.jks -file sso.csr
+Enter keystore password:  
 ```
 
-Import the CA into a new truststore keystore:
+Sign the Certificate Sign Request with the CA certificate.
+Here you'll need to re-enter the xpaas pass phrase you entered earlier.
 ```
-keytool -import -file xpaas.crt -alias xpaas.ca -keystore truststore.jks
+$ openssl x509 -req -CA xpaas.crt -CAkey xpaas.key -in sso.csr -out sso.crt -days 365 -CAcreateserial
+Signature ok
+subject=/CN=secure-sso-sso-app-demo.openshift32.example.com
+Getting CA Private Key
+Enter pass phrase for xpaas.key:
+```
+
+Import the CA into the SSL keystore (re-entering your keystore password)
+and saying `yes` to `Trust this certificate?`:
+```
+$ keytool -import -file xpaas.crt -alias xpaas.ca -keystore sso-https.jks
+[...]
+Trust this certificate? [no]: yes
+Certificate was added to keystore
+```
+
+Import the signed Certificate Sign Request into the SSL keystore,
+again entering your keystore password:
+```
+$ keytool -import -file sso.crt -alias sso-https-key -keystore sso-https.jks
+Enter keystore password:  
+Certificate reply was installed in keystore
+```
+
+Import the CA into a new truststore keystore,
+again, entering your keystore password and confirming that the
+certificate can be trusted:
+```
+$ keytool -import -file xpaas.crt -alias xpaas.ca -keystore truststore.jks
+[...]
+Trust this certificate? [no]:  yes
+Certificate was added to keystore
 ```
 
 Generate a secure key for the JGroups keystore:
 ```
-keytool -genseckey -alias jgroups -storetype JCEKS -keystore jgroups.jceks
+$ keytool -genseckey -alias jgroups -storetype JCEKS -keystore jgroups.jceks
+Enter keystore password:  
+Re-enter new password: 
+Enter key password for <jgroups>
+	(RETURN if same as keystore password):  
 ```
 
 ## Setup Openshift
