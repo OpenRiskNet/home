@@ -156,7 +156,7 @@ Enter key password for <jgroups>
 	(RETURN if same as keystore password):  
 ```
 
-## Setup Openshift
+## Setup OpenShift
 
 Login and create project for this work:
 ```
@@ -280,10 +280,10 @@ Create the PV:
 oc create -f pv-keycloak.yaml
 ```
 
-Now you can create the keycloak environment as above but using the sso71-postgresql-persistent.json template.
-Once done check that the Persitent Volume Claim gets bound to the Persistent Volume you created and that Keycloak
-starts correctly.
-
+Now you can create the keycloak environment as above but using the
+`sso71-postgresql-persistent.json` template. Once done check that the
+Persitent Volume Claim gets bound to the Persistent Volume you created
+and that Keycloak starts correctly.
 
 ## TODO
 
