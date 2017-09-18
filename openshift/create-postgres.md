@@ -8,7 +8,8 @@ The assumption here is that your project needs a central PostgreSQL database tha
 used by other apps in the project. We need to first create postgres and then to manage it 
 e.g. create databases and users that an application will use.
 
-## This example requires a persistent volume (at least 400GiB RWO).
+## This example requires a persistent volume
+It needs a persistent volume of at least 400MB (RWO).
 If you haven't created a persistent volume ensure that your
 OpenShift server has soem sort of back-end supported (like NFS) and,
 if you need to, create a suitable volume.
