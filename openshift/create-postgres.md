@@ -9,8 +9,8 @@ used by other apps in the project. We need to first create postgres and then to 
 e.g. create databases and users that an application will use.
 
 ## Login and create a project
-You need a project. if you do not modify the example here you will need
-a `myproject` project in OpenShift:
+You need a project. If you want to work directly from the example,
+copying every step, you will need a `myproject` project in OpenShift:
 
 ```
 $ oc login -u developer
@@ -21,7 +21,7 @@ $ oc new-project myproject
 
 Note: this can also all be done from the web console.
 
-First identify the template to use.
+First search for and identify the template to use...
 
 ```
 $ oc get templates -n openshift | grep postgres
@@ -37,15 +37,17 @@ This will describe all the parameters the template uses.
 Now use the template to create the database.
 
 ```
-$ oc process postgresql-persistent -n openshift\
- -p POSTGRESQL_DATABASE=mydb\
- -p POSTGRESQL_USER=myusername\
- -p POSTGRESQL_PASSWORD=secret\
- -p VOLUME_CAPACITY=400Mi\
- -p POSTGRESQL_VERSION=9.5\
+$ oc process postgresql-persistent -n openshift \
+ -p POSTGRESQL_DATABASE=mydb \
+ -p POSTGRESQL_USER=myusername \
+ -p POSTGRESQL_PASSWORD=secret \
+ -p VOLUME_CAPACITY=400Mi \
+ -p POSTGRESQL_VERSION=9.5 \
  -p MEMORY_LIMIT=250Mi \
   | oc create -n myproject -f -
 ```
+Here we are providing the parameters needed by the template.
+You will need to work out which ones need to be specified.
 
 >   Basic users may not have permission to create projects from templates
     in certain projects. If you are presented with the error
@@ -74,8 +76,10 @@ $ oadm policy add-role-to-user admin developer -n openshift
 role "admin" added: "developer"
 ```
 
-Here we are providing the parameters needed by the template.
-You will need to work out which ones need to be specified.
+And you can return to the `developer` user using the login:
+```
+$ oc login -u developer
+```
 
 ## Managing the database
 
