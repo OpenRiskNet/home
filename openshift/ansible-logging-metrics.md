@@ -158,6 +158,11 @@ po/logging-kibana-1-dvhhh                    2/2       Running   0          1h
 Access Logging at https://kibana.MASTER_PUBLIC_FQDN/
 
 Access Metrics at https://hawkular-metrics.MASTER_PUBLIC_FQDN/hawkular/metrics
-(NOTE: this is not responding - TODO work out why).
+
+**NOTE**: There is currently a bug in the metrics that prevents the hawkular-metrics pod from deploying.
+To resolve this use the web console to edit the YAML definition of the hawkular-metrics replication
+controller and change the image version from `latest` to `v3.6.0`. The pod should try to re-deploy and 
+should now start correctly. If not scale it down to 0 and back up to 1 replicas. Once done you should see 
+metrics displayed in the web console alongside your pods.
 
 
