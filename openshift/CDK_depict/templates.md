@@ -39,12 +39,12 @@ automatically generated secret that is used for the GitHub build trigger. You ty
 Take a look at the processed template:
 
 ```
-$ cat oc process -f build-template.yaml -o yaml
+$ oc process -f build-template.yaml -o yaml
 ```
 You will see the defintions of the build config and the image stream.
 If you are happy with this deploy the objects.
 ```
-$$ oc process -f build-template.yaml | oc create -f -
+$ oc process -f build-template.yaml | oc create -f -
 imagestream "cdkdepict" created
 buildconfig "cdkdepict" created
 ```
@@ -66,7 +66,65 @@ rebuilt whenever the source code, builder image or configuration is updated.
 
 ## Deploying the application
 
-TODO - this section will deal with deploying the CDK Depict application.
+We now deploy the application using the Docker image that we built earlier. To do this we use the deploy-template.yaml template.
+Let's look at it:
+
+```sh
+$ cat deploy-template.yaml
+```
+
+In it you will see definitions for the Replication Controller, the Service and the Route, as well as a small number of parameters
+that can be set by the person performing the deployment. Let's look at what the template generates:
+
+```
+$ oc process -f deploy-template.yaml -o yaml
+```
+All looks OK so let's deploy this:
+
+```
+$ oc process -f deploy-template.yaml | oc create -f -
+replicationcontroller "cdkdepict" created
+service "cdkdepict" created
+route "cdkdepict" created
+```
+
+Go to the web console and look at your app.
+If all went well you should see a route defintion along with a link that takes you to the app. 
+Click on that link and you should see the CDK Depict application. Huurah!
+
+## Undeploying
+
+To undeploy the app so that you can start again do this:
+
+```
+oc delete po,svc,rc,route -l app=cdkdepict
+```
+This does not delete the Build Config or Image Stream so you do not need to re-create these.
+
+## Notes
+
+The route definition contains the `kubernetes.io/tls-acme: "true"` annotation so you should be able to add TLS support to 
+the route using the [OpenShift ACME controller recipe](../certificates/README.md).
+
+The route to the app that is automatically generated is a bit ugly. You can improve this using the APPLICATION_DOMAIN parameter:
+```
+oc process -f deploy-template.yaml -p APPLICATION_DOMAIN=cdkdepict.mydomain.com | oc create -f -
+```
+
+TODO - The template could be improved by using a Deployment rather than a Replication Controller.
+
+The template uses a hard-coded Docker image name, assuming that it has been generated in the same project and default names 
+have been used. TODO - add parameters to improve this. 
+
+
+
+
+
+
+
+
+
+
 
 
  

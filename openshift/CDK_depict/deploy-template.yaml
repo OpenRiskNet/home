@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: cdkdepict-deploy
+  annotations:
+    description: "CDK Depict application"
+    iconClass: "icon-wildfly"
+    tags: "servlet,java,openrisknet,cdk,depict"
+labels:
+  app: cdkdepict
+  template: cdkdepict-deploy
+message: "CDK Depict has been deployed."
+
+objects:
+- apiVersion: v1
+  kind: ReplicationController
+  metadata:
+    name: ${APP_NAME}
+  spec:
+    replicas: 1
+    selector:
+      name: ${APP_NAME}
+    template:
+      metadata:
+        labels:
+          name: ${APP_NAME}
+      spec:
+        containers:
+        - image: docker-registry.default.svc:5000/cdkdepict/cdkdepict
+          name: ${APP_NAME}
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+        restartPolicy: Always
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: ${APP_NAME}
+  spec:
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      name: ${APP_NAME}
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: ${APP_NAME}
+    annotations:
+      kubernetes.io/tls-acme: "true"
+  spec:
+    host: ${APPLICATION_DOMAIN}
+    path: /cdkdepict-0.2
+    port:
+      targetPort: http
+    to:
+      name: ${APP_NAME}
+      kind: Service
+    wildcardPolicy: None
+
+parameters:
+- name: APP_NAME
+  description: Application name
+  value: cdkdepict
+- name: APPLICATION_DOMAIN
+  description: "The exposed hostname that will route to the service, if left blank a value will be defaulted."
+  value: ""
