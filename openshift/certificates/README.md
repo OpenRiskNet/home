@@ -91,7 +91,7 @@ $ oc login -u system:admin
 $ oc new-project acme-controller
 ```
 
-Create a cluster role named 'acme-controller' that is needed to grant extra privs to the acme controller as
+Create a cluster role named `acme-controller` that is needed to grant extra privs to the acme controller as
 it needs to access assets across all projects. 
 ```
 $ oc create -f openshift-acme/deploy/clusterrole.yaml
@@ -103,7 +103,7 @@ Grant that acme-controller role to the service account for your project.
 $ oc adm policy add-cluster-role-to-user acme-controller system:serviceaccount:acme-controller:default
 cluster role "acme-controller" added: "system:serviceaccount:acme-controller:default"
 ```
-Adjust serviceaccount:acme-controller if you did not name the project acme-controller.
+Adjust `serviceaccount:acme-controller` if you did not name the project `acme-controller`.
 
 Deploy the deployment config and service. There are two implementations, one that 
 points to the live Let's Encrypt servers, a second that point to their staging servers.
@@ -125,7 +125,8 @@ service "acme-controller" created
 
 >   Note: both the deployment config and the service need to be deployed together.
 
-Check everything is running OK:
+Check everything is running OK, specifically that `rc/acme-controller-1`
+is in a `Ready` state:
 ```
 $ oc get all
 NAME                 REVISION   DESIRED   CURRENT   TRIGGERED BY
@@ -149,15 +150,15 @@ it is very simple to add TLS to the route.
 
 1. From the OpenShift console login as a normal user and create a new project for your app.  
 1. Use the **Add to project** function and choose the **JavaScript** section from the **Browse Catalog**.
-1. Select the NODE.js section and choose the nodejs-ex example (link present in the page you see).
+1. Select the **Node.js** section and choose the **nodejs-ex.git** example (link present in the page you see).
 1. Deploy the app.
 
 After a while you will see the app's **pod** and you will notice that it has a basic HTTP route.
 
 1. Navigate to the route definition by clicking on the route's `Name`.
 1. In `Actions` select `Edit YAML`. You will notice that there is nothing there releated to TLS or HTTPS.
-1. Add this extra annotation to the metadata section at the top: `openshift.io/host.generated: "true"` andf click **Save**.
-   (note: the quotes around the true are necessary).
+1. Add this extra annotation to the metadata section at the top: `kubernetes.io/tls-acme: 'true'` and click **Save**.
+   (note: the quotes around the `true` are necessary).
 1. After a few seconds you will notice that the route description now has a TLS Settings section.
 1. If you edit the YAML again you will see a tls section containing the certificate and key.
 1. The route is now secured with TLS. Try it in your browser (if using the staging implementation the certificates will not be trusted, but they are present).
