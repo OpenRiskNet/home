@@ -68,9 +68,9 @@ $ oc delete all -l app=django-psql-example
 ```
 
 ## Persistent volume template
-An alternative template (`django-psql-persistent`) is available. Unless you're
-running minishift, you will need to have arranged persistent storage on your
-server.
+An alternative template (`"openshift/django-psql-persistent"`) is available.
+Unless you're running minishift, you will need to have arranged for some
+persistent volumes on your server.
 
 See the [Creating Persistent Volumes](creating-persistent-volumes.md) recipe.
 
