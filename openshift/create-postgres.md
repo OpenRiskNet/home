@@ -8,6 +8,13 @@ The assumption here is that your project needs a central PostgreSQL database tha
 used by other apps in the project. We need to first create postgres and then to manage it 
 e.g. create databases and users that an application will use.
 
+## This example requires a persistent volume (at least 400GiB RWO).
+If you haven't created a persistent volume ensure that your
+OpenShift server has soem sort of back-end supported (like NFS) and,
+if you need to, create a suitable volume.
+
+See the [Creating Persisten Volumes](creating-persistent-volumes.md) recipe.
+    
 ## Login and create a project
 You need a project. If you want to work directly from the example,
 copying every step, you will need a `myproject` project in OpenShift:
@@ -89,7 +96,7 @@ Find the pod name:
 $ oc get po
 ```
 
-And now connect to it:
+And now connect to it (obviously using the name you're presented with):
 ```
 $ oc rsh postgresql-1-gb0ls
 ```
@@ -109,10 +116,10 @@ postgres=# \q
 sh-4.2$ exit
 ```
 
-Now let's kill the pod!
+Now let's kill the pod (again, using the name applicable to your deployment)!
 
 ```
-$ oc delete postgresql-1-gb0ls
+$ oc delete pods postgresql-1-gb0ls
 pod "postgresql-1-d0z64" deleted
 $ oc get po
 NAME                 READY     STATUS    RESTARTS   AGE
