@@ -216,7 +216,7 @@ Login to the Ansible server instance if you need to...
 Then, on the server install a few packages...
 
     $ sudo yum -y --enablerepo=epel install ansible \
-            pyOpenSSL java-1.8.0-openjdk-headless httpd-tools
+            python-passlib pyOpenSSL java-1.8.0-openjdk-headless httpd-tools
 
 (...this might take a few minutes)
 
@@ -224,6 +224,18 @@ Then, on the server install a few packages...
 On your Ansible server...
 
     $ git clone https://github.com/openshift/openshift-ansible.git
+    
+To avoid unnecessary disruption you might want to switch to a known
+software release rather than working off `HEAD`. With the repository
+downloaded you can do this with:
+
+    $ cd openshift-ansible
+    $ git checkout openshift-ansible-3.6.173.0.36-1
+    $ cd
+    
+>   These recipes were tested using RedHat's Openshift repository
+    that was tagged **openshift-ansible-3.6.173.0.36-1**. We also
+    used ansible **2.3.1.0**.
     
 ### Adjust your domain
 If you have a domain you can create a human-readable form of the IP address

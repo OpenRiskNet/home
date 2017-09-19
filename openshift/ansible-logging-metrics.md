@@ -7,7 +7,10 @@ Adding Logging and Metrics to an Ansible install. This is an extension of
 
 ## Ansible machine requirements
 
-Metrics needs some extra packages on the Ansible machine:
+You might needs some extra packages on the Ansible machine,
+especially if you haven't been through the [Ansible one node](ansible-simple-one.md)
+recipe:
+
 ```
 sudo yum -y install --enablerepo=epel python-passlib 
 sudo yum -y install java-1.8.0-openjdk-headless httpd-tools
@@ -22,7 +25,7 @@ This example uses
 NFS is used for logging and metrics persistence.
 TODO - repeat this using GlusterFS.
 
-Create a $HOME/users.htpasswd file with your users. 
+Create a `$HOME/users.htpasswd` file with your users. 
 
 ### Ansible inventory file
 
