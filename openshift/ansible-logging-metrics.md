@@ -89,6 +89,7 @@ NODE_PRIVATE_FQDN openshift_node_labels="{'region': 'workers','zone': 'default'}
 
 ```
 ansible-playbook -i <Path_to_inventory_file> openshift-ansible/playbooks/byo/config.yml
+```
 
 ... tons of output taking about 20 mins ... ending with something like this:
 
@@ -104,7 +105,7 @@ SSH to the master and check things are running.
 For metrics:
 
 ```
-oc get all -n openshift-infra
+$ oc get all -n openshift-infra
 NAME                      DESIRED   CURRENT   READY     AGE
 rc/hawkular-cassandra-1   1         1         0         56m
 rc/hawkular-metrics       1         1         0         56m
@@ -123,13 +124,12 @@ NAME                            READY     STATUS              RESTARTS   AGE
 po/hawkular-cassandra-1-9wtmq   0/1       ContainerCreating   0          55m
 po/hawkular-metrics-g7f2c       0/1       CrashLoopBackOff    6          55m
 po/heapster-0f827               0/1       Running             6          55m
-
 ```
 
 For logging:
 
 ```
-oc get all -n logging
+$ oc get all -n logging
 NAME                                 REVISION   DESIRED   CURRENT   TRIGGERED BY
 dc/logging-curator                   1          1         1         config
 dc/logging-es-data-master-d108iw7o   1          1         1         config
