@@ -225,8 +225,8 @@ On your Ansible server...
 
     $ git clone https://github.com/openshift/openshift-ansible.git
     
-To avoid unnecessary disruption you might want to switch to a known
-software release rather than working off `HEAD`. With the repository
+To avoid unnecessary disruption you might prefer to switch to a known
+playbook release rather than working off `HEAD`. With the repository
 downloaded you can do this with:
 
     $ cd openshift-ansible
@@ -319,6 +319,17 @@ nfs
 
 # Set variables common for all OSEv3 hosts
 [OSEv3:vars]
+# Configure SDN cluster network and kubernetes service CIDR blocks. These
+# network blocks should be private and should not conflict with network blocks
+# in your infrastructure that pods may require access to. Can not be changed
+# after deployment.
+osm_cluster_network_cidr=10.128.0.0/14
+openshift_portal_net=172.30.0.0/16
+
+# Configure number of bits to allocate to each host’s subnet e.g. 8
+# would mean a /24 network on the host.
+osm_host_subnet_length=9
+
 # SSH user, this user should allow ssh based auth without requiring a password
 ansible_ssh_user=centos
 ansible_become=yes
