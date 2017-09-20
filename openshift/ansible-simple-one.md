@@ -264,7 +264,7 @@ instance with the following contents:
 ```
 [defaults]
 host_key_checking=False
-hostfile=osone-inventory.txt
+inventory=osone-inventory.txt
 remote_user=centos
 forks = 20
 gathering = smart
@@ -280,11 +280,8 @@ pipelining=True
 ```
 
 >   If you used a different name for your inventory file from the earlier step
-    change the `hostfile=osone-inventory.txt` line in the example.
+    change the `inventory=osone-inventory.txt` line in the example.
 
->   Note: `hostfile` is a deprecated setting since 1.9. You should
-    switch to using `inventory` if you can.
-    
 ## Start and/or add to ssh-agent
 `ssh-agent` takes care of the ssh authentication that Ansible will need
 when connecting to your OpenShift nodes. On your Ansible server start
@@ -298,7 +295,7 @@ and and the ssh credentials.
 
 ### Create the OpenShift inventory file
 This file, used by Ansible, defines the configuration of the OpenShift
-server that it will setup. The file must match the `hostfile` setting
+server that it will setup. The file must match the `inventory` setting
 you put in the `ansible.cfg` above.
 
 On your Ansible server...
