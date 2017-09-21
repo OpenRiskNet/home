@@ -77,7 +77,7 @@ TOKEN=`echo $RESULT | sed 's/.*access_token":"//g' | sed 's/".*//g'`
 ```
 
 The access token will now be stored in the `TOKEN` variable and can be used for further cURL commands or elsewhere. The token is added as a 
-HTTP header in furhter cURL commands simply by adding `-H "Authorization: bearer $TOKEN"` to commands, example:
+HTTP header in further cURL commands simply by adding `-H "Authorization: bearer $TOKEN"` to commands, example:
 ```
 curl -X GET "[your request url]" -H "accept: application/json" -H "Authorization: bearer $TOKEN"
 ```
