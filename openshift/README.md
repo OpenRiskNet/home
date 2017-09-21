@@ -43,6 +43,12 @@ Docker images we have already built) but they will want to deploy them to their 
 laptop, their in house servers or anywhere on the cloud. OpenShift's flexible way of deployment means all this is 
 possible, and we are not locked in to any particular cloud platform.
 
+The OpenShift _Interactive Learning Portal_ has a number of self-paced scenarios
+that use an online pre-configured OpenShift instance. It's an excellent
+introduction and allows you to experiment with and learn about OpenShift.
+
+* [Interactive Learning Portal](https://openshift.katacoda.com)
+
 For more information take a look at these links:
 
 * [Docker](http://www.docker.com)
