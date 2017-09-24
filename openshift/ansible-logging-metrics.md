@@ -54,6 +54,7 @@ openshift_master_cluster_public_hostname=MASTER_PUBLIC_FQDN
 openshift_master_default_subdomain=MASTER_PUBLIC_FQDN
 
 openshift_hosted_metrics_deploy=true
+openshift_hosted_metrics_deployer_version=v3.6.0
 openshift_hosted_metrics_storage_kind=nfs
 openshift_hosted_metrics_storage_access_modes=['ReadWriteOnce']
 openshift_hosted_metrics_storage_nfs_directory=/exports
@@ -63,6 +64,7 @@ openshift_hosted_metrics_storage_volume_size=10Gi
 openshift_hosted_metrics_storage_labels={'storage': 'metrics'}
 
 openshift_hosted_logging_deploy=true
+openshift_hosted_logging_deployer_version=v3.6.0
 openshift_hosted_logging_storage_kind=nfs
 openshift_hosted_logging_storage_access_modes=['ReadWriteOnce']
 openshift_hosted_logging_storage_nfs_directory=/exports
