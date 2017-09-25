@@ -8,7 +8,6 @@ make use of this big catalouge of so called Helm Charts for various applications
 Helm charts as far as I can see is that Templates are easier to integrate with OpenShifts fine grained permission model. Helm Charts need
 Administrator credentials in OpenShift to be installed without problems.
 
-Follow this tutorial to get Helm installed in your cluster: https://blog.openshift.com/deploy-helm-charts-minishifts-openshift-local-development/
-Then follow this tutorial up to step 5 to setup the permissions for the jupyterhub namespace correctly: https://webcache.googleusercontent.com/search?q=cache:1vj_2SkW9wMJ:https://github.com/jupyterhub/helm-chart/issues/26+&cd=1&hl=de&ct=clnk&gl=se&client=firefox-b-ab
-
-Finally, follow the steps here to install the actual JupyterHub Chart: https://zero-to-jupyterhub.readthedocs.io/en/latest/setup-jupyterhub.html
+* Follow this tutorial to get Helm installed in your cluster: https://blog.openshift.com/deploy-helm-charts-minishifts-openshift-local-development/
+* Then follow this tutorial up to step 5 to setup the permissions for the jupyterhub namespace correctly: https://webcache.googleusercontent.com/search?q=cache:1vj_2SkW9wMJ:https://github.com/jupyterhub/helm-chart/issues/26+&cd=1&hl=de&ct=clnk&gl=se&client=firefox-b-ab
+* Finally, follow the steps here to install the actual JupyterHub Chart: https://zero-to-jupyterhub.readthedocs.io/en/latest/setup-jupyterhub.html
