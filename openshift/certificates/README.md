@@ -193,10 +193,11 @@ If you look at this you will see the certificate and key.
 
 ## Manging your own routes
 
-Once OpenShift ACME is running deploying secured routes is very simple. Just create a basic route definition as if you were 
-only using HTTP and add the openshift.io/host.generated: "true"` annotation to the metadata section and all ther rest will 
-happen by magic.
-If OpenShift ACME is not running on your system no harm will be done by adding that annotation, just that your
+Once OpenShift ACME is running deploying secured routes is very simple.
+Just create a basic route definition as if you were only using HTTP and add
+the `openshift.io/host.generated: 'true'` annotation to the metadata section
+and all the rest will happen by magic. If OpenShift ACME is not running on
+your system no harm will be done by adding that annotation, just that your
 route will just run using HTTP.
 
 ## TODOs
