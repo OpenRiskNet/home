@@ -89,6 +89,7 @@ Then learn about deploying applications
 1. [Keycloak for SSO](sso/README.md) - Deploy Keycloak for SSO
 1. [Get token from Keycloak](keycloak-get-token/README.md) - How to authenticate to Keycloak and get an access token
 1. [Django App using Keycloak](django_keycloak_example.md) - Set up Keycloak and a Django app that uses it for authentication
+1. [Tomcat App using Keycloak](https://github.com/OpenRiskNet/example-java-servlet/blob/master/KEYCLOAK.md) - deploy the example servlet using Keycloak for SSO
 1. [TLS for routes](certificates/README.md) - securing routes using TLS/HTTPS
 
 Then learn about CI/CD
