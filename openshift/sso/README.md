@@ -301,6 +301,8 @@ spec:
     server: localhost
     path: /home/data/keycloak
 ```
+IMPORTANT: change `server: localhost` to point the hostname of the NFS server machine.
+
 
 Create the PV:
 ```
