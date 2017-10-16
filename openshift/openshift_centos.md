@@ -47,7 +47,7 @@ systemctl start cgconfig.service
 
 Grab an openshift release from here: https://github.com/openshift/origin/releases
 ```sh
-curl -kL https://github.com/openshift/origin/releases/download/v3.6.0-rc.0/openshift-origin-server-v3.6.0-rc.0-98b3d56-linux-64bit.tar.gz | tar xvz
+curl -kL https://github.com/openshift/origin/releases/download/v3.6.0/openshift-origin-server-v3.6.0-c4dd4cf-linux-64bit.tar.gz | tar xvz
 ```
 Add the extracted dir to your path (edit .bash_profile).
 
