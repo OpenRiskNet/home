@@ -58,3 +58,9 @@ A safer approach is:
 oc adm policy add-cluster-role-to-user sudoer user1
 ```
 This adds sudoer role to the user so that they can add `--as system:admin` or similar to their commands.
+
+
+```
+oc adm policy add-scc-to-group anyuid system:authenticated
+```
+This allows cotnainers to be run as a image defined user ID (inlcuding root) by any authenticated user. 
