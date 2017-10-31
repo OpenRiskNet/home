@@ -65,7 +65,7 @@ You need a full JDK installed to have the Keycloak tool.
 If you don't already have this do (as root or using sudo):
 
 ```
-$ sudo yum install -y java-1.8.0-openjdk.x86_64
+$ sudo yum install -y java-1.8.0-openjdk
 ```
 
 >   If you use `password` as the password (I know it isn't terribly secure)
