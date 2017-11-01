@@ -202,7 +202,7 @@ Run the installer:
 
 ```
 ansible-playbook -i inventory-file openshift-ansible/playbooks/byo/config.yml
-`
+```
 
 If it fails or you want to uninstall do this:
 
