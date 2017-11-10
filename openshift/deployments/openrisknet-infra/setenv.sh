@@ -1,3 +1,3 @@
-export OC_ADMIN=admin
-export OC_HOST=https://dev.openrisknet.org:8443
+source ../setenv.sh
 
+export OC_PROJECT=openrisknet-infra

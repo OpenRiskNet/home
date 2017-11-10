@@ -1,7 +1,9 @@
 #!/bin/bash
 #
 
-oc login $OC_HOST -u $OC_ADMIN
+set -e
+
+./validate.sh
 
 oc process -f sso-template.yaml\
  -p SSO_REALM=openrisknet\

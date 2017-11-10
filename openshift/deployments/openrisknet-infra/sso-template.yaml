@@ -232,15 +232,15 @@ objects:
   metadata:
    name: "${APPLICATION_NAME}"
    annotations:
-    template.openshift.io/expose-username: "{.data['sso-user']}"
-    template.openshift.io/expose-password: "{.data['sso-password']}"
+    template.openshift.io/expose-username: "{.data['sso-service-user']}"
+    template.openshift.io/expose-password: "{.data['sso-service-password']}"
     template.openshift.io/expose-admin-username: "{.data['sso-admin-user']}"
     template.openshift.io/expose-admin-password: "{.data['sso-admin-password']}"
   stringData:
-    sso-user: "${SSO_SERVICE_USERNAME}"
-    sso-password: "${SSO_SERVICE_PASSWORD}"
-    sso-user: "${SSO_SERVICE_ADMIN_USERNAME}"
-    sso-password: "${SSO_SERVICE_ADMIN_PASSWORD}"
+    sso-service-user: "${SSO_SERVICE_USERNAME}"
+    sso-service-password: "${SSO_SERVICE_PASSWORD}"
+    sso-admin-user: "${SSO_ADMIN_USERNAME}"
+    sso-admin-password: "${SSO_ADMIN_PASSWORD}"
 
 - kind: Service
   apiVersion: v1

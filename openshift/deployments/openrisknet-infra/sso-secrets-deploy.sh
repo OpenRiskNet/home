@@ -1,9 +1,9 @@
 #!/bin/bash
 
-oc login $OC_HOST -u $OC_ADMIN
+set -e
 
-oc delete secret/sso-jgroup-secret
-oc delete secret/sso-ssl-secret
+./validate.sh
+
 
 oc secret new sso-jgroup-secret certs/jgroups.jceks
 oc secret new sso-ssl-secret certs/sso-https.jks certs/truststore.jks
