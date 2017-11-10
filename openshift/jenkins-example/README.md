@@ -45,7 +45,7 @@ oc new-project cicd
 oc policy add-role-to-user edit orn1
 ```
 
-## PC creation
+## PV creation
 
 Create a YAML file named pv-0003.yaml for the PV with this content.
 ```
