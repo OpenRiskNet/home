@@ -121,6 +121,10 @@ parameters:
   name: DB_ADMIN_PASSWORD
   from: "[a-zA-Z0-9]{8}"
   generate: expression
+- displayName: Database Admin username
+  description: Database Admin username
+  name: DB_ADMIN_USERNAME
+  value: postgres
 - displayName: Database Volume Capacity
   description: Size of persistent storage for database volume.
   name: VOLUME_CAPACITY
@@ -222,10 +226,10 @@ objects:
       template.openshift.io/expose-admin-password: "{.data['database-admin-password']}"
       template.openshift.io/expose-database_name: "{.data['database-name']}"
   stringData:
-    database-user: "${POSTGRESQL_USER}"
-    database-password: "${POSTGRESQL_PASSWORD}"
-    database-admin-password: "${POSTGRESQL_ADMIN_PASSWORD}"
-    database-name: "${POSTGRESQL_DATABASE}"
+    database-user: "${DB_USERNAME}"
+    database-password: "${DB_PASSWORD}"
+    database-admin-password: "${DB_ADMIN_PASSWORD}"
+    database-name: "${DB_DATABASE}"
 
 - kind: Secret
   apiVersion: v1
@@ -507,6 +511,8 @@ objects:
           env:
           - name: POSTGRESQL_ADMIN_USER
             value: "${DB_ADMIN_USERNAME}"
+          - name: POSTGRESQL_ADMIN_PASSWORD
+            value: "${DB_ADMIN_PASSWORD}"
           - name: POSTGRESQL_USER
             value: "${DB_USERNAME}"
           - name: POSTGRESQL_PASSWORD
