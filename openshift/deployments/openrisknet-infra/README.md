@@ -1,4 +1,4 @@
-# Jenkins deployment
+# OpenRiskNet infrastructure deployment
 
 Scripts for deploying OpennRiskNet infrastructure components to the openrisknet-infra project.
 Currently this includes a PostgreSQL database and Keycloak for SSO.
