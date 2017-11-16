@@ -64,36 +64,8 @@ And these movies:
 
 If you find other useful links then please add them.
 
-## Recipes for getting started with OpenShift
+Take a look at these OpenRiskNet examples that are also in this repository:
 
-These recipes are created to allow people to try out OpenShift. The hope is to make it simpler to get over the initial
-"help this is all complex and scary" feeling by providing some simple procedures for getting started.
-
-A typical path to follow is:
-
-First learn how to setup an OpenShift cluster
-
-1. [Minishift](minishift_local_machine.md) - simple way to get an environment running on your local machine
-1. [Cluster up](openshift_centos.md) - set up a simple multi-user server environment using `oc cluster up`
-1. [Ansible one node](ansible-simple-one.md) - Simple joint master and node using Ansible
-1. [Ansible two node](ansible-simple-two.md) - Simple one master, one node setup using Ansible
-1. [Ansible metrics + logging](ansible-logging-metrics.md) - Deploy logging and metrics backed by NFS
-
-Then learn about deploying applications
-
-1. [Manual deploy CDK Depict](CDK_depict/CDK_depict.md) - use the web console to build and run the small web service application for generating chemical structure depictions CDK Depict
-1. [Template deploy CDK Depict](CDK_depict/templates.md) - same as above but using templates and the CLI
-1. [Wordpress + MySQL](wordpress-mysql-example/README.md) - Deploy Wordpress with a MySQL back end using NFS for persistent storage
-1. [Template deploy](template_deploy.md) - deploy a more relistic app from a built in or external template
-1. [Postgres database](create-postgres.md) - Deploy a postgres database
-1. [Keycloak for SSO](sso/README.md) - Deploy Keycloak for SSO
-1. [Get token from Keycloak](keycloak-get-token/README.md) - How to authenticate to Keycloak and get an access token
-1. [Django App using Keycloak](django_keycloak_example.md) - Set up Keycloak and a Django app that uses it for authentication
-1. [Tomcat App using Keycloak](https://github.com/OpenRiskNet/example-java-servlet/blob/master/KEYCLOAK.md) - deploy the example servlet using Keycloak for SSO
-1. [TLS for routes](certificates/README.md) - securing routes using TLS/HTTPS
-
-Then learn about CI/CD
-
-1. [Jenkins deploy](jenkins-example/README.md) - demonstrate how a persistent Jenkins can be deployed and a pipeline run
-1. [Promotion between projects](promotion_between_projects.md) - learn how to deploy an app and promote it from a dev to a test environment
-
+* [recipes](recipes/) - training and educational examples
+* [environments](environments/) - concrete examples of creating different types of OpenShift environments
+* [deployments](deployments/) - concrete examples of deploying infrastructure and application components to OpenShift
