@@ -22,6 +22,14 @@ The README.md in each project gives details of how to proceed. Typically there w
 Undeploying will typically not remove PVs and PVCs to avoid the risk of losing critical data, so you will need to manage those 
 manually.
 
+Some of these deployments require admin privileges. We assume a user named 'admin' for this. To set up such a user do this:
+
+```
+oc adm policy add-cluster-role-to-user cluster-admin admin
+```
+
+Alternatively change the value of the OC_ADMIN environment variable that is set in the setenv.sh file in this directory.
+
 ## Current components/projects
 
 It is suggested you deploy these projects in this order.
