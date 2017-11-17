@@ -51,6 +51,16 @@ Deploy using:
 ```
 Note: this deploys additional secrets with details of the PostgreSQL and Keycloak usernames and passwords.
 
+>   NOTE: You may stumble on the defect
+    `redhat-sso-7/sso70-openshift image fails to start`
+    (https://bugzilla.redhat.com/show_bug.cgi?id=1408453) which manifests
+    itself with a _Could not rename /opt/eap/standalone/configuration/standalone_xml_history/current_
+    exception and the Pod failing to start. As the `admin` user in the
+    `openrisknet-infra` project you should be able to work-aropund the problem
+    with the following command:
+     
+     oc volume dc/sso --add --claim-size 512M --mount-path /opt/eap/standalone/configuration/standalone_xml_history --name standalone-xml-history 
+     
 ## Undeploy
 
 
