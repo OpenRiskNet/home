@@ -12,9 +12,14 @@ installed (NOTE: it is expected this will change).
 You must generates the necessary certificates for Keycloak in the `certs` directory as described 
 [here](../../sso).
 
-Make sure the image streams are loaded using:
+Make sure the image streams are loaded. If you have the openshift/openshift-ansible repo checked out do this using:
 ```
 oc create -f $HOME/git/openshift/openshift-ansible/roles/openshift_examples/files/examples/v3.6/xpaas-streams/jboss-image-streams.json -n openshift
+```
+
+or pull directly from GitHub:
+```
+oc create -f https://raw.githubusercontent.com/openshift/openshift-ansible/master/roles/openshift_examples/files/examples/v3.6/xpaas-streams/jboss-image-streams.json -n openshift
 ```
 
 Before running anything setup the environment by running `source setenv.sh`.
