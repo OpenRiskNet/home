@@ -13,5 +13,5 @@ oc process -f sso-template.yaml\
  -p SSO_ADMIN_PASSWORD=password\
  -p SSO_TRUSTSTORE=truststore.jks\
  -p SSO_TRUSTSTORE_PASSWORD=password\
- -p HOSTNAME_HTTPS=sso.dev.openrisknet.org\
+ -p HOSTNAME_HTTPS=sso.${OC_ROUTES_BASENAME}\
  | oc create -f -
