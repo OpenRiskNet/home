@@ -8,6 +8,7 @@ fi
 source ../setenv.sh
 
 export OC_PROJECT=openrisknet-infra
+export OC_CERTS_PASSWORD=changeme
 
 echo "OC_PROJECT set to $OC_PROJECT"
 echo "OC_MASTER_HOSTNAME set to $OC_MASTER_HOSTNAME" 

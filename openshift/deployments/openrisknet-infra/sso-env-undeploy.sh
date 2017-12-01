@@ -7,6 +7,6 @@ set -e
 
 set +x
 
-# delete serice account and permissions
+# delete service account and permissions
 oc policy remove-role-from-user view system:serviceaccount:openrisknet-infra:sso-service-account
 oc delete serviceaccount/sso-service-account
