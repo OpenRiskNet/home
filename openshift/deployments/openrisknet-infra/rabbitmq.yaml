@@ -1,0 +1,188 @@
+# (oc adm policy add-scc-to-group anyuid system:authenticated)
+#
+# oc process -f rabbitmq.yaml | oc create -f -
+# oc delete all,cm,pvc,secrets --selector template=rabbitmq
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: rabbitmq
+  annotations:
+    description: Infrastructure RabbitMQ Definition
+    tags: rabbitmq,infrastructure
+labels:
+  template: rabbitmq
+  app: rabbitmq
+
+parameters:
+
+# -------------
+# Configuration
+# -------------
+# Common (not specific to any infrastructure service)
+
+- name: INFRA_NAMESPACE
+  value: openrisknet-infra
+
+# --------
+# RabbitMQ
+# --------
+
+- name: RABBITMQ_IMAGE_TAG
+  value: 3.6.14-management
+  description: >
+    The version tag for the RabbitMQ container.
+    This value is also set in the rabbitmq.config ConfigMap below.
+    Take care to change it is you change the tag.
+
+- name: RABBITMQ_CONFIG_FILE
+  value: /etc/openrisknet/rabbitmq
+  description: >
+    The path to the configuration file, without the .config extension.
+    We mount this directory in the container and add the
+    configuration files using our ConfigMap.
+
+- name: RABBITMQ_HOST
+  value: rabbitmq.openrisknet-infra.svc
+
+- name: DEFAULT_USER
+  value: guest
+
+- name: DEFAULT_PASS
+  from: "[a-zA-Z0-9]{10}"
+  generate: expression
+  required: true
+
+- name: ERLANG_COOKIE
+  description: RabbitMQ Erlang cookie
+  from: '[a-zA-Z0-9]{96}'
+  generate: expression
+
+- name: RABBITMQ_CPU_REQUEST
+  value: 100m
+- name: RABBITMQ_CPU_LIMIT
+  value: 1000m
+- name: RABBITMQ_MEM_REQUEST
+  value: 100Mi
+- name: RABBITMQ_MEM_LIMIT
+  value: 500Mi
+
+objects:
+
+# -----------------------------------------------------------------------------
+# RabbitMQ Service
+# -----------------------------------------------------------------------------
+
+- kind: Secret
+  apiVersion: v1
+  metadata:
+    name: rabbitmq
+    namespace: ${INFRA_NAMESPACE}
+  stringData:
+    host: ${RABBITMQ_HOST}
+    default-user: ${DEFAULT_USER}
+    default-pass: ${DEFAULT_PASS}
+    erlang-cookie: ${ERLANG_COOKIE}
+
+- kind: ConfigMap
+  apiVersion: v1
+  metadata:
+    name: rabbitmq-config
+    namespace: ${INFRA_NAMESPACE}
+  data:
+    rabbitmq.config: |
+      [
+        {rabbit, [
+          {loopback_users, [guest]}
+        ]},
+        {rabbitmq_management, [
+          {load_definitions, "/etc/openrisknet/definitions.json"}
+        ]}
+      ].
+    definitions.json: |
+      {
+        "rabbit_version": "3.6.14",
+        "users": [],
+        "vhosts": [],
+        "permissions": [],
+        "parameters": [],
+        "policies": [],
+        "queues": [],
+        "exchanges": [],
+        "bindings": []
+      }
+
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: rabbitmq
+    namespace: ${INFRA_NAMESPACE}
+  spec:
+    replicas: 1
+    selector:
+      name: rabbitmq
+    template:
+      metadata:
+        labels:
+          name: rabbitmq
+      spec:
+        containers:
+        - image: rabbitmq:${RABBITMQ_IMAGE_TAG}
+          name: rabbitmq
+          env:
+          - name: RABBITMQ_CONFIG_FILE
+            value: ${RABBITMQ_CONFIG_FILE}
+          - name: RABBITMQ_DEFAULT_USER
+            valueFrom:
+              secretKeyRef:
+                name: rabbitmq
+                key: default-user
+          - name: RABBITMQ_DEFAULT_PASS
+            valueFrom:
+              secretKeyRef:
+                name: rabbitmq
+                key: default-pass
+          - name: RABBITMQ_ERLANG_COOKIE
+            valueFrom:
+              secretKeyRef:
+                name: rabbitmq
+                key: erlang-cookie
+          ports:
+          - containerPort: 5672
+          - containerPort: 15672
+#          resources:
+#            limits:
+#              cpu: ${RABBITMQ_CPU_LIMIT}
+#              memory: ${RABBITMQ_MEM_LIMIT}
+#            requests:
+#              cpu: ${RABBITMQ_CPU_REQUEST}
+#              memory: ${RABBITMQ_MEM_REQUEST}
+          volumeMounts:
+          - name: rabbitmq-config
+            mountPath: /etc/openrisknet
+        volumes:
+        - name: rabbitmq-config
+          configMap:
+            name: rabbitmq-config
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: rabbitmq
+    namespace: ${INFRA_NAMESPACE}
+  spec:
+    ports:
+    - name: empd
+      port: 4369
+      targetPort: 4369
+    - name: ampq
+      port: 5672
+      targetPort: 5672
+    - name: http
+      port: 15672
+      targetPort: 15672
+    - name: erlang
+      port: 25672
+      targetPort: 25672
+    selector:
+      name: rabbitmq

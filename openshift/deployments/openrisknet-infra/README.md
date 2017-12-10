@@ -1,10 +1,11 @@
 # OpenRiskNet infrastructure deployment
 
-Scripts for deploying OpennRiskNet infrastructure components to the openrisknet-infra project.
-Currently this includes a PostgreSQL database and Keycloak for SSO.
+Scripts for deploying OpenRiskNet infrastructure components to the openrisknet-infra project.
+Currently this includes a PostgreSQL database, Keycloak for SSO and RabbitMQ as a message queue.
 Currently the PostgreSQL database is installed as part of the process of installing Keycloak, so
 the only activity revolves around deploying Keycloak, and as a result you get a PostgreSQL database
-installed (NOTE: it is expected this will change). 
+installed (NOTE: it is expected this will change).
+The process for deploying RabbitMQ is also described.
 
 
 ## Prerequisites and Assumptions
@@ -15,6 +16,8 @@ oc new-project openrisknet-infra
 ```
 
 Before running anything setup the environment by running `source setenv.sh`.
+
+# SSO and PostgreSQL
 
 You must generate the necessary certificates for Keycloak in the `certs` directory as described 
 [here](../../sso). You can do this in one simple step by running the `certs-create.sh` script. 
@@ -31,7 +34,7 @@ or pull directly from GitHub:
 oc create -f https://raw.githubusercontent.com/openshift/openshift-ansible/master/roles/openshift_examples/files/examples/v3.6/xpaas-streams/jboss-image-streams.json -n openshift
 ```
 
-## Deploy
+## Deploy SSO and PostgreSQL
 
 This project uses a PVC for PostgreSQL storage. Make sure a PV is available. The `pv-postgresql-template.yaml' file
 can be used as an example.
@@ -75,7 +78,7 @@ under the key of `sso-admin-password`.
 Similar for the Keycloak service user named `manager` who's password is stored under the `sso-service-password` key.
 
      
-## Undeploy
+## Undeploy SSO and PostgreSQL
 
 
 ```
@@ -99,8 +102,35 @@ oc delete project/openrisknet-infra
 
 You may want to clean up the PV that was used following undeploying.
 
-## TODO
+## TODO for SSO and PostgreSQL
 
-1. Use trusted root certificate
-1. Break apart deployment of PostgreSQL and Keycloak
+1. HIGH: Use trusted root certificate.
+1. LOW: Break apart deployment of PostgreSQL and Keycloak.
+1. LOW: Investigate having a hot standby PostgreSQL instance for high availability.
 
+# RabbitMQ
+
+## Deploy RabbitMQ
+
+Make sure that the `openrisknet-infra` project has been created and that you have edited and sourced the `setenv.sh` file.
+
+```
+./rabbitmq-deploy.sh
+```
+
+The passwords and erlang cookie that are generated during deployment are stored in a secret named `rabbitmq`.
+
+## Undeploy RabbitMQ
+
+```
+./rabbitmq-undeploy.sh
+```
+
+## TODO for RabbitMQ
+
+1. HIGH: Provide persistent volumes for the queue storage.
+1. LOW: Make the deployment neutral in nature so that it can be used in non OpenRiskNet projects (primarily the location of
+files in `/etc/openrisknet/`).
+1. MEDIUM: Investigate security risks (including the implications of the `guest` user).
+1. MEDIUM: Expose the RabbitMQ web console (with authentication hooked into the OpenShift OAuth authentication).
+1. LOW: Investigate clustering RabbitMQ instances for high availability and scalability.
