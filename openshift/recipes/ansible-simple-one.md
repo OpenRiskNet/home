@@ -92,7 +92,7 @@ Hit **Next: Add Storage**
 Hit **Next: Add Tags**
 
 ### Step 5: Add Tags
-To simplify its identification you can add a tag, for now use sometihing
+To simplify its identification you can add a tag, for now use something
 distinct like `openshift-one-ansible` and click **Next: Configure Security Group**
 
 ### Step 6: Configure Security Group
