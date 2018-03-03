@@ -1,0 +1,129 @@
+[OSEv3:children]
+masters
+nodes
+etcd
+nfs
+
+[OSEv3:vars]
+ansible_ssh_user=centos
+ansible_become=yes
+
+openshift_deployment_type=origin
+openshift_release=v3.7
+openshift_image_tag=v3.7.1
+
+openshift_disable_check=disk_availability,docker_storage,memory_availability
+openshift_clock_enabled=true
+
+# Enable htpasswd authentication
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/users.htpasswd'}]
+# make sure this htpasswd file exists
+openshift_master_htpasswd_file=/home/centos/users.htpasswd
+
+openshift_master_cluster_public_hostname=130.238.28.25.nip.io
+openshift_master_default_subdomain=130.238.28.34.nip.io
+openshift_master_api_port=443
+openshift_master_console_port=443
+
+#openshift_master_named_certificates=[{certfile: /home/centos/certs/master.openrisknet.org/fullchain.pem, keyfile: /home/centos/certs/master.openrisknet.org/privkey.pem}]
+#openshift_master_overwrite_named_certificates=true
+
+# default project node selector
+osm_default_node_selector='zone=default'
+
+openshift_hosted_registry_storage_kind=nfs
+openshift_hosted_registry_storage_access_modes=['ReadWriteMany']
+openshift_hosted_registry_storage_nfs_directory=/exports
+openshift_hosted_registry_storage_nfs_options='*(rw,root_squash)'
+openshift_hosted_registry_storage_volume_name=registry
+openshift_hosted_registry_storage_volume_size=10Gi
+
+openshift_docker_additional_registries = registry.access.redhat.com
+openshift_docker_insecure_registries = registry.access.redhat.com
+
+openshift_metrics_install_metrics=true
+openshift_metrics_storage_kind=nfs
+openshift_metrics_storage_access_modes=['ReadWriteOnce']
+openshift_metrics_storage_nfs_directory=/exports
+openshift_metrics_storage_nfs_options='*(rw,root_squash)'
+openshift_metrics_storage_volume_name=metrics
+openshift_metrics_storage_volume_size=10Gi
+openshift_metrics_storage_labels={'storage': 'metrics'}
+openshift_metrics_cassandra_nodeselector={"zone":"default"}
+openshift_metrics_hawkular_nodeselector={"zone":"default"}
+openshift_metrics_heapster_nodeselector={"zone":"default"}
+
+openshift_logging_install_logging=true
+openshift_logging_storage_kind=nfs
+openshift_logging_storage_access_modes=['ReadWriteOnce']
+openshift_logging_storage_nfs_directory=/exports
+openshift_logging_storage_nfs_options='*(rw,root_squash)'
+openshift_logging_storage_volume_name=logging
+openshift_logging_storage_volume_size=10Gi
+openshift_logging_storage_labels={'storage': 'logging'}
+openshift_logging_eventrouter_nodeselector=
+openshift_logging_curator_nodeselector={"zone":"default"}
+openshift_logging_kibana_nodeselector={"zone":"default"}
+openshift_logging_es_nodeselector={"zone":"default"}
+openshift_logging_es_ops_nodeselector={"zone":"default"}
+openshift_logging_kibana_ops_nodeselector={"zone":"default"}
+openshift_logging_curator_ops_nodeselector={"zone":"default"}
+
+openshift_hosted_prometheus_deploy=true
+openshift_prometheus_node_selector={"region":"infra"}
+openshift_prometheus_storage_kind=nfs
+openshift_prometheus_storage_access_modes=['ReadWriteOnce']
+openshift_prometheus_storage_nfs_directory=/exports
+openshift_prometheus_storage_nfs_options='*(rw,root_squash)'
+openshift_prometheus_storage_volume_name=prometheus
+openshift_prometheus_storage_volume_size=5Gi
+openshift_prometheus_storage_labels={'storage': 'prometheus'}
+openshift_prometheus_storage_type='pvc'
+# For prometheus-alertmanager
+openshift_prometheus_alertmanager_storage_kind=nfs
+openshift_prometheus_alertmanager_storage_access_modes=['ReadWriteOnce']
+openshift_prometheus_alertmanager_storage_nfs_directory=/exports
+openshift_prometheus_alertmanager_storage_nfs_options='*(rw,root_squash)'
+openshift_prometheus_alertmanager_storage_volume_name=prometheus-alertmanager
+openshift_prometheus_alertmanager_storage_volume_size=5Gi
+openshift_prometheus_alertmanager_storage_labels={'storage': 'prometheus-alertmanager'}
+openshift_prometheus_alertmanager_storage_type='pvc'
+# For prometheus-alertbuffer
+openshift_prometheus_alertbuffer_storage_kind=nfs
+openshift_prometheus_alertbuffer_storage_access_modes=['ReadWriteOnce']
+openshift_prometheus_alertbuffer_storage_nfs_directory=/exports
+openshift_prometheus_alertbuffer_storage_nfs_options='*(rw,root_squash)'
+openshift_prometheus_alertbuffer_storage_volume_name=prometheus-alertbuffer
+openshift_prometheus_alertbuffer_storage_volume_size=10Gi
+openshift_prometheus_alertbuffer_storage_labels={'storage': 'prometheus-alertbuffer'}
+openshift_prometheus_alertbuffer_storage_type='pvc'
+
+openshift_hosted_etcd_storage_kind=nfs
+openshift_hosted_etcd_storage_nfs_options="*(rw,root_squash,sync,no_wdelay)"
+openshift_hosted_etcd_storage_nfs_directory=/exports/
+openshift_hosted_etcd_storage_volume_name=oab-etcd-vol 
+openshift_hosted_etcd_storage_access_modes=["ReadWriteOnce"]
+openshift_hosted_etcd_storage_volume_size=1G
+openshift_hosted_etcd_storage_labels={'storage': 'etcd'}
+
+ansible_service_broker_image_prefix=registry.access.redhat.com/openshift3/ose-
+ansible_service_broker_registry_url=registry.access.redhat.com
+
+[masters]
+nf-master.openstacklocal
+
+[etcd]
+nf-master.openstacklocal
+
+[nfs]
+nf-infra.openstacklocal
+
+[nodes]
+nf-master.openstacklocal openshift_public_ip=130.238.28.25
+nf-infra.openstacklocal  openshift_public_ip=130.238.28.34 openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
+nf-node-1.openstacklocal openshift_node_labels="{'zone': 'default'}"
+nf-node-2.openstacklocal openshift_node_labels="{'zone': 'worker'}"
+nf-node-3.openstacklocal openshift_node_labels="{'zone': 'worker'}"
+nf-node-4.openstacklocal openshift_node_labels="{'zone': 'worker'}"
+nf-node-5.openstacklocal openshift_node_labels="{'zone': 'worker'}"
+

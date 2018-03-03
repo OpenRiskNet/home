@@ -1,0 +1,58 @@
+kind: List
+items:
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: nf-0001
+  spec:
+    volumeName: nf-0001
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 100Gi
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: nf-0002
+  spec:
+    volumeName: nf-0002
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 100Gi
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: nf-0003
+  spec:
+    volumeName: nf-0003
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 100Gi
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: nf-0004
+  spec:
+    volumeName: nf-0004
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 100Gi
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: nf-0005
+  spec:
+    volumeName: nf-0005
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 100Gi
+

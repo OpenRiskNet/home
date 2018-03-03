@@ -33,7 +33,7 @@ objects:
     runPolicy: Serial
     source:
       git:
-        ref: master
+        ref: 0.3
         uri: https://github.com/cdk/depict.git
       type: Git
     strategy:
