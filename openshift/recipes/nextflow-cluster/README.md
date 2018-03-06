@@ -87,7 +87,9 @@ On bastion node:
 oc login https://130.238.28.25.nip.io -u admin
 oc adm new-project nextflow --node-selector='zone=worker'
 oc adm policy add-role-to-user edit nextflow
+oc adm policy add-cluster-role-to-user admin -z default
 ```
+TODO: set up a desdicated service account rather than grant additional prrivs to the default one.
 
 ## Setting up PVs and PVCs
 On bastion node in /home/centos/openrisknet-nf dir:
