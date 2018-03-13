@@ -199,10 +199,6 @@ A few of caveats:
 
 GlusterFS might be a better choice for these scenarios.
 
-## Files
-
-Sample files for the ansible inventory files (basic configuation  
-
 
 
 
