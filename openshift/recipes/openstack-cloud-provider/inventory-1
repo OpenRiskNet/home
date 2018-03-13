@@ -1,0 +1,50 @@
+[OSEv3:children]
+masters
+nodes
+etcd
+
+[OSEv3:vars]
+ansible_ssh_user=centos
+ansible_become=yes
+
+openshift_deployment_type=origin
+openshift_release=v3.7
+openshift_image_tag=v3.7.1
+
+openshift_disable_check=disk_availability,docker_storage,memory_availability
+openshift_clock_enabled=true
+
+# Enable htpasswd authentication
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/users.htpasswd'}]
+# make sure this htpasswd file exists
+openshift_master_htpasswd_file=/home/centos/users.htpasswd
+
+openshift_master_cluster_public_hostname=130.238.28.104.nip.io
+openshift_master_default_subdomain=130.238.28.104.nip.io
+
+# Openstack
+openshift_cloudprovider_kind = openstack
+openshift_cloudprovider_openstack_auth_url = "{{ lookup('env','OS_AUTH_URL') }}"
+openshift_cloudprovider_openstack_username = "{{ lookup('env','OS_USERNAME') }}"
+openshift_cloudprovider_openstack_password = "{{ lookup('env','OS_PASSWORD') }}"
+openshift_cloudprovider_openstack_region = "{{ lookup('env', 'OS_REGION_NAME') }}"
+openshift_cloudprovider_openstack_domain_name = "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
+openshift_cloudprovider_openstack_tenant_id = "{{ lookup('env','OS_PROJECT_ID') }}"
+
+openshift_metrics_install_metrics=false
+openshift_logging_install_logging=false
+openshift_hosted_prometheus_deploy=false
+
+ansible_service_broker_image_prefix=registry.access.redhat.com/openshift3/ose-
+ansible_service_broker_registry_url=registry.access.redhat.com
+
+[masters]
+all-in-one
+
+[etcd]
+all-in-one
+
+[nodes]
+all-in-one openshift_hostname=all-in-one.openstacklocal openshift_schedulable=true openshift_node_labels="{'region': 'infra', 'zone': 'default'}" 
+
+

@@ -17,6 +17,7 @@ First learn how to setup an OpenShift cluster
 1. [Ansible two node](ansible-simple-two.md) - Simple one master, one node setup using Ansible
 1. [Ansible metrics + logging](ansible-logging-metrics.md) - Deploy logging and metrics backed by NFS
 1. [Nextflow cluster](nextflow-cluster/) - Create cluster for testing [Nextflow](http://nextflow.io) pipelines
+1. [Openstack Cloud Provider](openstack-cloud-provider/) - Using the Openstack Cloud Provider for provisioning volumes
 
 Then learn about deploying applications
 
