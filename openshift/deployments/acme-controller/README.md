@@ -1,7 +1,7 @@
 # acme-controller deployment
 
 Scripts for deploying the acme controller. 
-See here for details about acme controller: [https://github.com/tnozicka/openshift-acme]()
+See here for details about acme controller: [https://github.com/tnozicka/openshift-acme](https://github.com/tnozicka/openshift-acme)
 
 Note that thse scripts use artifacts from that GitHub repo, so those are subject to change.
 
