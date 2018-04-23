@@ -22,6 +22,10 @@ The README.md in each project gives details of how to proceed. Typically there w
 Undeploying will typically not remove PVs and PVCs to avoid the risk of losing critical data, so you will need to manage those 
 manually.
 
+## Setup
+
+In this directory you must create the file `setup.sh` using `setenv-example.sh` as an example. Edit to to reflect your environment.
+
 Some of these deployments require admin privileges. We assume a user named 'admin' for this. To set up such a user do this:
 
 ```

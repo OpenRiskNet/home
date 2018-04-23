@@ -4,12 +4,11 @@ set -e
 
 ./validate.sh
 
-oc create -f https://raw.githubusercontent.com/tnozicka/openshift-acme/master/deploy/clusterrole.yaml
-
-oc adm policy add-cluster-role-to-user acme-controller system:serviceaccount:acme-controller:default
 
 oc create\
- -f https://raw.githubusercontent.com/tnozicka/openshift-acme/master/deploy/deploymentconfig-letsencrypt-live.yaml\
- -f https://raw.githubusercontent.com/tnozicka/openshift-acme/master/deploy/service.yaml
+  -f https://raw.githubusercontent.com/tnozicka/openshift-acme/master/deploy/letsencrypt-live/cluster-wide/clusterrole.yaml\
+  -f https://raw.githubusercontent.com/tnozicka/openshift-acme/master/deploy/letsencrypt-live/cluster-wide/serviceaccount.yaml\
+  -f https://raw.githubusercontent.com/tnozicka/openshift-acme/master/deploy/letsencrypt-live/cluster-wide/imagestream.yaml\
+  -f https://raw.githubusercontent.com/tnozicka/openshift-acme/master/deploy/letsencrypt-live/cluster-wide/deployment.yaml
 
-oc label svc/acme-controller app=acme-controller
+oc adm policy add-cluster-role-to-user openshift-acme -z openshift-acme

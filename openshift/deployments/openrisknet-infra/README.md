@@ -15,7 +15,9 @@ Create the project using:
 oc new-project openrisknet-infra
 ```
 
-Before running anything setup the environment by running `source setenv.sh`.
+Before running anything you must create the file `setup.sh` using `setenv-example.sh` as an example 
+and setup the environment byrunning `source setenv.sh`. You must already have set up the `setup.sh`
+file in the directory above this.
 
 # SSO and PostgreSQL
 
@@ -26,7 +28,7 @@ variable that is defined in the setenv.sh script.
 
 Make sure the image streams are loaded. If you have the openshift/openshift-ansible repo checked out do this using:
 ```
-oc create -f $HOME/git/openshift/openshift-ansible/roles/openshift_examples/files/examples/v3.6/xpaas-streams/jboss-image-streams.json -n openshift
+oc create -f $OPENSHIFT_ANSIBLE_GIT/roles/openshift_examples/files/examples/v${OPENSHIFT_VERSION}/xpaas-streams/jboss-image-streams.json -n openshift
 ```
 
 or pull directly from GitHub:
@@ -36,8 +38,8 @@ oc create -f https://raw.githubusercontent.com/openshift/openshift-ansible/maste
 
 ## Deploy SSO and PostgreSQL
 
-This project uses a PVC for PostgreSQL storage. Make sure a PV is available. The `pv-postgresql-template.yaml' file
-can be used as an example.
+**IMPORTANT**: This project uses a PVC for PostgreSQL storage. Make sure a PV is available. The `pv-postgresql-template.yaml' file
+can be used as an example if using NFS.
 
 
 Prepare the environment using:
