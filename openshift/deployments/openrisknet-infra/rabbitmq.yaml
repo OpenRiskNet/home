@@ -1,7 +1,9 @@
+---
+
 # (oc adm policy add-scc-to-group anyuid system:authenticated)
 #
 # oc process -f rabbitmq.yaml | oc create -f -
-# oc delete all,cm,pvc,secrets --selector template=rabbitmq
+# oc delete all,cm,secrets --selector template=rabbitmq
 
 kind: Template
 apiVersion: v1
@@ -9,7 +11,7 @@ metadata:
   name: rabbitmq
   annotations:
     description: Infrastructure RabbitMQ Definition
-    tags: rabbitmq,infrastructure
+    tags: rabbitmq,infratsrtucture
 labels:
   template: rabbitmq
   app: rabbitmq
@@ -29,7 +31,7 @@ parameters:
 # --------
 
 - name: RABBITMQ_IMAGE_TAG
-  value: 3.6.14-management
+  value: 3.6.15-management
   description: >
     The version tag for the RabbitMQ container.
     This value is also set in the rabbitmq.config ConfigMap below.
@@ -44,6 +46,12 @@ parameters:
 
 - name: RABBITMQ_HOST
   value: rabbitmq.openrisknet-infra.svc
+
+- name: RABBITMQ_NODENAME
+  value: rabbit@localhost
+
+- name: RABBITMQ_MNESIA_BASE
+  value: /volume/mnesia
 
 - name: DEFAULT_USER
   value: guest
@@ -101,7 +109,7 @@ objects:
       ].
     definitions.json: |
       {
-        "rabbit_version": "3.6.14",
+        "rabbit_version": "3.6.15",
         "users": [],
         "vhosts": [],
         "permissions": [],
@@ -130,6 +138,10 @@ objects:
         - image: rabbitmq:${RABBITMQ_IMAGE_TAG}
           name: rabbitmq
           env:
+          - name: RABBITMQ_MNESIA_BASE
+            value: ${RABBITMQ_MNESIA_BASE}
+          - name: RABBITMQ_NODENAME
+            value: ${RABBITMQ_NODENAME}
           - name: RABBITMQ_CONFIG_FILE
             value: ${RABBITMQ_CONFIG_FILE}
           - name: RABBITMQ_DEFAULT_USER
@@ -158,9 +170,14 @@ objects:
 #              cpu: ${RABBITMQ_CPU_REQUEST}
 #              memory: ${RABBITMQ_MEM_REQUEST}
           volumeMounts:
+          - name: rabbitmq-mnesia
+            mountPath: ${RABBITMQ_MNESIA_BASE}
           - name: rabbitmq-config
             mountPath: /etc/openrisknet
         volumes:
+        - name: rabbitmq-mnesia
+          persistentVolumeClaim:
+            claimName: rabbitmq-claim
         - name: rabbitmq-config
           configMap:
             name: rabbitmq-config

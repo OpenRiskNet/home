@@ -7,58 +7,164 @@ the only activity revolves around deploying Keycloak, and as a result you get a 
 installed (NOTE: it is expected this will change).
 The process for deploying RabbitMQ is also described.
 
+**Note**: This process is abreviated from the process described to deploy the squonk-infra components of the Squonk Computational notebook
+that is described [here](https://github.com/InformaticsMatters/squonk/tree/openshift/openshift/templates). Those
+instructions may be more up to date. There is no need to deploy the Squonk applications (the squonk-app part) in those instructions.
 
-## Prerequisites and Assumptions
 
-Create the project using:
+
+## Setup
+
+### Configure the Installation
+
+Before you start you must have or create the `admin` (`$OC_ADMIN_USER`) account and grant it `cluster-admin` role.
+As the `system:admin` user when on the master node:
+
 ```
-oc new-project openrisknet-infra
-```
-
-Before running anything you must create the file `setup.sh` using `setenv-example.sh` as an example 
-and setup the environment byrunning `source setenv.sh`. You must already have set up the `setup.sh`
-file in the directory above this.
-
-# SSO and PostgreSQL
-
-You must generate the necessary certificates for Keycloak in the `certs` directory as described 
-[here](../../sso). You can do this in one simple step by running the `certs-create.sh` script. 
-All certs and keystores are protected with the password defined in the OC_CERTS_PASSWORD environment 
-variable that is defined in the setenv.sh script.
-
-Make sure the image streams are loaded. If you have the openshift/openshift-ansible repo checked out do this using:
-```
-oc create -f $OPENSHIFT_ANSIBLE_GIT/roles/openshift_examples/files/examples/v${OPENSHIFT_VERSION}/xpaas-streams/jboss-image-streams.json -n openshift
+oc adm policy add-cluster-role-to-user cluster-admin admin
 ```
 
-or pull directly from GitHub:
+Now back on the node where the installation is happening (e.g. the bastion node):
+
+Create/edit `setenv.sh` from the supplied `setenv-template.sh` template. At the very least you
+need to define `OC_MASTER_HOSTNAME`, which in minishift is likely to be something 
+like `192.168.99.100`. Several other variables will also likely need to be set.
+
+Once done, _source_ the file...
+
 ```
-oc create -f https://raw.githubusercontent.com/openshift/openshift-ansible/master/roles/openshift_examples/files/examples/v3.6/xpaas-streams/jboss-image-streams.json -n openshift
+source setenv.sh
 ```
 
-## Deploy SSO and PostgreSQL
+### Test logins
 
-**IMPORTANT**: This project uses a PVC for PostgreSQL storage. Make sure a PV is available. The `pv-postgresql-template.yaml' file
-can be used as an example if using NFS.
+Ensure that you have the `$OC_ADMIN` by testing a login.
 
+>   This forces entering the password, which won't be required again in your
+    session therefore avoiding the need for oc passwords later in the process.
 
-Prepare the environment using:
 ```
-./sso-env-deploy.sh
-```
-
-Define the necessary secrets (certs, passwords etc.) using:
-```
-./sso-secrets-deploy.sh
+oc login -u $OC_ADMIN
 ```
 
-Deploy using:
-```
-./sso-deploy.sh
-```
-Note: this deploys additional secrets with details of the PostgreSQL and Keycloak usernames and passwords.
+### Create Keycloak image streams
 
->   NOTE: You may stumble on the defect
+The keycloak deployment is based on that found in the 
+[jboss-openshift](https://github.com/jboss-openshift/application-templates/tree/master/sso)
+application templates.
+
+As that `admin` user you must deploy the xpaas image streams to your OpenShift environment:
+
+```
+oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/sso/sso72-image-stream.json -n openshift
+```
+
+This only needs to be done once.
+
+### Create Infrastructure Project
+
+Create project (default name `openrisknet-infra`) as the `$OC_ADMIN_USER` user:
+```
+oc new-project $OC_INFRA_PROJECT --display-name='ORN Application Infrastructure'
+```
+
+>   If you delete the projects you may also need to manually delete the PVs that 
+    are created in the next step.
+
+
+## Create Infrastructure
+
+### Infrastructure PVs and PVCs
+
+Create the PVs required by Postgres and RabbitMQ.
+
+#### If using Minishift:
+
+Minishift comes with 100 PVs ready to use so you only need to create the PVCs:
+
+```
+oc process -p INFRA_NAMESPACE=$OC_INFRA_PROJECT -f infra-pvc-minishift.yaml | oc create -f -
+```
+
+After completing you should see something like this:
+
+```
+$ oc get pvc
+NAME               STATUS    VOLUME    CAPACITY   ACCESSMODES   STORAGECLASS   AGE
+postgresql-claim   Bound     pv0015    100Gi      RWO,ROX,RWX                  11s
+rabbitmq-claim     Bound     pv0002    100Gi      RWO,ROX,RWX                  11s
+```
+
+#### If using NFS with OpenShift: 
+
+First create NFS exports on the node that is acting as the NFS server (probably the infrastructure node) 
+for `/exports/pv-postgresql` and `/exports/pv-rabbitmq` and then define the PVs and PVCs:
+
+```
+oc process -p INFRA_NAMESPACE=$OC_INFRA_PROJECT -p NFS_SERVER=$OC_NFS_SERVER -f infra-pvc-nfs.yaml | oc create -f -
+```
+
+This creates PVs for the NFS mounts and binds the PVCs that RabbitMQ and PostgreSQL need. This is 'permanant' coupling
+of the PVC to the PV so that this (and any data in the NFS mounts) can be retained between deployments.
+
+Following this you should see something like this (irrelevant entries are excluded):
+
+```
+$ oc get pv,pvc
+NAME                                          CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS    CLAIM                                   STORAGECLASS   REASON    AGE
+pv/pv-postgresql                              50Gi       RWO           Retain          Bound     openrisknet-infra/postgresql-claim                               2h
+pv/pv-rabbitmq                                1Gi        RWO           Retain          Bound     openrisknet-infra/rabbitmq-claim                                 2h
+
+NAME                   STATUS    VOLUME          CAPACITY   ACCESSMODES   STORAGECLASS   AGE
+pvc/postgresql-claim   Bound     pv-postgresql   50Gi       RWO           standard       2h
+pvc/rabbitmq-claim     Bound     pv-rabbitmq     1Gi        RWO           standard       2h
+```
+
+>   Note: if re-using these PVs/PVCs you will need to delete the contents of the volume (the
+    `/exports/pv-postgresql` and `/exports/pv-rabbitmq` directories) or you may get permissions
+    problems when postgres and rabbitmq initialise.
+
+Now we are ready to start deploying the infrastructure.
+
+#### If using dynamic provisioning with OpenShift:
+
+Dymanic provisioning allows to only specfy the PVS and OpensShift will satisfy the request dynamically
+using whatever dynamic provision is configured. You can use the StorageClass property to define
+what type of storage you need.
+
+This is tested with Cinder volumes on OpenStack but other mechanisms should also work.
+Dynamic provisioning msut be set up on OpenShift before you start.
+
+From the infra project create the PVCs (with OpenShift creating the PVs for you) using:
+
+```
+oc process -p STORAGE_CLASS=standard -p POSTGRESQL_VOLUME_SIZE=125Gi -f infra-pvc-dynamic.yaml | oc create -f -
+```
+
+>   Note: use whatever value you need for the STORAGE_CLASS and POSTGRESQL_VOLUME_SIZE properties.
+
+>   Note: if re-using the postgres PV/PVC you will need to delete the contents of the volume (the
+    `/exports/pv-postgresql` directory) or you may get permissions problems when postgres initialises.
+
+
+### Deploy PostgreSQL, RabbitMQ and SSO
+
+Deploy PostgreSQL, RabbitMQ and Keycloak to the infrastructure project:
+
+```
+./sso-postgres-deploy.sh
+./rabbitmq-deploy.sh
+```
+
+To get postgres running in Minishift you might need to
+set permissions on the PV that is used. e.g.
+
+```
+minishift ssh -- sudo chmod 777 /mnt/sda1/var/lib/minishift/openshift.local.pv/pv0091
+```
+(lookup the appropriate PV to fix)
+
+>   NOTE: With Minishift you may stumble on the defect
     `redhat-sso-7/sso70-openshift image fails to start`
     (https://bugzilla.redhat.com/show_bug.cgi?id=1408453) which manifests
     itself with a _Could not rename /opt/eap/standalone/configuration/standalone_xml_history/current_
@@ -68,71 +174,13 @@ Note: this deploys additional secrets with details of the PostgreSQL and Keycloa
      
      oc volume dc/sso --add --claim-size 512M --mount-path /opt/eap/standalone/configuration/standalone_xml_history --name standalone-xml-history 
 
-You might also need to change the permissions on the PV that is claimed by Postgresql is you get a 'permission denied'
-error in the Posgtresql pod. If this happens identify the PV that is being used by the `postgresql-claim` PVC, connect
-to the server providing the PV and do a chmod 777 on the directory. e.g. for Minishift something like this:
-```
-minishift ssh -- sudo chmod -R 777 /var/lib/minishift/openshift.local.pv/pv0068
-```
-
-Keycloak is deployed with the admin user of `admin` with a randomly generated password that can be found in the `sso` secret
-under the key of `sso-admin-password`.
-Similar for the Keycloak service user named `manager` who's password is stored under the `sso-service-password` key.
-
-     
-## Undeploy SSO and PostgreSQL
+Check that the infrastructure components are all running (e.g. use the web console).
+It may take several minutes for everything to start.
 
 
-```
-./sso-undeploy.sh
-```
+### Undeploy
 
-Optionally delete the secrets:
-```
-./sso-secrets-undeploy.sh
-```
+Run the `sso-postgres-undeploy.sh` and `rabbitmq-undeploy.sh` scripts to undeploy these applications.
+Note that the PVCs are NOT deleted by these scripts to avoid accidental loss of data.
+Delete thesee manually if needed.
 
-Optionally delete the service accounts and permissions:
-```
-./sso-env-undeploy.sh
-```
-
-Optionally delete the project using:
-```
-oc delete project/openrisknet-infra
-```
-
-You may want to clean up the PV that was used following undeploying.
-
-## TODO for SSO and PostgreSQL
-
-1. HIGH: Use trusted root certificate.
-1. LOW: Break apart deployment of PostgreSQL and Keycloak.
-1. LOW: Investigate having a hot standby PostgreSQL instance for high availability.
-
-# RabbitMQ
-
-## Deploy RabbitMQ
-
-Make sure that the `openrisknet-infra` project has been created and that you have edited and sourced the `setenv.sh` file.
-
-```
-./rabbitmq-deploy.sh
-```
-
-The passwords and erlang cookie that are generated during deployment are stored in a secret named `rabbitmq`.
-
-## Undeploy RabbitMQ
-
-```
-./rabbitmq-undeploy.sh
-```
-
-## TODO for RabbitMQ
-
-1. HIGH: Provide persistent volumes for the queue storage.
-1. LOW: Make the deployment neutral in nature so that it can be used in non OpenRiskNet projects (primarily the location of
-files in `/etc/openrisknet/`).
-1. MEDIUM: Investigate security risks (including the implications of the `guest` user).
-1. MEDIUM: Expose the RabbitMQ web console (with authentication hooked into the OpenShift OAuth authentication).
-1. LOW: Investigate clustering RabbitMQ instances for high availability and scalability.
