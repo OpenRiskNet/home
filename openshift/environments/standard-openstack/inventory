@@ -47,10 +47,6 @@ openshift_pkg_version=-3.7.2
 openshift_disable_check=disk_availability,docker_storage,memory_availability,docker_image_availability,package_availability,package_version
 openshift_clock_enabled=true
 
-# Enable htpasswd authentication
-openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/users.htpasswd'},{"name": "github", "challenge": false, "login": true, "kind": "GitHubIdentityProvider", "clientID": "8081ebdef265224f3805", "clientSecret": "4c45f42150b1a3e7a734b5ac4bba338b0b4d6005", "teams": ["OpenRiskNet/developers"]}]
-# make sure this htpasswd file exists
-openshift_master_htpasswd_file=/home/centos/users.htpasswd
 
 # master must resolve to ip address 130.238.28.57
 openshift_master_cluster_public_hostname=prod.openrisknet.org
@@ -58,6 +54,11 @@ openshift_master_cluster_public_hostname=prod.openrisknet.org
 openshift_master_default_subdomain=prod.openrisknet.org
 openshift_master_api_port=443
 openshift_master_console_port=443
+
+# Enable htpasswd authentication
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/users.htpasswd'},{"name": "github", "challenge": false, "login": true, "kind": "GitHubIdentityProvider", "clientID": "8081ebdef265224f3805", "clientSecret": "4c45f42150b1a3e7a734b5ac4bba338b0b4d6005", "teams": ["OpenRiskNet/developers"]}]
+# make sure this htpasswd file exists
+openshift_master_htpasswd_file=/home/centos/users.htpasswd
 
 openshift_master_named_certificates=[{"certfile": "/home/centos/site-prd/certs/fullchain.pem", "keyfile": "/home/centos/site-prd/certs/privkey.pem"}]
 openshift_master_overwrite_named_certificates=true
