@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: orn-chemidconvert
+  namespace: openrisknet
+  labels:
+    app: orn-chemidconvert
+  annotations:
+    openrisknet-openapi: http://orn-chemidconvert.openrisknet.svc.cluster.local:8080/v1/swagger.json
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: chemidconvert

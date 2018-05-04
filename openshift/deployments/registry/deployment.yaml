@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: orn-registry # e.g. myservice
+  namespace: openrisknet
+spec:
+  revisionHistoryLimit: 5
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0 # if you only have 1 replica you probably want this to avoid downtime during rolling update
+  template:
+    metadata:
+      labels:
+        app: orn-registry # e.g. myservice
+    spec:
+      volumes:
+      - name: temp
+        emptyDir: {}
+      - name: config
+        emptyDir: {}
+      containers:
+      - name: orn-registry # e.g. myservice
+        image: douglasconnect/orn-registry:latest # either offical images: <imagename> or our repo: eu.gcr.io/douglasconnect-docker/<imagename>:latest
+        ports:
+        - containerPort: 8085 # ports as per the dockerfile
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "20m"
+        volumeMounts:
+        - name: temp
+          mountPath: /tmp

@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: chemidconvert
+  namespace: openrisknet
+spec:
+  replicas: 1
+  revisionHistoryLimit: 5
+  template:
+    metadata:
+      labels:
+        app: chemidconvert
+    spec:
+      containers:
+      - name: chemidconvert
+        image: douglasconnect/chemidconvert:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "10m"
