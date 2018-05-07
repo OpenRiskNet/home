@@ -14,6 +14,7 @@ spec:
       labels:
         app: orn-registry # e.g. myservice
     spec:
+      serviceAccountName: registry-service-account
       volumes:
       - name: temp
         emptyDir: {}
