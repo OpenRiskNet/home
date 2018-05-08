@@ -51,17 +51,27 @@ objects:
 - kind: Service
   apiVersion: v1
   metadata:
-    name: bridgedb
+    name: bridgedb-app
   spec:
     ports:
-    - name: swagger
-      port: 8080
-      targetPort: 8080
     - name: bridgedb
       port: 8183
       targetPort: 8183
     selector:
       name: bridgedb
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: bridgedb-swagger
+  spec:
+    ports:
+    - name: swagger
+      port: 8080
+      targetPort: 8080
+    selector:
+      name: bridgedb
+
 
 - kind: Route
   apiVersion: v1
@@ -73,11 +83,9 @@ objects:
       kubernetes.io/tls-acme: 'false'
   spec:
     host: bridgedb-app.${ROUTES_BASENAME}
-    port:
-      targetPort: bridgedb
     to:
       kind: Service
-      name: bridgedb
+      name: bridgedb-app
 
 - kind: Route
   apiVersion: v1
@@ -89,9 +97,7 @@ objects:
       kubernetes.io/tls-acme: 'false'
   spec:
     host: bridgedb-swagger.${ROUTES_BASENAME}
-    port:
-      targetPort: swagger
     to:
       kind: Service
-      name: bridgedb
+      name: bridgedb-swagger
 
