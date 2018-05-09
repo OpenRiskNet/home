@@ -22,6 +22,8 @@ The README.md in each project gives details of how to proceed. Typically there w
 Undeploying will typically not remove PVs and PVCs to avoid the risk of losing critical data, so you will need to manage those 
 manually.
 
+For a generic guide to getting your deployments production ready look [here](ProductionReployments.md).
+
 ## Setup
 
 In this directory you must create the file `setup.sh` using `setenv-example.sh` as an example. Edit to to reflect your environment.
@@ -41,4 +43,6 @@ It is suggested you deploy these projects in this order.
 1. acme-controller (recommended) - provides TLS support for routes using Let's Encrypt certificates
 1. openrisknet-infra (essential) - Core OpenRiskNet infrastructure that can used by any OpenRiskNet application. Currently includes PostgreSQL database and Keycloak Single Sign On (SSO)
 1. jenkins (optional) - Jenkins CI/CD system
+
+
 
