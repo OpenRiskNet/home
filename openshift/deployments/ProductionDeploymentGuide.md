@@ -9,7 +9,7 @@ services at a state that a security concious pharmaceutical company will be will
 
 Here are some guidelines that should be handled to get to this state.
 
-## Container user.
+## Container user
 
 Many containers still run as the root user. This is bad as it introduces potential security risks.
 Better to run as a specific non-privileged user. This is still not ideal as there is potential 
@@ -54,10 +54,10 @@ To do this edit the `index.html` in this [GitHub repo](https://github.com/OpenRi
 Committing a change to this repo will result in the page automatically being redeployed a few minutes 
 later.
 
-## Service discoverability
+### Service discoverability
 Make your services discoverable by the ORN Service Registry.
 
-TODO: describe how to do this once it's working.
+_TODO: describe how to do this once it's working_.
 
 ## Health checks
 Make sure your pods have health checks.
@@ -66,7 +66,7 @@ A simple `http://pod.ip/ping` returning a 200 response is usually sufficient.
 This allows readiness and liveness checks to be described in your deployment and allows K8S to better
 manage your pods (e.g. restart if they become unresponsive).
 
-TODO - describe this further.
+_TODO - describe this further_.
 
 ## Define resource limits
 
@@ -75,7 +75,7 @@ for more details.
 
 This allows K8S to better schedule pods on the cluster and to kill misbehaving pods.
 
-TODO - describe this further.
+_TODO - describe this further_.
 
 ## Authentication
 
@@ -112,7 +112,7 @@ More complex deployments can use
 [Ansible Playbook Bundles](https://docs.openshift.org/latest/apb_devel/index.html) with the 
 [Ansible Service Broker](https://docs.openshift.org/latest/architecture/service_catalog/ansible_service_broker.html).
  
-TODO - describe this further. 
+_TODO - describe this further_. 
 
 ## Continuous delivery
 
@@ -122,6 +122,6 @@ There are several approaches, but the 2 most common may be:
 1. update whenever a new Docker image is pushed to Docker Hub.
 1. Rebuild and deploy when updated code is pushed to GitHub.
 
-TODO - describe this further.
+_TODO - describe this further_.
 
 
