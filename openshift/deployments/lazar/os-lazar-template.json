@@ -1,0 +1,132 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "lazar",
+    "annotations": {
+      "description": "lazar toxicity prediction service",
+      "iconClass": "",
+      "tags": "lazar,toxicity,prediction"
+    },
+    "labels": {
+     "template": "lazar",
+     "app": "lazar"
+    } 
+  },
+  "objects": [
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "lazar-rest"
+      },
+      "spec": {
+        "dockerImageRepository": "docker.io/gebele/lazar-rest"
+      },
+      "status": {
+        "dockerImageRepository": "docker.io/gebele/lazar-rest"
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "lazar-rest"
+      },
+      "spec": {
+        "strategy": {
+          "type": "Recreate",
+          "resources": {}
+        },
+        "triggers": [
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "name": "lazar-rest"
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "name": "lazar-rest"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "lazar-rest",
+                "image": "docker.io/gebele/lazar-rest:latest",
+                "ports": [
+                  {
+                    "containerPort": 8089,
+                    "protocol": "TCP"
+                  }
+                ],
+                "resources": {},
+                "terminationMessagePath": "/dev/termination-log",
+                "imagePullPolicy": "Always",
+                "securityContext": {
+                  "capabilities": {},
+                  "privileged": false
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "dnsPolicy": "ClusterFirst"
+          }
+        }
+      },
+      "status": {}
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "lazar-rest"
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "lazar-rest",
+            "protocol": "TCP",
+            "port": 8089,
+            "targetPort": 8089,
+            "nodePort": 0
+          }
+        ],
+        "selector": {
+          "name": "lazar-rest"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+      },
+      "status": {
+        "loadBalancer": {}
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "lazar",
+        "annotations": {
+          "kubernetes.io/tls-acme": "true"
+        }
+      },
+      "spec": {
+        "host": "prod.openrisknet.org",
+        "to": {
+          "kind": "Service",
+          "name": "lazar-rest"
+        },
+        "tls": {
+          "termination": "edge"
+        }
+      },
+      "status": {}
+    }
+  ],
+  "parameters": []
+}
