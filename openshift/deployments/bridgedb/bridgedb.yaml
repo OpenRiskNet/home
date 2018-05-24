@@ -17,7 +17,7 @@ labels:
 parameters:
 
 - name: IMAGE_TAG
-  value: develop-human-2
+  value: latest
 
 - name: ROUTES_BASENAME
   value: prod.openrisknet.org
@@ -42,7 +42,7 @@ objects:
           name: bridgedb
       spec:
         containers:
-        - image: bigcatum/bridgedb:${IMAGE_TAG}
+        - image: marvinm2/testbridgedb:${IMAGE_TAG}
           name: bridgedb
           ports:
           - containerPort: 8080
