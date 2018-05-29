@@ -11,7 +11,7 @@ accounts.
 
 ## To log in to the OpenShift web console
 
-Go to [https://prod.openrisknet.org/]([https://prod.openrisknet.org/) in your browser.
+Go to https://prod.openrisknet.org/ in your browser.
 
 Choose the `github` option among the `Login with ...` options. This will take you to GitHub to log in (if you are not already logged in).
 Enter your GitHub username and password.
