@@ -6,7 +6,7 @@ metadata:
   labels:
     app: orn-chemidconvert
   annotations:
-    openrisknet-openapi: http://orn-chemidconvert.openrisknet.svc.cluster.local:8080/v1/swagger.json
+    openrisknet-static-services: http://orn-chemidconvert.openrisknet.svc.cluster.local:8080/v1/swagger.json
 spec:
   ports:
   - port: 8080
