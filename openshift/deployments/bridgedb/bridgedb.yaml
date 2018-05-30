@@ -17,7 +17,7 @@ labels:
 parameters:
 
 - name: IMAGE_TAG
-  value: develop-human-2
+  value: orn-v1
 
 - name: ROUTES_BASENAME
   value: prod.openrisknet.org
@@ -97,6 +97,7 @@ objects:
       kubernetes.io/tls-acme: 'false'
   spec:
     host: bridgedb-swagger.${ROUTES_BASENAME}
+    path: /swagger/
     to:
       kind: Service
       name: bridgedb-swagger

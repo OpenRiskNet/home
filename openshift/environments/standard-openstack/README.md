@@ -57,6 +57,32 @@ TODO - describe details
 IMPORTANT - open up the security group so that all TCP and UDP traffic is allowed within the subnet.
 TODO - potentially restrict this to only the necessary protocols and ports to enhance security
 
+## Prepare Bastion node
+
+Create a new Centos7 images for your bastion node and prepare it like this (as root or using sudo):
+
+```
+yum -y update
+yum -y install wget git net-tools bind-utils bash-completion python-devel python-passlib java-1.8.0-openjdk-headless httpd-tools
+
+yum -y install docker
+systemctl enable docker
+systemctl start docker
+
+yum -y install https://rdoproject.org/repos/rdo-release.rpm
+yum -y install python-openstackclient 
+yum -y install python-heatclient
+
+sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/rdo-release.repo
+sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/rdo-testing.repo
+sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/rdo-qemu-ev.repo
+
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
+
+yum -y install --enablerepo=epel ansible pyOpenSSL
+```
+
 ### DNS setup
 
 OpenStack has an optional DNS feature that provides hostname resolution within the subnet.
