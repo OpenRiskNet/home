@@ -131,6 +131,8 @@ objects:
   apiVersion: v1
   metadata:
     name: jguweka
+    annotations:
+      openrisknet-static-services: http://jguweka.jguweka.svc.cluster.local:8080/openapi/openapi.json
   spec:
     ports:
     - name: jguweka
