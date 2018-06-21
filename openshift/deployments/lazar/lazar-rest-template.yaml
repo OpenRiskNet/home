@@ -17,6 +17,19 @@ objects:
     name: lazar-rest
   spec:
     dockerImageRepository: docker.io/gebele/lazar-rest
+    lookupPolicy:
+      local: false
+    tags:
+      - annotations:
+          openshift.io/display-name: lazar-rest
+        from:
+          kind: DockerImage
+          name: 'docker.io/gebele/lazar-rest:latest'
+        importPolicy:
+          scheduled: true
+        name: latest
+        referencePolicy:
+          type: Source
   status:
     dockerImageRepository: docker.io/gebele/lazar-rest
 - kind: DeploymentConfig
@@ -28,7 +41,15 @@ objects:
       type: Recreate
       resources: {}
     triggers:
-    - type: ConfigChange
+      - type: ConfigChange
+      - imageChangeParams:
+          automatic: true
+          containerNames:
+            - lazar-rest
+          from:
+            kind: ImageStreamTag
+            name: 'lazar-rest:latest'
+        type: ImageChange
     replicas: 1
     selector:
       name: lazar-rest
@@ -41,7 +62,7 @@ objects:
         - name: lazar-rest
           image: docker.io/gebele/lazar-rest:latest
           ports:
-          - containerPort: 8089
+          - containerPort: 8088
             protocol: TCP
           resources: {}
           terminationMessagePath: "/dev/termination-log"
@@ -58,13 +79,13 @@ objects:
     name: lazar-rest
     namespace: lazar
     annotations:
-      openrisknet-static-services: http://lazar-rest.lazar.svc.cluster.local:8089/api/api.json
+      openrisknet-static-services: http://lazar-rest.lazar.svc.cluster.local:8088/api/api.json
   spec:
     ports:
     - name: lazar-rest
       protocol: TCP
-      port: 8089
-      targetPort: 8089
+      port: 8088
+      targetPort: 8088
       nodePort: 0
     selector:
       name: lazar-rest
