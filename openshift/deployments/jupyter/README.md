@@ -141,6 +141,7 @@ c.OAuthenticator.client_id = 'jupyterhub'
 c.OAuthenticator.client_secret = '<client-secret>'
 c.OAuthenticator.oauth_callback_url = 'https://jupyterhub-jupyter.prod.openrisknet.org/hub/oauth_callback' 
 c.OAuthenticator.tls_verify = True
+c.OAuthenticator.login_service = 'OpenRiskNet SSO'
 
 # storage
 c.KubeSpawner.user_storage_pvc_ensure = True
