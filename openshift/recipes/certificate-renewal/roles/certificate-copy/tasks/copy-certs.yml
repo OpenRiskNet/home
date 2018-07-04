@@ -1,0 +1,11 @@
+---
+
+# Copy certs (if they were renewed)
+
+- name: Copy certificates 1
+  debug:
+    msg: "Certs in {{ hostvars['OSV3'].openshift_master_named_certificates }}"
+
+- name: Copy certificates 2
+  debug:
+    msg: "Renewed {{ certificates_renewed }}"
