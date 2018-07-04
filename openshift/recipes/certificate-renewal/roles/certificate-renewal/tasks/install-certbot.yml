@@ -2,7 +2,13 @@
 
 # Install Certbot
 
-- name: Install Certbot
-  package:
-    name: "{{ certbot_package }}"
-    state: present
+- name: Install EPEL repo (CentOS)
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+  when: ansible_distribution == 'CentOS'
+
+- name: Install Certbot (Centos)
+  yum:
+    name: certbot
+    enablerepo: epel
+  when: ansible_distribution == 'CentOS'
