@@ -1,7 +1,0 @@
----
-
-- hosts: masters[0]
-
-  roles:
-  - certificate-renewal
-  - certificate-copy

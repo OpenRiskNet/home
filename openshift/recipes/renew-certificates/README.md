@@ -1,18 +1,17 @@
 # Certificated Renewal
 An ansible playbook and roles that can be used to renew
-Let's Encrypt/[Certbot]-like SSL certificates in amn OpenShift cluster.
+Let's Encrypt/[Certbot]-like SSL certificates in an OpenShift cluster.
 
 The steps involve...
 
 -   Renewing certificates on the master node
--   Moving them to the bastion
--   Executing the OpenShift redeploy certificates playbook
+-   Fetching them back to the bastion
 
 ## Running the playbook
 
 **UNDER CONSTRUCTION**
 
-Notes wil be added once it's been written and tested!
+Notes will be added once it's been tested!
 
 ---
 
