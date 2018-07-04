@@ -4,8 +4,4 @@
 
   roles:
   - certificate-renewal
-
-- hosts: localhost
-
-  roles:
   - certificate-copy

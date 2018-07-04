@@ -1,0 +1,4 @@
+---
+
+certbot_domain: prod.openrisknet.org
+certbot_src_dir: "/etc/letsencrypt/live/{{ certbot_domain }}"
