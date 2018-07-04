@@ -1,0 +1,8 @@
+---
+
+# Install Certbot
+
+- name: Install Certbot
+  package:
+    name: "{{ certbot_package }}"
+    state: present

@@ -1,0 +1,3 @@
+---
+
+certbnot_renew_command: "certbot renew"

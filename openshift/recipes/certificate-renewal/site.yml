@@ -1,0 +1,6 @@
+---
+
+- hosts: master[0]
+
+  roles:
+  - certificate-renewal

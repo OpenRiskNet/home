@@ -1,0 +1,4 @@
+---
+
+- name: Renew an existing certificate
+  shell: "{{ certbot_renew_command }}"
