@@ -2,13 +2,15 @@
 
 # Copy certs (if they were renewed)
 
-vars:
-#  local_cert_dir: "{{ hostvars[groups['masters'][0]].openshift_master_named_certificates[0].certfile.split('/fullchain')[0] }}"
-  local_cwert_dir: /home/centos/abc
-
 - name: Copy certificates (from remote)
   fetch:
-    src: "{{ certbot_src_dir }}"
-    dest: "{{ local_cert_dir }}"
+    src: "{{ certbot_src_dir }}/{{ item }}"
+    dest: "{{ local_cert_dir }}/"
     flat: true
-#  when: certificates_renewed is defined
+  become: true
+  loop:
+  - cert.pem
+  - chain.pem
+  - fullchain.pem
+  - privkey.pem
+  when: certificates_renewed is defined
