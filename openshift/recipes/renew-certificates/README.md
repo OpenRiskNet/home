@@ -1,17 +1,30 @@
-# Certificated Renewal
+# Certificate Renewal
 An ansible playbook and roles that can be used to renew
 Let's Encrypt/[Certbot]-like SSL certificates in an OpenShift cluster.
 
 The steps involve...
 
--   Renewing certificates on the master node
--   Fetching them back to the bastion
+-   Renewing certificates using the first master node
+-   Fetching them back to the bastion ready for deployment
+-   Running the OpenShift certificate redeployment playbook
 
-## Running the playbook
+## Running the playbook (production system)
+With this repository checked out on the bastion to `~/github/openrisknet/home`
+(which would be normal if you've installed an OpenShift system using
+accompanying recipes) you should be able to renew and collect new
+certificates with the following command: -
 
-**UNDER CONSTRUCTION**
+    $ ansible-playbook -i site-prd/inventory \
+        github/openrisknet/home/openshift/recipes/certificate-renewal/site.yml
 
-Notes will be added once it's been tested!
+This will place the certificates in the directory indicated by the inventory.
+
+With this done you should then be able to run the OpenShift certificate
+deployment playbook, which for our 3.7 production deployment can be achieved
+with this play: -
+
+    $ ansible playbook -i site-prd/inventory \
+        github/openshift-ansible-release-3.7/playbooks/byo/openshift-cluster/redeploy-certificates.yml
 
 ---
 
