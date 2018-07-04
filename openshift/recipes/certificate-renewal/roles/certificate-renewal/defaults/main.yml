@@ -1,3 +1,6 @@
 ---
 
-certbnot_renew_command: "certbot renew"
+certbot_domain: prod.openrisknet.org
+certbot_email: tdudgeon@informaticsmatters.com
+certbot_renew_command: "certbot certonly -n --standalone -d {{ certbot_domain }} --agree-tos --email {{ certbot_email }}"
+certbot_cert_dir: "/etc/letsencrypt/live/{{ certbot_domain }}"

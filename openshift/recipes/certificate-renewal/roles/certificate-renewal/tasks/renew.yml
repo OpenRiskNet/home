@@ -1,4 +1,22 @@
 ---
 
+# Try to renew the certificates (typically using certbot's certonly option).
+# To determine whether certificates have been renewed we need to check the
+# stdout of the command. If certificates were not renewed you'll see something
+# like this in the output stream...
+#
+#   Cert not yet due for renewal
+#
+# And, if successful you should see something like: -
+#
+#   Congratulations!
+
 - name: Renew an existing certificate
   shell: "{{ certbot_renew_command }}"
+  register: certbot_result
+  become: true
+
+- name: Set certificate renewal fact
+  set_fact:
+    certificates_renewed: true
+  when: '"Congratulations" in certbot_result.stdout'

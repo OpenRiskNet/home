@@ -1,4 +1,10 @@
 ---
 
+# A certbot/let's encrypt renewal playbook.
+# This should only result in actions when the
+# certificate is nearing its expiry but it
+# does also take care of ensuring certbot is present.
+
 - import_tasks: include-vars.yml
 - import_tasks: install-certbot.yml
+- import_tasks: renew.yml
