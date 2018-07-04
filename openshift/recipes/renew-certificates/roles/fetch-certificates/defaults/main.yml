@@ -1,6 +1,6 @@
 ---
 
-certbot_domain: prod.openrisknet.org
+certbot_domain: "{{ hostvars[groups['masters'][0]].openshift_master_cluster_public_hostname }}"
 certbot_src_dir: "/etc/letsencrypt/live/{{ certbot_domain }}"
 
 local_cert_dir: "{{ hostvars[groups['masters'][0]].openshift_master_named_certificates[0].certfile.split('/fullchain')[0] }}"
