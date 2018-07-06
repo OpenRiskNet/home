@@ -11,11 +11,13 @@ The steps involve...
 ## Running the playbook (production system)
 With this repository checked out on the bastion to `~/github/openrisknet/home`
 (which would be normal if you've installed an OpenShift system using
-accompanying recipes) you should be able to renew and collect new
-certificates with the following command: -
+accompanying recipes).
+ 
+You should be able to renew and collect new certificates with the following
+command, normally executed from the `site-prd` directory: -
 
-    $ ansible-playbook -i site-prd/inventory \
-        github/openrisknet/home/openshift/recipes/certificate-renewal/site.yml
+    $ ansible-playbook -i inventory \
+        ~/github/openrisknet/home/openshift/recipes/renew-certificates/site.yml
 
 This will place the certificates in the directory indicated by the inventory.
 
@@ -23,8 +25,8 @@ With this done you should then be able to run the OpenShift certificate
 deployment playbook, which for our 3.7 production deployment can be achieved
 with this play: -
 
-    $ ansible playbook -i site-prd/inventory \
-        github/openshift-ansible-release-3.7/playbooks/byo/openshift-cluster/redeploy-certificates.yml
+    $ ansible-playbook -i inventory \
+        ~/github/openshift-ansible-release-3.7/playbooks/byo/openshift-cluster/redeploy-certificates.yml
 
 ---
 
