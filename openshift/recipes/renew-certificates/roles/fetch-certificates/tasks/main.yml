@@ -1,6 +1,6 @@
 ---
 
-# A certbot/let's encrypt certificate copying play.
-# Copies certificates from the master to the bastion (localhost)
+# A certbot/let's encrypt certificate fetch play.
+# Fetches certificates from the master to the bastion (localhost)
 
-- import_tasks: copy-certs.yml
+- import_tasks: fetch-certs.yml

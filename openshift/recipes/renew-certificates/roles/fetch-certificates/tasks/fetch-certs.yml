@@ -1,8 +1,8 @@
 ---
 
-# Copy certs (if they were renewed)
+# Fetch certs (if they were renewed)
 
-- name: Copy certificates (from remote)
+- name: Fetch certificates (from remote)
   fetch:
     src: "{{ certbot_src_dir }}/{{ item }}"
     dest: "{{ local_cert_dir }}/"
