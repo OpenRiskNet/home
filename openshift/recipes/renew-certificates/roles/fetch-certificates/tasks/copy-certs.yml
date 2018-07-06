@@ -13,4 +13,5 @@
   - chain.pem
   - fullchain.pem
   - privkey.pem
-  when: certificates_renewed is defined
+# abc (6-jul) : Add suitable variable
+#  when: certificates_renewed is defined
