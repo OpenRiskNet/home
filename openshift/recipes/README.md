@@ -32,6 +32,7 @@ Then learn about deploying applications
 1. [Tomcat App using Keycloak](https://github.com/OpenRiskNet/example-java-servlet/blob/master/KEYCLOAK.md) - deploy the example servlet using Keycloak for SSO
 1. [TLS for routes](certificates/README.md) - securing routes using TLS/HTTPS
 1. [Renewal of Certificates](renew-certificates/README.md) - an ansible play for renewing certificates
+1. [Postgres backup and recovery](postgres-backup-and-recovery/README.md) - images and templates for automated backup and recovery of a PostgresQL server
 
 Then learn about CI/CD
 
