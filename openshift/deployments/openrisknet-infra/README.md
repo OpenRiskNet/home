@@ -52,7 +52,7 @@ oc login -u $OC_ADMIN
 The keycloak deployment is based on that found in the 
 [jboss-openshift](https://github.com/jboss-openshift/application-templates/tree/master/sso)
 application templates. Currently it uses Red Hat SSO 7.2 which is based on Keycloak version 3.4.3.
-See [here](https://access.redhat.com/articles/23428810) for more info on versions.
+See [here](https://access.redhat.com/articles/2342881) for more info on versions.
 
 As that `admin` user you must deploy the xpaas image streams to your OpenShift environment:
 
