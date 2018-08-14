@@ -72,7 +72,7 @@ An alternative template (`"openshift/django-psql-persistent"`) is available.
 Unless you're running minishift, you will need to have arranged for some
 persistent volumes on your server.
 
-See the [Creating Persistent Volumes](creating-persistent-volumes.md) recipe.
+See the [Creating Persistent Volumes](creating-persistent-volumes-nfs.md) recipe.
 
 ## Writing templates
 

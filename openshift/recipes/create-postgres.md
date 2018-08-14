@@ -14,7 +14,7 @@ If you haven't created a persistent volume ensure that your
 OpenShift server has soem sort of back-end supported (like NFS) and,
 if you need to, create a suitable volume.
 
-See the [Creating Persistent Volumes](creating-persistent-volumes.md) recipe.
+See the [Creating Persistent Volumes](creating-persistent-volumes-nfs.md) recipe.
     
 ## Login and create a project
 You need a project. If you want to work directly from the example,
