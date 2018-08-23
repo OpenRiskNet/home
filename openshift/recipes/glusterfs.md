@@ -14,7 +14,7 @@ Identify the hekati pod in the glusterfs project.
 oc rsh <hekati-pod>
 ```
 
-## Credentials
+### Credentials
 
 You need to set the `HEKETI_CLI_USER` and `HEKETI_CLI_KEY` environment variables.
 Key can be found in the `heketi-storage-config-secret` secret.
@@ -29,9 +29,9 @@ In the hekati pod:
 ...
 ```
 
-## Operations
+### Operations
 
-### Listing nodes
+#### Listing nodes
 
 ```
 # heketi-cli node list
@@ -40,14 +40,14 @@ Id:60459e8e6ddc6043a9b6abb16d08c94c	Cluster:5597e74a79ccb9cef776af8d55af2366
 Id:83ebf02c6cd32577eb3cde36d2b48e26	Cluster:5597e74a79ccb9cef776af8d55af2366
 ```
 
-### Listing topology
+#### Listing topology
 
 ```
 # heketi-cli topology info
 ...
 ```
 
-### Listing volumes
+#### Listing volumes
 ```
 # heketi-cli volume list
 ...
@@ -55,4 +55,11 @@ Id:83ebf02c6cd32577eb3cde36d2b48e26	Cluster:5597e74a79ccb9cef776af8d55af2366
 ...
 ```
 
+## Gluster
+
+To look directly at gluster:
+
+1. `oc rsh` to a gluster pod
+2. run a gluster cli command. e.g. `gluster volume list`
+3. `gluster help` lists the available commands 
 
