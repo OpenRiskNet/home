@@ -6,6 +6,10 @@
 
 [some examples](https://access.redhat.com/documentation/en-us/reference_architectures/2017/html/deploying_openshift_container_platform_3.5_on_amazon_web_services/persistent_storage) (this is for AWS but the info is useful)
 
+Info on Ansible playbooks:
+* https://github.com/openshift/openshift-ansible/tree/master/roles/openshift_storage_glusterfs
+* https://github.com/openshift/openshift-ansible/blob/master/playbooks/openshift-glusterfs/README.md
+
 ## Using Hekati
 
 Identify the hekati pod in the glusterfs project.
