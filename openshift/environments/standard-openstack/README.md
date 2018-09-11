@@ -504,6 +504,8 @@ _Note_: When installing looging using cinder volumes you might need to adjust th
 2. do a `docker exec -it -u 0:0 <container> bash` into the elasticsearch container
 3. `chmod g+w /elasticsearch/persistent`
 
+This issue is describe [here](https://github.com/openshift/openshift-ansible/issues/8456).
+
 ### Prometheus
 
 We are still establishing the best approach to installing Prometheus. 
