@@ -499,6 +499,11 @@ ansible-playbook -i inventory ~/openshift-ansible/playbooks/byo/openshift-cluste
 ansible-playbook -i inventory ~/openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml
 ```
 
+_Note_: When installing looging using cinder volumes you might need to adjust the permissions on the elasticsearch volume.
+1. ssh to the node where the elasticsearch pod is running
+2. do a `docker exec -it -u 0:0 <container> bash` into the elasticsearch container
+3. `chmod g+w /elasticsearch/persistent`
+
 ### Prometheus
 
 We are still establishing the best approach to installing Prometheus. 
