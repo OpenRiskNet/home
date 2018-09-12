@@ -17,7 +17,7 @@ labels:
 parameters:
 
 - name: IMAGE_TAG
-  value: orn-v2
+  value: orn-v1
 
 - name: ROUTES_BASENAME
   value: prod.openrisknet.org
