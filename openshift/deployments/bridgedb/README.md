@@ -1,4 +1,7 @@
-BridgeDb service to allow mapping gene and protein identifiers.
+BridgeDb service to allow mapping gene and protein identifiers. 
+
+There will be multiple versions of this docker image:
+Version 2 (tag: orn-v2) contains identifier mappings for Homo sapiens, Mus musculus and Rattus norvegicus, as well as metabolite identifier mappings.
 
 ## Deploying
 
