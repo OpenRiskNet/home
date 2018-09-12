@@ -6,13 +6,13 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: bridgedb
+  name: bridgedb-full
   annotations:
     description: BridgeDB
     tags: bridge
 labels:
-  template: bridgedb
-  app: bridgedb
+  template: bridgedb-full
+  app: bridgedb-full
 
 parameters:
 
@@ -31,19 +31,19 @@ objects:
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
-    name: bridgedb
+    name: bridgedb-full
   spec:
     replicas: 1
     selector:
-      name: bridgedb
+      name: bridgedb-full
     template:
       metadata:
         labels:
-          name: bridgedb
+          name: bridgedb-full
       spec:
         containers:
         - image: bigcatum/bridgedb:${IMAGE_TAG}
-          name: bridgedb
+          name: bridgedb-full
           ports:
           - containerPort: 8080
           - containerPort: 8183
@@ -51,53 +51,53 @@ objects:
 - kind: Service
   apiVersion: v1
   metadata:
-    name: bridgedb-app
+    name: bridgedb-full-app
   spec:
     ports:
-    - name: bridgedb
+    - name: bridgedb-full
       port: 8183
       targetPort: 8183
     selector:
-      name: bridgedb
+      name: bridgedb-full
 
 - kind: Service
   apiVersion: v1
   metadata:
-    name: bridgedb-swagger
+    name: bridgedb-full-swagger
   spec:
     ports:
-    - name: swagger
+    - name: swagger-full
       port: 8080
       targetPort: 8080
     selector:
-      name: bridgedb
+      name: bridgedb-full
 
 
 - kind: Route
   apiVersion: v1
   metadata:
-    name: bridgedb-app
+    name: bridgedb-full-app
     annotations:
       # Note: Set to false to avoid exhausting certificate generation request quota.
       # Change this to true when you are ready for secure the route with TLS.
       kubernetes.io/tls-acme: 'false'
   spec:
-    host: bridgedb-app.${ROUTES_BASENAME}
+    host: bridgedb-full-app.${ROUTES_BASENAME}
     to:
       kind: Service
-      name: bridgedb-app
+      name: bridgedb-full-app
 
 - kind: Route
   apiVersion: v1
   metadata:
-    name: bridgedb-swagger
+    name: bridgedb-full-swagger
     annotations:
       # Note: Set to false to avoid exhausting certificate generation request quota.
       # Change this to true when you are ready for secure the route with TLS.
       kubernetes.io/tls-acme: 'false'
   spec:
-    host: bridgedb-swagger.${ROUTES_BASENAME}
+    host: bridgedb-full-swagger.${ROUTES_BASENAME}
     path: /swagger/
     to:
       kind: Service
-      name: bridgedb-swagger
+      name: bridgedb-full-swagger
