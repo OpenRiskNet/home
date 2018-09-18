@@ -41,7 +41,7 @@ objects:
           name: enanomapper
       spec:
         containers:
-        - image: bigcatum/enannomapper:${IMAGE_TAGTOMCAT}
+        - image: bigcatum/enanomapper:${IMAGE_TAGTOMCAT}
           name: enanomapper-tomcat
           ports:
           - containerPort: 8080
