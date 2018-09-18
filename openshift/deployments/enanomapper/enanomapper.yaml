@@ -62,17 +62,6 @@ objects:
     selector:
       name: enanomapper
 
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: enanomapper-mariadb
-  spec:
-    ports:
-    - name: enanomapper-mariadb
-      port: 3306
-      targetPort: 3306
-    selector:
-      name: enanomapper
 
 
 - kind: Route
