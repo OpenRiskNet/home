@@ -54,7 +54,7 @@ objects:
     name: bridgedbfull-app
   spec:
     ports:
-    - name: bridgedbfull
+    - name: bridgedbfull-app
       port: 8183
       targetPort: 8183
     selector:
@@ -66,7 +66,7 @@ objects:
     name: bridgedbfull-swagger
   spec:
     ports:
-    - name: swagger
+    - name: bridgedbfull-swagger
       port: 8080
       targetPort: 8080
     selector:
@@ -96,7 +96,7 @@ objects:
       # Change this to true when you are ready for secure the route with TLS.
       kubernetes.io/tls-acme: 'false'
   spec:
-    host: bridgedbfull-swagger.${ROUTES_BASENAME}
+    host: bridgedbfull.${ROUTES_BASENAME}
     path: /swagger/
     to:
       kind: Service
