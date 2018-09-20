@@ -61,8 +61,17 @@ objects:
       targetPort: 8080
     selector:
       name: enanomapper
-
-
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: enanomapper-mariadb
+  spec:
+    ports:
+    - name: enanomapper-mariadb
+      port: 3306
+      targetPort: 3306
+    selector:
+      name: enanomapper
 
 - kind: Route
   apiVersion: v1
@@ -73,10 +82,23 @@ objects:
       # Change this to true when you are ready for secure the route with TLS.
       kubernetes.io/tls-acme: 'false'
   spec:
-    host: enanomapper.${ROUTES_BASENAME}
+    host: nanomaterialdb-test.${ROUTES_BASENAME}
     path: /ambit/
     to:
       kind: Service
       name: enanomapper-tomcat
-
+      
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: enanomapper-mariadb
+    annotations:
+      # Note: Set to false to avoid exhausting certificate generation request quota.
+      # Change this to true when you are ready for secure the route with TLS.
+      kubernetes.io/tls-acme: 'false'
+  spec:
+    host: enanomapper-mariadb.${ROUTES_BASENAME}
+    to:
+      kind: Service
+      name: enanomapper-mariadb
 
