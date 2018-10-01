@@ -11,6 +11,14 @@
 #
 #   Congratulations!
 
+# In order for this to work with the more recent certbot I believe we
+# need to suspend the master's API service during the renewal...
+
+- name: Stop Master API service
+  service:
+    name: origin-master-api.service
+    state: stopped
+
 - name: Renew an existing certificate
   shell: "{{ certbot_renew_command }}"
   register: certbot_result
@@ -20,3 +28,9 @@
   set_fact:
     certificates_renewed: true
   when: '"Congratulations" in certbot_result.stdout'
+
+- name: Start Master API service
+  service:
+    name: origin-master-api.service
+    state: started
+

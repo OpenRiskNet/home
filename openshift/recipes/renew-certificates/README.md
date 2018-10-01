@@ -1,5 +1,5 @@
 # Certificate Renewal
-An ansible playbook and roles for a CentOS deployment that can be used to renew
+An [ansible] playbook and roles for a CentOS deployment that can be used to renew
 Let's Encrypt/[Certbot]-like SSL certificates in an OpenShift cluster.
 The playbook contains two [roles] that involve...
 
@@ -30,6 +30,9 @@ files and deploy them to the master.
 An execution example follows.
 
 ### Running the playbook (production system)
+You need to make sure that you have ssh access to the master node form the
+bastion, an expectation of the renewal Ansible playbook.
+
 With this repository checked out on the bastion to `~/github/openrisknet/home`
 (which would be normal if you've installed an OpenShift system using
 accompanying recipes)...
