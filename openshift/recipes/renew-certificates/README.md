@@ -42,6 +42,11 @@ accompanying recipes)...
     own email address or are unsure which one is being used you can set
     your own value on the command line by adding
     `--extra-vars "certbot_email=blob@xyz.com"`.
+    
+>   As this renewal process requires the port used by the Master's API
+    service the API service is stopped by the playbook during the
+    certificate renewal, which typically lasts for about a minute or so,
+    depending on network performance. 
      
 ...you should be able to renew and fetch new certificates with the following
 playbook command, normally executed from the `site-prd` directory: -
@@ -59,7 +64,7 @@ with this play: -
 ---
 
 Alan Christie  
-July 2018
+October 2018
 
 [ansible]: https://docs.ansible.com
 [roles]: https://docs.ansible.com/ansible/2.5/user_guide/playbooks_reuse_roles.html
