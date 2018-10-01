@@ -132,7 +132,6 @@ os.environ['OAUTH2_TOKEN_URL'] = 'https://sso.prod.openrisknet.org/auth/realms/o
 os.environ['OAUTH2_AUTHORIZE_URL'] = 'https://sso.prod.openrisknet.org/auth/realms/openrisknet/protocol/openid-connect/auth' 
 os.environ['OAUTH2_USERDATA_URL'] = 'https://sso.prod.openrisknet.org/auth/realms/openrisknet/protocol/openid-connect/userinfo'
 os.environ['OAUTH2_TLS_VERIFY'] = '1'
-os.environ['OAUTH2_USERDATA_METHOD'] = 'POST'
 os.environ['OAUTH2_USERNAME_KEY'] = 'preferred_username'
 
 from oauthenticator.generic import GenericOAuthenticator
