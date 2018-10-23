@@ -22,6 +22,8 @@ parameters:
 - name: ROUTES_BASENAME
   value: prod.openrisknet.org
 
+
+
 # -----------------------------------------------------------------------------
 # BridgeDB
 # -----------------------------------------------------------------------------
@@ -47,6 +49,11 @@ objects:
           ports:
           - containerPort: 8080
           - containerPort: 8183
+          resources:
+            requests:
+              memory: 2000M
+            limits:
+              memory: 2500M
 
 - kind: Service
   apiVersion: v1
