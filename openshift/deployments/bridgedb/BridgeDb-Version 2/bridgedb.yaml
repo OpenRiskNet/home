@@ -14,6 +14,21 @@ labels:
   template: bridgedb
   app: bridgedb
 
+kind: Pod
+  apiVersion: v1
+  spec:
+    containers:
+    - image: bigcatum/bridgedb:${IMAGE_TAG}
+      name: bridgedb
+      resources:
+        requests:
+          cpu: 1000m
+          memory: 2000Mi
+        limits:
+          cpu: 1000m
+          memory: 2500Mi
+
+
 parameters:
 
 - name: IMAGE_TAG
@@ -49,19 +64,7 @@ objects:
           ports:
           - containerPort: 8080
           - containerPort: 8183
-- kind: Pod
-  apiVersion: v1
-  spec:
-    containers:
-    - image: bigcatum/bridgedb:${IMAGE_TAG}
-      name: bridgedb
-      resources:
-        requests:
-          cpu: 1000m
-          memory: 2000Mi
-        limits:
-          cpu: 1000m
-          memory: 2500Mi
+
 
 - kind: Service
   apiVersion: v1
