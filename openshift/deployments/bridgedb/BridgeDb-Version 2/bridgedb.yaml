@@ -51,9 +51,9 @@ objects:
           - containerPort: 8183
           resources:
             requests:
-              memory: 2000M
+              memory: 2000MiB
             limits:
-              memory: 2500M
+              memory: 2500MiB
 
 - kind: Service
   apiVersion: v1
