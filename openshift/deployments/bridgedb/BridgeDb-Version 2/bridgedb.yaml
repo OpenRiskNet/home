@@ -46,6 +46,7 @@ objects:
       spec:
         containers:
         - image: bigcatum/bridgedb:${IMAGE_TAG}
+          imagePullPolicy: IfNotPresent
           name: bridgedb
           ports:
           - containerPort: 8080
@@ -73,8 +74,8 @@ objects:
               cpu: 1000m
               memory: 2000Mi
             limits:
-              cpu: 1000m
-              memory: 2500Mi
+              cpu: 1500m
+              memory: 4000Mi
 
 - kind: Service
   apiVersion: v1
