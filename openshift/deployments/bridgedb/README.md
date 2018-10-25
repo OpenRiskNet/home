@@ -4,7 +4,7 @@ There will be multiple versions of this docker image:
 
 Version 1 (docker image tag: orn-v1) currently contains identifier mappings for Homo sapiens, Mus musculus and Rattus norvegicus, but will be updated to a full BridgeDb image with all identifier mapping files.
 
-Version 2 (tag: orn-v2) contains identifier mappings for Homo sapiens, Mus musculus and Rattus norvegicus, as well as metabolite identifier mappings. This will be the lighter version of the image with only the identifiers of the most used organisms.
+Version 2 (tag: orn-v2) contains identifier mappings for Homo sapiens, Mus musculus and Rattus norvegicus, as well as metabolite identifier mappings. This will be the lighter version of the image with only the identifiers of the most used organisms. It also has configurations for resource limits, and readiness and liveness probes.
 
 ## Deploying
 
