@@ -9,3 +9,4 @@ It is essentially a _knowledge base_ of hints, tips and tricks.
 - [Synchronising Service Startup](synchronising-service-startup.md)
 - [Logging in using your GitHub account](github-login.md)
 - [Pods not terminating due to hanging glusterfs mounts](hanging-gluster-mounts.md)
+- [Defining Readiness and Liveness probes](container-probes.md)
