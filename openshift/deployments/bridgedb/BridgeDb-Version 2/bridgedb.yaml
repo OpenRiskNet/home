@@ -14,6 +14,7 @@ labels:
   template: bridgedb
   app: bridgedb
 
+
 parameters:
 
 - name: IMAGE_TAG
@@ -21,6 +22,8 @@ parameters:
 
 - name: ROUTES_BASENAME
   value: prod.openrisknet.org
+
+
 
 # -----------------------------------------------------------------------------
 # BridgeDB
@@ -47,6 +50,31 @@ objects:
           ports:
           - containerPort: 8080
           - containerPort: 8183
+          readinessProbe:
+            failureTreshold: 4
+            httpGet:
+              path: /swagger/
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 1
+          livenessProbe:
+            failureTreshold: 4
+            httpGet:
+              path: /swagger/
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 2000Mi
+            limits:
+              cpu: 1000m
+              memory: 2500Mi
 
 - kind: Service
   apiVersion: v1
@@ -82,7 +110,7 @@ objects:
       # Change this to true when you are ready for secure the route with TLS.
       kubernetes.io/tls-acme: 'false'
   spec:
-    host: bridgedb-app.${ROUTES_BASENAME}
+    host: bridgedb.${ROUTES_BASENAME}
     to:
       kind: Service
       name: bridgedb-app

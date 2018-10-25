@@ -21,7 +21,7 @@ oc rsh <hekati-pod>
 ### Credentials
 
 You need to set the `HEKETI_CLI_USER` and `HEKETI_CLI_KEY` environment variables.
-Key can be found in the `heketi-storage-config-secret` secret.
+Key can be found in the `heketi-storage-admin-secret` secret.
 
 In the hekati pod:
 
