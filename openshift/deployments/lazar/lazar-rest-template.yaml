@@ -70,6 +70,24 @@ objects:
           securityContext:
             capabilities: {}
             privileged: false
+          livenessProbe:
+            exec:
+              command:
+                - ls
+                - /home/ist
+            failureTreshold: 1
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 4
+          readinessProbe:
+            httpGet:
+              path: "/"
+              port: 8088
+              scheme: "HTTP"
+            failureTreshold: 1
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 4
         restartPolicy: Always
         dnsPolicy: ClusterFirst
   status: {}
@@ -106,4 +124,17 @@ objects:
       name: lazar-rest
     tls:
       termination: edge
+      insecureEdgeTerminationPolicy: Redirect
   status: {}
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: lazar-glusterfs-storage
+    namespace: lazar
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: glusterfs-storage
