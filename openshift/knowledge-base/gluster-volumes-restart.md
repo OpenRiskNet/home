@@ -35,4 +35,12 @@ sh-4.2# gluster volume start vol_d9fd3e06266e04715b5ec105b9028a78 force
 volume start: vol_d9fd3e06266e04715b5ec105b9028a78: success
 ```
 
-Note: someetimes not all 3 bricks start. Need to investigate why.
+Note: sometimes not all 3 bricks start. When this happens stopping and then starting the volume seems to work, but leaves the volume stopped for a short period:
+
+```
+sh-4.2# gluster volume stop vol_d75ef3e83708c753f24faa4d3effaa8f
+Stopping volume will make its data inaccessible. Do you want to continue? (y/n) y
+volume stop: vol_d75ef3e83708c753f24faa4d3effaa8f: success
+sh-4.2# gluster volume start vol_d75ef3e83708c753f24faa4d3effaa8f
+volume start: vol_d75ef3e83708c753f24faa4d3effaa8f: success
+```
