@@ -22,7 +22,7 @@ The README.md in each project gives details of how to proceed. Typically there w
 Undeploying will typically not remove PVs and PVCs to avoid the risk of losing critical data, so you will need to manage those 
 manually.
 
-For a generic guide to getting your deployments production ready look [here](ProductionReployments.md).
+For a generic guide to getting your deployments production ready look [here](ProductionDeploymentGuide.md).
 
 ## Setup
 
