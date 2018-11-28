@@ -1,0 +1,82 @@
+---
+
+# A backup CronJob using the InformaticsMatters backup image at
+# https://github.com/InformaticsMatters/bandr where you can
+# review the documentation in sql-backup/backup.py
+# and sql-recovery/recovery.py
+#
+# oc process -f backup.yaml -p PGADMINPASS=<password> | oc create -f -
+# oc delete cronjob --selector template=jupyterhub-db-backup
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: jupyterhub-db-postgresql-backup
+  annotations:
+    description: Jupyter PostgreSQL Backup Template
+    tags: jupyter,postgres,backup
+labels:
+  template: jupyterhub-db-backup
+  app: jupyterhub-db-backup
+
+parameters:
+
+  - name: PGHOST
+    value: jupyterhub-db
+  - name: PGUSER
+    value: postgres
+  - name: PGADMINPASS
+    required: true
+
+  - name: BACKUP_COUNT
+    value: '4'
+  - name: BACKUP_IMAGE
+    value: 'informaticsmatters/sql-backup:stable'
+
+objects:
+
+  # The HOURLY CronJob (running at 00:07 each day).
+  # This job will create new postgres backups
+  # Keeping the last BACKUP_COUNT backups in /backup/hourly
+  - kind: CronJob
+    apiVersion: batch/v2alpha1
+    metadata:
+      name: jupyterhub-db-backup-hourly
+    spec:
+      schedule: '7 0 * * *'
+      startingDeadlineSeconds: 180
+      concurrencyPolicy: Forbid
+      jobTemplate:
+        spec:
+          template:
+            metadata:
+              labels:
+                name: jupyterhub-db-backup
+            spec:
+              # Application containers
+              containers:
+                - image: ${BACKUP_IMAGE}
+                  name: jupyterhub-db-backup
+                  imagePullPolicy: Always
+                  volumeMounts:
+                    - name: backup-data
+                      mountPath: /backup
+
+                  env:
+                    - name: BACKUP_TYPE
+                      value: hourly
+                    - name: BACKUP_COUNT
+                      value: ${BACKUP_COUNT}
+
+                    - name: PGHOST
+                      value: ${PGHOST}
+                    - name: PGUSER
+                      value: ${PGUSER}
+                    - name: PGADMINPASS
+                      value: ${PGADMINPASS}
+
+              volumes:
+                - name: backup-data
+                  persistentVolumeClaim:
+                    claimName: jupyterhub-db-backup-claim
+              restartPolicy: Never

@@ -1,0 +1,74 @@
+---
+
+# Example PostgreSQL database recovery deployments.
+#
+# Used in conjunction with a backup this `Job` template
+# illustrates how to recover a backup against
+# a chosen database.
+#
+# oc process -f recovery.yaml -p PGADMINPASS=<password> | oc create -f -
+# oc delete job --selector template=jupyterhub-db-recovery
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: jupyterhub-db-postgresql-recovery
+  annotations:
+    description: PostgreSQL Revovery Template
+    tags: postgres,backup,recovery
+labels:
+  template: jupyterhub-db-recovery
+  app: jupyterhub-db-recovery
+
+parameters:
+
+  - name: FROM_BACKUP
+    value: 'latest'
+
+  - name: PG_HOST
+    value: jupyterhub-db
+  - name: PG_USER
+    value: postgres
+  - name: PG_PASS
+    required: true
+
+  - name: RECOVERY_IMAGE
+    value: 'informaticsmatters/sql-recovery:stable'
+
+objects:
+
+  - kind: Job
+    apiVersion: batch/v1
+    metadata:
+      name: jupyterhub-db-recovery
+    spec:
+      replicas: 1
+      selector:
+        name: jupyterhub-db-recovery
+      template:
+        metadata:
+          labels:
+            name: jupyterhub-db-recovery
+        spec:
+          containers:
+            - image: ${RECOVERY_IMAGE}
+              name: jupyterhub-db-recovery
+              volumeMounts:
+                - name: backup-data
+                  mountPath: /backup
+
+              env:
+                - name: FROM_BACKUP
+                  value: ${FROM_BACKUP}
+                - name: PGHOST
+                  value: ${PG_HOST}
+                - name: PGUSER
+                  value: ${PG_USER}
+                - name: PGADMINPASS
+                  value: ${PG_PASS}
+
+          volumes:
+            - name: backup-data
+              persistentVolumeClaim:
+                claimName: jupyterhub-db-backup-claim
+          restartPolicy: Never
