@@ -61,10 +61,15 @@ with this play: -
     $ ansible-playbook -i inventory \
         ~/github/openshift-ansible-release-3.7/playbooks/byo/openshift-cluster/redeploy-certificates.yml
 
+In OpenShift 3.9 the certificate redeployment playbook has moved. In 3.9 you'd run: -
+
+    $ ansible-playbook -i inventory \
+        ~/github/openshift-ansible-release-3.7/playbooks/redeploy-certificates.yml
+
 ---
 
 Alan Christie  
-October 2018
+November 2018
 
 [ansible]: https://docs.ansible.com
 [roles]: https://docs.ansible.com/ansible/2.5/user_guide/playbooks_reuse_roles.html
