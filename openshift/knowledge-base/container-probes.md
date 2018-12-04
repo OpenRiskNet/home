@@ -1,6 +1,6 @@
 # OpenShift Container Probes
 OpenShift provide a number of options to detect and handle unhealthy
-containers. Two of these [health] mechanisms are handled by the
+containers. Two of these health mechanisms are handled by the
 **Readiness Probe** and the **Liveness Probe**.
 
 They are well documented on the OpenShift [Application Health] page so here
