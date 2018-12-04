@@ -38,8 +38,8 @@ objects:
     name: lazar-rest
   spec:
     strategy:
-      type: Recreate
-      resources: {}
+      rollingUpdate:
+        maxUnavailable: 0
     triggers:
       - type: ConfigChange
       - imageChangeParams:
@@ -85,7 +85,7 @@ objects:
               port: 8088
               scheme: "HTTP"
             failureTreshold: 1
-            initialDelaySeconds: 60
+            initialDelaySeconds: 120
             periodSeconds: 30
             timeoutSeconds: 4
         restartPolicy: Always
