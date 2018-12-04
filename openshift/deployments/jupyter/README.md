@@ -176,7 +176,6 @@ Deploy it using:
 oc new-app --template jupyterhub-deployer --param JUPYTERHUB_CONFIG="`cat jupyterhub_config.py`"
 ```
 
-
 ## Delete
 Delete the deployment (imagestreams will remain):
 ```
@@ -187,3 +186,70 @@ Or delete everything:
 ```
 oc delete project jupyter
 ```
+
+## Database backups
+These example templates provide backups of your JupyterHub database
+using the Informatics Matters backup container image.
+
+>   For the following recipe to work the JupyterHub database must be configured
+    to permit remote access to the admin account, i.e. a password must be
+    provided in the database Pod's `POSTGRESQL_ADMIN_PASSWORD` environment
+    variable. If a password is not set you can run `psql -U postgres` from
+    within the Pod and change the password with the `\password` meta command
+    of psql.
+
+-   [PVC](backup-pvc.yaml)
+-   [CronJob](backup.yaml)
+
+The backup image provides rich control of actions
+through a number of container environment variables.
+
+The backup essentially creates a compressed SQL file from the
+result of running a `pg_dumpall` command.
+
+The example template has a backup schedule that results in the
+backup running at **00:07** each day whilst maintaining a history of
+**4** of the most recent backups.
+
+>   If you want to change the total number of backups that are held set the
+    `BACKUP_COUNT` parameter, with `-p BACKUP_COUNT=<n>`.
+
+To deploy the backup, using an OpenShift login on the Jupyter project,
+first create the storage and then start the CronJob. You will need
+the admin password of the database and (optionally) the host and
+admin user (defaulted to `jupyterhub-db` and `jupyterhub` respectively).
+
+So, if the admin password is `xyz123` and you're using the default Jupyter
+database host service name and admin username you can deploy with the
+following sequence of commands, after logging onto OpenShift as an admin user:
+
+```
+oc project jupyter
+oc process -f backup-pvc.yaml | oc create -f -
+oc process -f backup.yaml -p PGADMINPASS=xyz123 | oc create -f -
+```
+
+Or, with a different host, the backup can be deployed with: -
+
+```
+oc process -f backup.yaml -p PGADMINPASS=xyz123 \
+    -p PGHOST=jupyterhub-db | oc create -f -
+```
+
+### Database recovery
+A recovery image can be launched using the example Job template.
+
+-   [Job](recovery.yaml)
+
+This template, which has the same database user parameters as the backup
+template, and attempts to recover the database from the latest backup can
+be run with the following command: -
+
+```
+oc process -f recovery.yaml -p PGADMINPASS=xyz123 \
+    -p PGHOST=jupyterhub-db | oc create -f -
+```
+
+>   It is important to ensure that the backup CronJob is not running
+    or will not run when you recover the database.
+ 

@@ -1,0 +1,42 @@
+---
+
+# An example gluster-like template for the backup (and recovery) volumes.
+#
+# oc process -f backup-pvc.yaml | oc create -f -
+# oc delete pvc --selector template=jupyterhub-backup-pvc
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: jupyter-backup-persistence-dynamic
+  annotations:
+    description: Jupyter Backup PVC using dynamic provisioning
+    tags: jupyterhub,pv,pvc
+labels:
+  template: jupyterhub-backup-pvc
+
+parameters:
+
+  - name: STORAGE_CLASS
+    value: glusterfs-storage
+
+  - name: BACKUP_VOLUME_NAME
+    value: jupyterhub-db-backup-claim
+  - name: BACKUP_VOLUME_SIZE
+    value: 5Gi
+
+objects:
+
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: ${BACKUP_VOLUME_NAME}
+      labels:
+        application: jupyterhub-db-backup
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: "${BACKUP_VOLUME_SIZE}"
+      storageClassName: ${STORAGE_CLASS}

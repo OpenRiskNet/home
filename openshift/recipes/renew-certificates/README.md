@@ -29,7 +29,7 @@ files and deploy them to the master.
 
 An execution example follows.
 
-### Running the playbook (production system)
+## Running the playbook (production system)
 You need to make sure that you have ssh access to the master node form the
 bastion, an expectation of the renewal Ansible playbook.
 
@@ -61,10 +61,23 @@ with this play: -
     $ ansible-playbook -i inventory \
         ~/github/openshift-ansible-release-3.7/playbooks/byo/openshift-cluster/redeploy-certificates.yml
 
+In OpenShift 3.9 the certificate redeployment playbook has moved. In 3.9 you'd run: -
+
+    $ ansible-playbook -i inventory \
+        ~/github/openshift-ansible-release-3.7/playbooks/redeploy-certificates.yml
+
+## Post deploy issues
+
+1.  It is possible that the KeyCloak/SSO Route (or any other *Redirected* Route)
+    may have been disrupted by the certificate deployment. If KeyCloak/SSO
+    is deployed check the route and, if the application is not responding,
+    review the solution suggested in the
+    [knowledge base](../../knowledge-base/post-certificate-renewal-problems.md) article.
+ 
 ---
 
 Alan Christie  
-October 2018
+November 2018
 
 [ansible]: https://docs.ansible.com
 [roles]: https://docs.ansible.com/ansible/2.5/user_guide/playbooks_reuse_roles.html
