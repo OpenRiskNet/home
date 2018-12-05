@@ -2,7 +2,6 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: orn-registry # e.g. myservice
-  namespace: openrisknet
 spec:
   revisionHistoryLimit: 5
   replicas: 1
@@ -29,6 +28,8 @@ spec:
           requests:
             memory: "200Mi"
             cpu: "20m"
+          limits:
+            memory: "1Gi"
         volumeMounts:
         - name: temp
           mountPath: /tmp
