@@ -2,9 +2,10 @@ kind: Route
 apiVersion: v1
 metadata:
   name: query-test
+  annotations:
+      kubernetes.io/tls-acme: 'true'
 spec:
-  # we omit the host to let the automatic route name generation kick in
-  #host:
+  host: query-test.prod.openrisknet.org
   to:
     kind: Service
     name: query-test
