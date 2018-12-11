@@ -1,0 +1,10 @@
+kind: Route
+apiVersion: v1
+metadata:
+  name: query-test
+spec:
+  # we omit the host to let the automatic route name generation kick in
+  #host:
+  to:
+    kind: Service
+    name: query-test
