@@ -64,7 +64,7 @@ with this play: -
 In OpenShift 3.9 the certificate redeployment playbook has moved. In 3.9 you'd run: -
 
     $ ansible-playbook -i inventory \
-        ~/github/openshift-ansible-release-3.7/playbooks/redeploy-certificates.yml
+        ~/github/openshift-ansible-release-3.9/playbooks/redeploy-certificates.yml
 
 ## Post deploy issues
 
