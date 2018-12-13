@@ -4,7 +4,7 @@ This recipe describes how to get the [CDK-Depict](https://github.com/cdk/depict)
 It assumes you already have an OpenShift environment running (see recipes for doing this with [minishift](minishift_local_machine.md)
 or on a [centos machine](openshift_centos.md)).
 
-CDK Depict is a small web service application for generating chemical structure depictions based on the Chemistry Development Kit (CDK) and is created by [John Mayfield](https://github.com/johnmay). We will use OpenShift to check it out from GitHub, run it's Maven build, and deploy it:
+CDK Depict is a small web service application for generating chemical structure depictions based on the [Chemistry Development Kit](https://cdk.github.io/) (CDK, doi:[10.1186/s13321-017-0220-4](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-017-0220-4)) and is created by [John Mayfield](https://github.com/johnmay). We will use OpenShift to check it out from GitHub, run it's Maven build, and deploy it:
 
 1. From the UI choose **Add to Project** -> **Browse Catalogue**, pick **Java** and then select **WildFly**
 2. Name it, e.g., "_cdkdepict_" and point to the github repository at: `https://github.com/cdk/depict.git`
