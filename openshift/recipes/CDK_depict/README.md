@@ -10,10 +10,11 @@ CDK Depict is a small web service application for generating chemical structure 
 2. Name it, e.g., "_cdkdepict_" and point to the github repository at: `https://github.com/cdk/depict.git`
 3. We need to tell Maven to only produce the `.war` file and no `.jar` file (becuase the wildfly template will try and fail on the `.jar` file). We also tell it to skip the tests.  
    So, show **advanced options**, and
+4. in **Context Dir** add `/cdkdepict-webapp` and
 4. under **Build Configuration** add an environment variable `MAVEN_ARGS` with the value `compile war:war -Popenshift -DskipTests -B`
 
    ![Set the maven args](mavenargs.png)
-5. In order to reach the service it is nice to configure the route to take us straight to the application. Under **Routing** set the path to `/cdkdepict-0.2`  
+5. In order to reach the service it is nice to configure the route to take us straight to the application. Under **Routing** set the path to ~~`/cdkdepict-0.2`~~ `cdkdepict-webapp-1.3`
 
    ![Fix routing](routing.png)
 5. Click "Create"
