@@ -14,7 +14,7 @@ CDK Depict is a small web service application for generating chemical structure 
 4. under **Build Configuration** add an environment variable `MAVEN_ARGS` with the value `compile war:war -Popenshift -DskipTests -B`
 
    ![Set the maven args](mavenargs.png)
-5. In order to reach the service it is nice to configure the route to take us straight to the application. Under **Routing** set the path to ~~`/cdkdepict-0.2`~~ `cdkdepict-webapp-1.3`
+5. In order to reach the service it is nice to configure the route to take us straight to the application. Under **Routing** set the path to ~~`/cdkdepict-0.2`~~ `/cdkdepict-webapp-1.3`
 
    ![Fix routing](routing.png)
 5. Click "Create"
