@@ -1,4 +1,8 @@
 # Certificate Renewal
+
+>   Caution: Depending on your OpenShift version the playbooks may be limited to
+    [Ansible] v2.5 or v2.4.
+
 An [ansible] playbook and roles for a CentOS deployment that can be used to renew
 Let's Encrypt/[Certbot]-like SSL certificates in an OpenShift cluster.
 The playbook contains two [roles] that involve...
