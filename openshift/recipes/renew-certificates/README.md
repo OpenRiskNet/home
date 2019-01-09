@@ -55,11 +55,13 @@ accompanying recipes)...
 ...you should be able to renew and fetch new certificates with the following
 playbook command, normally executed from the `site-prd` directory.
 
-If you have used the *orchestrator* to deploy the cluster you should execute
-the playbook from the appropriate *inventories* directory.
-For the **Development** site this might be
-`abc/orchestrator/openshift/inventories/hpc2n-37`. Once you have
-the correct inventory file run the playbook with the following command: -
+>   If you have used the *orchestrator* to deploy the cluster you should execute
+    the playbook from the appropriate *inventories* directory.
+    For the **Development** site this might be
+    `abc/orchestrator/openshift/inventories/hpc2n-37`.
+    
+Once you have the correct inventory file run the playbook with the following
+command: -
 
     $ ansible-playbook -i inventory \
         ~/github/openrisknet/home/openshift/recipes/renew-certificates/site.yml
