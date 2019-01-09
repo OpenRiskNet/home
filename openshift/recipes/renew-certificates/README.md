@@ -82,7 +82,7 @@ In OpenShift 3.9 the certificate redeployment playbook has moved. In 3.9 you'd r
 You can renew certificates for a specific node by placing the node hostname
 in a the `[new_nodes]` section of the inventory file. You should make sure
 the hostname is copied here, not moved. For example, to redeploy to
-`orn-node-004.openstacklocal` the `[new_nodes]` secttion will like like this:
+`orn-node-004.openstacklocal` the `[new_nodes]` section will look like this:
 
     [new_nodes]
     orn-node-004.openstacklocal
@@ -92,7 +92,7 @@ Then run the following playbook...
     $ ansible-playbook -v -i inventory \
         ~/github/openshift-ansible-release-3.7/playbooks/certificate_expiry/easy-mode.yaml
         
-Once done remove the host from the `[new_nodes]` section.
+Once done remove the chosen host from the `[new_nodes]` section.
 
 ## Generating a certificate expiry report
 The following playbook produces a report file in `/tmp/cert-expiry-report.json`: -
