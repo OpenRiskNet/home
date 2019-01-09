@@ -111,7 +111,7 @@ The following playbook produces a report file in `/tmp/cert-expiry-report.json`:
 ---
 
 Alan Christie  
-November 2018
+January 2019
 
 [ansible]: https://docs.ansible.com
 [roles]: https://docs.ansible.com/ansible/2.5/user_guide/playbooks_reuse_roles.html
