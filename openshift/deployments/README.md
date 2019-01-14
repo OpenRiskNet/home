@@ -43,6 +43,3 @@ It is suggested you deploy these projects in this order.
 1. acme-controller (recommended) - provides TLS support for routes using Let's Encrypt certificates
 1. openrisknet-infra (essential) - Core OpenRiskNet infrastructure that can used by any OpenRiskNet application. Currently includes PostgreSQL database and Keycloak Single Sign On (SSO)
 1. jenkins (optional) - Jenkins CI/CD system
-
-
-

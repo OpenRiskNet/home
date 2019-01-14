@@ -25,6 +25,33 @@ Avoid running as the root user unless that is absolutely necessary, and that sho
 
 AIM: your containers can be run without the need to modify the default security settings.
 
+## Create project-specific users
+
+Do not rely on an OpenShift `admin` user. where possible use `admin` to create
+a user that is specific to your deployment/project with limited privileges
+(See SCC below).
+
+A `developer` user may already be available, if so, and you'd prefer not
+to create your own user, use `developer` to create the project
+and deploy the application.
+
+## Create project-specific service accounts and SCCs
+
+Use project-specific _Service Accounts_. When pods are deployed they
+are deployed by built-in service account called `default`. This account
+has limited privileges, especially with regard to allowing containers to run
+that need to be run as root.
+
+Rather than adjusting the capabilities of the  default account is is
+recommended that (as `admin`) you create a service account
+for each project. You can then adjust the privilege of this account
+without disturbing the system-wide `default`.
+
+An OpenShift blog that describes **Service Accounts** and the related topic
+of **Security Context Constraints** (SCCs), which controls the actions that a
+pod can perform and what it has the ability to access, can be found
+in the article [Understanding Service Accounts and SCCs](https://blog.openshift.com/understanding-service-accounts-sccs/).
+
 ## Routes should run over HTTPS
 
 The expectation nowadays is that HTTPS should be used for all traffic and that all certificates should be signed by 
