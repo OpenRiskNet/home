@@ -1,7 +1,7 @@
 # Example of deploying Wordpress using MySQL
 
 This example is based on the one from 
-[here](https://github.com/openshift/origin/tree/master/examples/wordpress)
+[here](https://github.com/openshift/origin/tree/release-3.9/examples/wordpress)
 updated to apply to the type of environment we use, and simplified and improved
 a little. It provides an example of:
 
