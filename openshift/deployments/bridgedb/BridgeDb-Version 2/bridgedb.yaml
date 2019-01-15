@@ -2,31 +2,63 @@
 
 # oc process -f bridgedb.yaml | oc create -f -
 # oc delete all --selector template=bridgedb
+#
+# Alternatively, deploy into the Template Broker and install from there.
+# To deploy to the built-in 'openshift' namespace
+# (once logged in to the appropriate OpenShift server): -
+#
+# oc create -t bridgedb.yaml -n openshift
+#
+# From there you should be able to use *Add to Project* (from any project)
+# and navigate to the BridgeDB application using
+# *Select from Project -> openshift*.
 
 kind: Template
 apiVersion: v1
 metadata:
   name: bridgedb
   annotations:
-    description: BridgeDB
+    openshift.io/display-name: BridgeDB
+    openshift.io/provider-display-name: Marvin Martens
+    openshift.io/documentation-url: https://github.com/OpenRiskNet/home.git
+    openshift.io/support-url: https://github.com/OpenRiskNet/home/issues
+    iconClass: icon-openjdk
+    description: >
+      BridgeDb is a service to allow mapping gene and protein identifiers
     tags: bridge
 labels:
   template: bridgedb
   app: bridgedb
 
+# -----------------------------------------------------------------------------
+# Parameters
+# -----------------------------------------------------------------------------
 
 parameters:
 
 - name: IMAGE_TAG
+  description: >-
+    The BridgeDB container image tag
   value: orn-v2
 
 - name: ROUTES_BASENAME
+  description: >-
+    The base name of the service endpoint.
+    This is typically the PROD or DEV URL basename.
   value: prod.openrisknet.org
 
+- name: BRIDGEDB_PORT
+  description: >-
+    The HTTP port for the BridgeDB service
+  value: "8183"
 
+- name: SWAGGER_PORT
+  description: >-
+    The HTTP port for the BridgeDB swagger service
+  value: "8080"
 
 # -----------------------------------------------------------------------------
-# BridgeDB
+# Objects
 # -----------------------------------------------------------------------------
 
 objects: 
@@ -84,7 +116,7 @@ objects:
   spec:
     ports:
     - name: bridgedb-app
-      port: 8183
+      port: ${BRIDGEDB_PORT}
       targetPort: 8183
     selector:
       name: bridgedb
@@ -96,11 +128,10 @@ objects:
   spec:
     ports:
     - name: bridgedb-swagger
-      port: 8080
+      port: ${SWAGGER_PORT}
       targetPort: 8080
     selector:
       name: bridgedb
-
 
 - kind: Route
   apiVersion: v1
@@ -130,4 +161,3 @@ objects:
     to:
       kind: Service
       name: bridgedb-swagger
-
