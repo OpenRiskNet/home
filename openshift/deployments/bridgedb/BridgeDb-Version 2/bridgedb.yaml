@@ -7,7 +7,7 @@
 # To deploy to the built-in 'openshift' namespace
 # (once logged in to the appropriate OpenShift server): -
 #
-#   oc create -t bridgedb.yaml -n openshift
+# oc create -t bridgedb.yaml -n openshift
 #
 # From there you should be able to use *Add to Project* (from any project)
 # and navigate to the BridgeDB application using
@@ -44,7 +44,7 @@ parameters:
 - name: ROUTES_BASENAME
   description: >-
     The base name of the service endpoint.
-    This is typically the PROD or DEV UEL basename.
+    This is typically the PROD or DEV URL basename.
   value: prod.openrisknet.org
 
 - name: BRIDGEDB_PORT
