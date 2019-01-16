@@ -18,7 +18,7 @@ apiVersion: v1
 metadata:
   name: bridgedb
   annotations:
-    openshift.io/display-name: BridgeDb
+    openshift.io/display-name: BridgeDb identifier mapping
     openshift.io/provider-display-name: Maastricht University, Department of Bioinformatics - BiGCaT
     openshift.io/documentation-url: https://github.com/OpenRiskNet/home.git
     openshift.io/support-url: https://github.com/OpenRiskNet/home/issues
