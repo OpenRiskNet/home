@@ -24,7 +24,8 @@ metadata:
     openshift.io/support-url: https://github.com/OpenRiskNet/home/issues
     iconClass: icon-openjdk
     description: >
-      BridgeDb is a platform for database identifier mapping, both simple identifiers (e.g. CHEBI:1234) and universal resource identifiers (URIs, e.g. http://identifiers.org/chebi/CHEBI:1234). It is the workhorse of data integration and supports the essential FAIR aspect of interoperability, with recent efforts adding detailed provenance and meaning to mappings (“scientific lenses”). BridgeDb provides the glue between bioinformatics processing pipeline blocks, and has an OpenAPI-based interface. This service provides identifier mapping for metabolites and genes/proteins from Homo sapiens, Mus musculus and Rattus norvegicus.
+      BridgeDb (https://www.bridgedb.org/) is a platform for database identifier mapping, both simple identifiers (e.g. CHEBI:1234) and universal resource identifiers (URIs, e.g. http://identifiers.org/chebi/CHEBI:1234). It is the workhorse of data integration and supports the essential FAIR aspect of interoperability, with recent efforts adding detailed provenance and meaning to mappings (“scientific lenses”). BridgeDb provides the glue between bioinformatics processing pipeline blocks, and has an OpenAPI-based interface. 
+      Documentation on the Docker image is available on https://github.com/bridgedb/docker.This service provides identifier mapping for metabolites and genes/proteins from Homo sapiens, Mus musculus and Rattus norvegicus.
     tags: bridgedb
 labels:
   template: bridgedb
