@@ -57,6 +57,12 @@ with the following oc command: -
  
     oc create -f <template> -n openrisknet-applications
 
+>   Note - if you make modifications to your template you will need to remove
+    the old template from the TSB and install the new one. The TSB does
+    not know where your template came from so the installed template is
+    a static copy of a template. See the *Removing application templates*
+    section below. 
+   
 ## Installing an application from a template
 
 With your template installed, from a suitable destination *project* you will
