@@ -34,6 +34,7 @@ Then learn about deploying applications
 1. [TLS for routes](certificates/README.md) - securing routes using TLS/HTTPS
 1. [Renewal of Certificates](renew-certificates/README.md) - an ansible play for renewing certificates
 1. [Postgres backup and recovery](postgres-backup-and-recovery/README.md) - images and templates for automated backup and recovery of a PostgresQL server
+1. [Serving Apps from the TSB](serving-via-the-tsb.md) - how to deploy applications using the Template Service Broker
 
 Then learn about CI/CD
 
