@@ -10,7 +10,7 @@
 # oc create -f bridgedb.yaml -n openrisknet-applications
 #
 # From there you should be able to use *Add to Project* (from any project)
-# and navigate to the BridgeDB application using
+# and navigate to the BridgeDb application using
 # *Select from Project -> OpenRiskNet Applications*.
 #
 # To remove the template you can run the following
