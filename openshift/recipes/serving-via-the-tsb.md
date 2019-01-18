@@ -57,6 +57,13 @@ with the following oc command: -
  
     oc create -f <template> -n openrisknet-applications
 
+>   If you are greeted with the error **User "...." cannot create templates
+    in the namespace "openrisknet-applications"** then you have not be
+    authorised to **Edit** the openrisknet-applications project. Contact
+    a system administrator who should be able to enable your access
+    with the command
+    `oc adm policy add-role-to-user edit <you> -n openrisknet-applications`
+
 >   Note - if you make modifications to your template you will need to remove
     the old template from the TSB and install the new one. The TSB does
     not know where your template came from so the installed template is
