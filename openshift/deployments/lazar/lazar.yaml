@@ -2,14 +2,39 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: lazar-rest-template
+  name: lazar
   annotations:
-    description: lazar REST prediction service
+    openshift.io/display-name: lazar toxicity prediction service
+    openshift.io/provider-display-name: Johannes Gutenberg University Mainz - JGU, in silico toxicology gmbh - IST
+    openshift.io/documentation-url: https://github.com/OpenRiskNet/home.git
+    openshift.io/support-url: https://github.com/OpenRiskNet/home/issues
+    description: lazar (lazy structure–activity relationships) is a modular framework for predictive toxicology. 
+      Similar to the read across procedure in toxicological risk assessment, lazar creates local 
+      QSAR (quantitative structure–activity relationship) models for each compound to be predicted.
     iconClass: ''
     tags: lazar,prediction,rest
-parameters: []
 labels:
-  template: lazar-rest-template
+  template: lazar
+  app: lazar
+message:
+  lazar has been deployed to your project.
+  To remove the deployment you can use the command-line
+  and run "oc delete all --selector template=lazar" for the
+  project you deployed to.
+parameters:
+  - name: IMAGE_TAG
+    description:
+      The lazar docker image tag
+    value: latest
+  - name: ROUTES_BASENAME
+    description:
+      The base name of the service endpoint.
+      This is typically the PROD or DEV URL basename.
+    value: prod.openrisknet.org
+  - name: LAZAR_SERVICE_PORT
+    description:
+      The port for the lazar service inside your project
+    value: "8088"
 objects:
 - kind: ImageStream
   apiVersion: v1
@@ -21,10 +46,10 @@ objects:
       local: false
     tags:
       - annotations:
-          openshift.io/display-name: lazar-rest
+          openshift.io/display-name: lazar
         from:
           kind: DockerImage
-          name: 'docker.io/gebele/lazar-rest:latest'
+          name: docker.io/gebele/lazar-rest:${IMAGE_TAG}
         importPolicy:
           scheduled: true
         name: latest
@@ -35,7 +60,7 @@ objects:
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
-    name: lazar-rest
+    name: lazar
   spec:
     strategy:
       rollingUpdate:
@@ -45,22 +70,22 @@ objects:
       - imageChangeParams:
           automatic: true
           containerNames:
-            - lazar-rest
+            - lazar
           from:
             kind: ImageStreamTag
-            name: 'lazar-rest:latest'
+            name: lazar-rest:${IMAGE_TAG}
         type: ImageChange
     replicas: 1
     selector:
-      name: lazar-rest
+      name: lazar
     template:
       metadata:
         labels:
-          name: lazar-rest
+          name: lazar
       spec:
         containers:
-        - name: lazar-rest
-          image: docker.io/gebele/lazar-rest:latest
+        - name: lazar
+          image: docker.io/gebele/lazar-rest:${IMAGE_TAG}
           ports:
           - containerPort: 8088
             protocol: TCP
@@ -70,22 +95,22 @@ objects:
           securityContext:
             capabilities: {}
             privileged: false
-          livenessProbe:
-            exec:
-              command:
-                - ls
-                - /home/ist
-            failureTreshold: 1
-            initialDelaySeconds: 30
-            periodSeconds: 30
-            timeoutSeconds: 4
           readinessProbe:
             httpGet:
               path: "/"
               port: 8088
               scheme: "HTTP"
-            failureTreshold: 1
+            failureTreshold: 4
             initialDelaySeconds: 120
+            periodSeconds: 30
+            timeoutSeconds: 4
+          livenessProbe:
+            exec:
+              command:
+                - ls
+                - /home/ist
+            failureTreshold: 4
+            initialDelaySeconds: 180
             periodSeconds: 30
             timeoutSeconds: 4
         restartPolicy: Always
@@ -94,19 +119,19 @@ objects:
 - kind: Service
   apiVersion: v1
   metadata:
-    name: lazar-rest
+    name: lazar
     namespace: lazar
     annotations:
-      openrisknet-static-services: http://lazar-rest.lazar.svc.cluster.local:8088/api/api.json
+      openrisknet-static-services: http://lazar.lazar.svc.cluster.local:8088/api/api.json
   spec:
     ports:
-    - name: lazar-rest
+    - name: lazar
       protocol: TCP
-      port: 8088
+      port: ${LAZAR_SERVICE_PORT}
       targetPort: 8088
       nodePort: 0
     selector:
-      name: lazar-rest
+      name: lazar
     type: ClusterIP
     sessionAffinity: None
   status:
@@ -118,10 +143,10 @@ objects:
     annotations:
       kubernetes.io/tls-acme: 'true'
   spec:
-    host: lazar.prod.openrisknet.org
+    host: lazar.${ROUTES_BASENAME}
     to:
       kind: Service
-      name: lazar-rest
+      name: lazar
     tls:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
