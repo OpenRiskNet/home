@@ -13,7 +13,7 @@
   "paths": {
     "/datasets/749ea637-1262-46cc-b7cd-a8c2c6004245/data": {
       "get": {
-        "summary": "Returns the data along with aggregation/faceting information and a total count",
+        "summary": "Returns the data",
         "parameters": [
           {
             "name": "offset",
@@ -41,9 +41,6 @@
                   "type": "object",
                   "properties": {
                     "count": {
-                      "type": "integer"
-                    },
-                    "aggregations": {
                       "type": "integer"
                     },
                     "data": {

@@ -1,5 +1,5 @@
 {
-  "total": 12,
+  "total": 10,
   "data": [
     {
       "id": "1",
@@ -9,14 +9,10 @@
       "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
       "SMILES": "CCCCCC(C=CC=O)O",
       "CAS": "75899-68-2",
-      "Concentration": {
-        "value": 2.301029996,
-        "unit": "log(uM)"
-      },
-      "Activity": {
-        "value": 75.24132429,
-        "unit": "percent_activity"
-      }
+      "Concentration": 2.301029996,
+      "ConcentrationUnit": "log(uM)",
+      "Activity": 75.24132429,
+      "ActivityUnit": "percent_activity"
     }, {
       "id": "2",
       "SampleID": "2-4Hydroxynonenal",
@@ -25,14 +21,10 @@
       "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
       "SMILES": "CCCCCC(C=CC=O)O",
       "CAS": "75899-68-2",
-      "Concentration": {
-        "value": 1.301029996,
-        "unit": "log(uM)"
-      },
-      "Activity": {
-        "value": 19.29322676,
-        "unit": "percent_activity"
-      }
+      "Concentration": 1.301029996,
+      "ConcentrationUnit": "log(uM)",
+      "Activity": 19.29322676,
+      "ActivityUnit": "percent_activity"
     }, {
       "id": "3",
       "SampleID": "3-4Hydroxynonenal",
@@ -41,14 +33,10 @@
       "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
       "SMILES": "CCCCCC(C=CC=O)O",
       "CAS": "75899-68-2",
-      "Concentration": {
-        "value": 1.84509804,
-        "unit": "log(uM)"
-      },
-      "Activity": {
-        "value": 11.85320463,
-        "unit": "percent_activity"
-      }
+      "Concentration": 1.84509804,
+      "ConcentrationUnit": "log(uM)",
+      "Activityvalue": 11.85320463,
+      "Activityunit": "percent_activity"
     }, {
       "id": "4",
       "SampleID": "4-4Hydroxynonenal",
@@ -57,14 +45,10 @@
       "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
       "SMILES": "CCCCCC(C=CC=O)O",
       "CAS": "75899-68-2",
-      "Concentration": {
-        "value": 0.301029996,
-        "unit": "log(uM)"
-      },
-      "Activity": {
-        "value": 12.28098506,
-        "unit": "percent_activity"
-      }
+      "Concentration": 0.301029996,
+      "ConcentrationUnit": "log(uM)",
+      "Activity": 12.28098506,
+      "ActivityUnit": "percent_activity"
     }, {
       "id": "5",
       "SampleID": "5-4Hydroxynonenal",
@@ -73,14 +57,10 @@
       "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
       "SMILES": "CCCCCC(C=CC=O)O",
       "CAS": "75899-68-2",
-      "Concentration": {
-        "value": 0.84509804,
-        "unit": "log(uM)"
-      },
-      "Activity": {
-        "value": 4.059497986,
-        "unit": "percent_activity"
-      }
+      "Concentration": 0.84509804,
+      "ConcentrationUnit": "log(uM)",
+      "Activity": 4.059497986,
+      "ActivityUnit": "percent_activity"
     }, {
       "id": "6",
       "SampleID": "6-4Hydroxynonenal",
@@ -89,14 +69,10 @@
       "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
       "SMILES": "CCCCCC(C=CC=O)O",
       "CAS": "75899-68-2",
-      "Concentration": {
-        "value": 1.84509804,
-        "unit": "log(uM)"
-      },
-      "Activity": {
-        "value": 13.42294954,
-        "unit": "percent_activity"
-      }
+      "Concentration": 1.84509804,
+      "ConcentrationUnit": "log(uM)",
+      "Activityvalue": 13.42294954,
+      "ActivityUnit": "percent_activity"
     }, {
       "id": "7",
       "SampleID": "7-4Hydroxynonenal",
@@ -105,14 +81,10 @@
       "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
       "SMILES": "CCCCCC(C=CC=O)O",
       "CAS": "75899-68-2",
-      "Concentration": {
-        "value": 2.301029996,
-        "unit": "log(uM)"
-      },
-      "Activity": {
-        "value": 73.98184176,
-        "unit": "percent_activity"
-      }
+      "Concentration": 2.301029996,
+      "ConcentrationUnit": "log(uM)",
+      "Activity": 73.98184176,
+      "ActivityUnit": "percent_activity"
     }, {
       "id": "8",
       "SampleID": "8-4Hydroxynonenal",
@@ -121,14 +93,10 @@
       "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
       "SMILES": "CCCCCC(C=CC=O)O",
       "CAS": "75899-68-2",
-      "Concentration": {
-        "value": -0.096910013,
-        "unit": "log(uM)"
-      },
-      "Activity": {
-        "value": 21.00230795,
-        "unit": "percent_activity"
-      }
+      "Concentration": -0.096910013,
+      "ConcentrationUnit": "log(uM)",
+      "Activity": 21.00230795,
+      "ActivityUnit": "percent_activity"
     }, {
       "id": "9",
       "SampleID": "9-4Hydroxynonenal",
@@ -137,14 +105,10 @@
       "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
       "SMILES": "CCCCCC(C=CC=O)O",
       "CAS": "75899-68-2",
-      "Concentration": {
-        "value": 0.84509804,
-        "unit": "log(uM)"
-      },
-      "Activity": {
-        "value": -3.183133526,
-        "unit": "percent_activity"
-      }
+      "Concentration": 0.84509804,
+      "ConcentrationUnit": "log(uM)",
+      "Activity": -3.183133526,
+      "ActivityUnit": "percent_activity"
     }, {
       "id": "10",
       "SampleID": "10-4Hydroxynonenal",
@@ -153,14 +117,10 @@
       "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
       "SMILES": "CCCCCC(C=CC=O)O",
       "CAS": "75899-68-2",
-      "Concentration": {
-        "value": 1.301029996,
-        "unit": "log(uM)"
-      },
-      "Activity": {
-        "value": 11.36278966,
-        "unit": "percent_activity"
-      }
+      "Concentration": 1.301029996,
+      "ConcentrationUnit": "log(uM)",
+      "Activity": 11.36278966,
+      "ActivityUnit": "percent_activity"
     }
   ]
 }
