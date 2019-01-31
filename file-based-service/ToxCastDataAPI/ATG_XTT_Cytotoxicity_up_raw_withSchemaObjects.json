@@ -1,0 +1,265 @@
+{
+  "total": 12,
+  "data": [
+    {
+      "id": "1",
+      "SampleID": "1-4Hydroxynonenal",
+      "PubchemCID": 5283344,
+      "CompoundName": "4-Hydroxy-2-nonenal",
+      "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
+      "SMILES": "CCCCCC(C=CC=O)O",
+      "CAS": "75899-68-2",
+      "Concentration": {
+        "value": 2.301029996,
+        "unit": "log(uM)"
+      },
+      "Activity": {
+        "value": 75.24132429,
+        "unit": "percent_activity"
+      }
+    }, {
+      "id": "2",
+      "SampleID": "2-4Hydroxynonenal",
+      "PubchemCID": 5283344,
+      "CompoundName": "4-Hydroxy-2-nonenal",
+      "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
+      "SMILES": "CCCCCC(C=CC=O)O",
+      "CAS": "75899-68-2",
+      "Concentration": {
+        "value": 1.301029996,
+        "unit": "log(uM)"
+      },
+      "Activity": {
+        "value": 19.29322676,
+        "unit": "percent_activity"
+      }
+    }, {
+      "id": "3",
+      "SampleID": "3-4Hydroxynonenal",
+      "PubchemCID": 5283344,
+      "CompoundName": "4-Hydroxy-2-nonenal",
+      "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
+      "SMILES": "CCCCCC(C=CC=O)O",
+      "CAS": "75899-68-2",
+      "Concentration": {
+        "value": 1.84509804,
+        "unit": "log(uM)"
+      },
+      "Activity": {
+        "value": 11.85320463,
+        "unit": "percent_activity"
+      }
+    }, {
+      "id": "4",
+      "SampleID": "4-4Hydroxynonenal",
+      "PubchemCID": 5283344,
+      "CompoundName": "4-Hydroxy-2-nonenal",
+      "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
+      "SMILES": "CCCCCC(C=CC=O)O",
+      "CAS": "75899-68-2",
+      "Concentration": {
+        "value": 0.301029996,
+        "unit": "log(uM)"
+      },
+      "Activity": {
+        "value": 12.28098506,
+        "unit": "percent_activity"
+      }
+    }, {
+      "id": "5",
+      "SampleID": "5-4Hydroxynonenal",
+      "PubchemCID": 5283344,
+      "CompoundName": "4-Hydroxy-2-nonenal",
+      "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
+      "SMILES": "CCCCCC(C=CC=O)O",
+      "CAS": "75899-68-2",
+      "Concentration": {
+        "value": 0.84509804,
+        "unit": "log(uM)"
+      },
+      "Activity": {
+        "value": 4.059497986,
+        "unit": "percent_activity"
+      }
+    }, {
+      "id": "6",
+      "SampleID": "6-4Hydroxynonenal",
+      "PubchemCID": 5283344,
+      "CompoundName": "4-Hydroxy-2-nonenal",
+      "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
+      "SMILES": "CCCCCC(C=CC=O)O",
+      "CAS": "75899-68-2",
+      "Concentration": {
+        "value": 1.84509804,
+        "unit": "log(uM)"
+      },
+      "Activity": {
+        "value": 13.42294954,
+        "unit": "percent_activity"
+      }
+    }, {
+      "id": "7",
+      "SampleID": "7-4Hydroxynonenal",
+      "PubchemCID": 5283344,
+      "CompoundName": "4-Hydroxy-2-nonenal",
+      "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
+      "SMILES": "CCCCCC(C=CC=O)O",
+      "CAS": "75899-68-2",
+      "Concentration": {
+        "value": 2.301029996,
+        "unit": "log(uM)"
+      },
+      "Activity": {
+        "value": 73.98184176,
+        "unit": "percent_activity"
+      }
+    }, {
+      "id": "8",
+      "SampleID": "8-4Hydroxynonenal",
+      "PubchemCID": 5283344,
+      "CompoundName": "4-Hydroxy-2-nonenal",
+      "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
+      "SMILES": "CCCCCC(C=CC=O)O",
+      "CAS": "75899-68-2",
+      "Concentration": {
+        "value": -0.096910013,
+        "unit": "log(uM)"
+      },
+      "Activity": {
+        "value": 21.00230795,
+        "unit": "percent_activity"
+      }
+    }, {
+      "id": "9",
+      "SampleID": "9-4Hydroxynonenal",
+      "PubchemCID": 5283344,
+      "CompoundName": "4-Hydroxy-2-nonenal",
+      "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
+      "SMILES": "CCCCCC(C=CC=O)O",
+      "CAS": "75899-68-2",
+      "Concentration": {
+        "value": 0.84509804,
+        "unit": "log(uM)"
+      },
+      "Activity": {
+        "value": -3.183133526,
+        "unit": "percent_activity"
+      }
+    }, {
+      "id": "10",
+      "SampleID": "10-4Hydroxynonenal",
+      "PubchemCID": 5283344,
+      "CompoundName": "4-Hydroxy-2-nonenal",
+      "InChIKey": "\tJVJFIQYAHPMBBX-FNORWQNLSA-N",
+      "SMILES": "CCCCCC(C=CC=O)O",
+      "CAS": "75899-68-2",
+      "Concentration": {
+        "value": 1.301029996,
+        "unit": "log(uM)"
+      },
+      "Activity": {
+        "value": 11.36278966,
+        "unit": "percent_activity"
+      }
+    }
+  ],
+  "aggregations": {
+    "CompoundName": {
+      "name": "CompoundName",
+      "filterTerm": "CompoundNameFilter",
+      "buckets": [
+        {
+          "key": "4-Hydroxy-2-nonenal",
+          "doc_count": 12,
+          "selected": false
+        }
+      ]
+    },
+    "Concentration": {
+      "name": "Concentration",
+      "filterTerm": "ConcentrationFilter",
+      "buckets": [
+        {
+          "key": "-0.096910013",
+          "doc_count": 2,
+          "selected": false
+        }, {
+          "key": "0.301029996",
+          "doc_count": 2,
+          "selected": false
+        }, {
+          "key": "0.84509804",
+          "doc_count": 2,
+          "selected": false
+        }, {
+          "key": "1.301029996",
+          "doc_count": 2,
+          "selected": false
+        }, {
+          "key": "1.84509804",
+          "doc_count": 2,
+          "selected": false
+        }, {
+          "key": "2.301029996",
+          "doc_count": 2,
+          "selected": false
+        }
+      ]
+    },
+    "Activity": {
+      "name": "Activity",
+      "filterTerm": "ActivityFilter",
+      "buckets": [
+        {
+          "key": "-3.183133526",
+          "doc_count": 1,
+          "selected": false
+        }, {
+          "key": "-3.656597774",
+          "doc_count": 1,
+          "selected": false
+        }, {
+          "key": "11.36278966",
+          "doc_count": 1,
+          "selected": false
+        }, {
+          "key": "11.85320463",
+          "doc_count": 1,
+          "selected": false
+        }, {
+          "key": "12.28098506",
+          "doc_count": 1,
+          "selected": false
+        }, {
+          "key": "13.42294954",
+          "doc_count": 1,
+          "selected": false
+        }, {
+          "key": "19.29322676",
+          "doc_count": 1,
+          "selected": false
+        }, {
+          "key": "21.00230795",
+          "doc_count": 1,
+          "selected": false
+        }, {
+          "key": "3.766199878",
+          "doc_count": 1,
+          "selected": false
+        }, {
+          "key": "4.059497986",
+          "doc_count": 1,
+          "selected": false
+        }, {
+          "key": "73.98184176",
+          "doc_count": 1,
+          "selected": false
+        }, {
+          "key": "75.24132429",
+          "doc_count": 1,
+          "selected": false
+        }
+      ]
+    }
+  }
+}
