@@ -121,6 +121,6 @@ Alan Christie
 January 2019
 
 [ansible]: https://docs.ansible.com
-[tls-sni-01]: https://community.letsencrypt.org/t/how-to-stop-using-tls-sni-01-with-certbot/83210)
+[tls-sni-01]: https://community.letsencrypt.org/t/how-to-stop-using-tls-sni-01-with-certbot/83210
 [roles]: https://docs.ansible.com/ansible/2.5/user_guide/playbooks_reuse_roles.html
 [certbot]: https://certbot.eff.org
