@@ -3,6 +3,13 @@
 >   Caution: Depending on your OpenShift version the playbooks may be limited to
     [Ansible] v2.5 or v2.4.
 
+>   From March 13th 2019 TLS-SNI-01 validation will have reached
+    its end-of-life for support. If you have problems renewing
+    certificates you probably just need to make sure that you're running
+    an up-to-date certbot binary. If `certbot --version` reports `0.28` or
+    higher you should be OK. For further details refer to
+    the [tls-sni-01] article. 
+    
 An [ansible] playbook and roles for a CentOS deployment that can be used to renew
 Let's Encrypt/[Certbot]-like SSL certificates in an OpenShift cluster.
 The playbook contains two [roles] that involve...
@@ -114,5 +121,6 @@ Alan Christie
 January 2019
 
 [ansible]: https://docs.ansible.com
+[tls-sni-01]: https://community.letsencrypt.org/t/how-to-stop-using-tls-sni-01-with-certbot/83210)
 [roles]: https://docs.ansible.com/ansible/2.5/user_guide/playbooks_reuse_roles.html
 [certbot]: https://certbot.eff.org
