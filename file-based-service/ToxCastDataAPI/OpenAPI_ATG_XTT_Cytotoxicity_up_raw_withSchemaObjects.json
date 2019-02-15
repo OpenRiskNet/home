@@ -74,6 +74,7 @@
                             "description": "Test Compound InChIKey"
                           },
                           "SMILES": {
+                            "@": "http://semanticscience.org/resource/CHEMINF_000018",
                             "title": "SMILES",
                             "type": "string",
                             "description": "Test Compound SMILES"
