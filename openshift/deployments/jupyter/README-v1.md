@@ -1,15 +1,12 @@
 # Deploying JupyterHub to OpenShift
 
+__IMPORTANT__: these instructions are obsolete and no longer work. They are kept for reference purposes.
+See [here](README.md) for the current instructions.
+
 This is entirely based on the work of Graham Dupleton <gdumplet@redhat.com> who has been very helpful in getting this
 set up. Mostly it is based on instructions found in his
-[jupyter-notebooks](https://github.com/jupyter-on-openshift/jupyter-notebooks) and
 [jupyterhub-quickstart](https://github.com/jupyter-on-openshift/jupyterhub-quickstart)
-GitHub repos.
-
-An earlier version of the instructions can be found [here](README-v1.md).
-
-Unlike the earlier instructions all artifacts used are checked into this repo avoid problems with changes in remotely
-located files.
+GitHub repo.
 
 What is deployed is:
 
@@ -27,8 +24,6 @@ OpenShift cluster with:
 
 ## Deploy
 
-The deployment can be done as a user without `cluster-admin` privs.
-
 ### new project
 ```
 oc new-project jupyter
@@ -36,59 +31,101 @@ oc new-project jupyter
 
 ### Build Jupyter images
 ```
-oc create -f templates/build-configs/s2i-minimal-notebook.yaml
-oc create -f templates/build-configs/s2i-scipy-notebook.yaml
-oc create -f templates/build-configs/s2i-tensorflow-notebook.yaml
+oc create -f https://raw.githubusercontent.com/jupyter-on-openshift/jupyter-notebooks/master/images.json
 ```
-This takes about 15 mins. Whilst that is running you can get some other things ready.
+This takes about 15 mins.
 
-### Create the image stream for the JupyterHub image
+Patch the build configs to enable JupyterLab support:
+```
+oc patch bc/s2i-minimal-notebook --patch '{"spec":{"resources":{"limits":{"memory":"3Gi"}}}}'
+oc patch bc/s2i-scipy-notebook --patch '{"spec":{"resources":{"limits":{"memory":"3Gi"}}}}'
+oc patch bc/s2i-tensorflow-notebook --patch '{"spec":{"resources":{"limits":{"memory":"3Gi"}}}}'
 
-```
-oc create -f templates/image-streams/jupyterhub.yaml
-```
+oc set env bc/s2i-minimal-notebook JUPYTER_INSTALL_LAB=true
 
-### Load the template to deploy JupyterHub
+oc start-build s2i-minimal-notebook
+oc start-build s2i-scipy-notebook
+oc start-build s2i-tensorflow-notebook
+```
+The images will be rebuilt. Wait for this to finish.
 
+TODO: can this be improved so that the Jupyter images only need to be built once?
+
+## Build JupyterHub image
+Deploy the s2i builder for the JupyterHub image: 
 ```
-oc create -f templates/jupyterhub/jupyterhub-deployer.yaml
+oc create -f https://raw.githubusercontent.com/jupyter-on-openshift/jupyterhub-quickstart/master/images.json
 ```
+Wait for the build to complete. Takes about 3 mins.
 
 ### Set up SSO
 
 In Keycloak go to the appropriate realm (e.g. `openrisknet`) and add `jupyterhub` as a new client.
 Specify `confidential` as the `Access Type`.
 
+### Deploy JupyterHub templates
+
+Deploy the JupyterHub templates:
+```
+oc create -f https://raw.githubusercontent.com/jupyter-on-openshift/jupyterhub-quickstart/master/templates.json
+```
+
+### Edit templates
+
+These templates need to be edited as the liveness and readiness probes are not tolerant of slow starting containers and after
+they have failed seems to cause further problems (e.g. patching the deployment config once it is running to modify these probes is too late).
+
+For the `jupyterhub-deployer` template modify the Deployment config for the jupyterhub-db to add these to the livenessProbe:
+```
+failureThreshold: 10
+initialDelaySeconds: 60
+periodSeconds: 15
+timeoutSeconds: 1
+```
+and this or the readinessProbe:
+```
+failureThreshold: 3
+initialDelaySeconds: 90
+periodSeconds: 30
+timeoutSeconds: 1
+```
+
+Modify the other templates similarly if they are being used.
+
+TODO: push those changes back to Graham's project to avoid this being necessary.
+
+TODO: look into deploying Jupyterhub into an existing Postgres database (e.g. the one in the openrisknet-infra project). 
+
 ### JupyterHub Configuration
 
-Create the jupyterhub_config.py configuration file. One is provided in this dir but you may want different options.
-
+Create the jupyterhub_config.py configuration file:
 ```
-c.JupyterHub.spawner_class = 'kubespawner.KubeSpawner'
+c.JupyterHub.spawner_class = 'wrapspawner.ProfilesSpawner'
 
 c.KubeSpawner.start_timeout = 180
 c.KubeSpawner.http_timeout = 120
 
 c.KubeSpawner.environment = dict(JUPYTER_ENABLE_LAB='true')
 
-c.KubeSpawner.profile_list = [
-    {
-        'display_name': 'Minimal Notebook (CentOS 7 / Python 3.6)',
-        'default': True,
-        'kubespawner_override': {
-            'image_spec': 's2i-minimal-notebook:3.6'
-        }
-    },{
-        'display_name': 'SciPy Notebook (CentOS 7 / Python 3.6)',
-        'kubespawner_override': {
-            'image_spec': 's2i-scipy-notebook:3.6'
-        }
-    },{
-        'display_name': 'Tensorflow Notebook (CentOS 7 / Python 3.6)',
-        'kubespawner_override': {
-            'image_spec': 's2i-tensorflow-notebook:3.6'
-        }
-    }
+c.ProfilesSpawner.profiles = [
+    (
+        "Minimal Notebook (CentOS 7 / Python 3.5)",
+        's2i-minimal-notebook',
+        'kubespawner.KubeSpawner',
+        dict(singleuser_image_spec='s2i-minimal-notebook:3.5')
+    ),
+    (
+        "SciPy Notebook (CentOS 7 / Python 3.5)",
+        's2i-scipy-notebook',
+        'kubespawner.KubeSpawner',
+        dict(singleuser_image_spec='s2i-scipy-notebook:3.5')
+    ),
+    (
+        "Tensorflow Notebook (CentOS 7 / Python 3.5)",
+        's2i-tensorflow-notebook',
+        'kubespawner.KubeSpawner',
+        dict(singleuser_image_spec='s2i-tensorflow-notebook:3.5')
+    )
 ]
 
 # authentication
@@ -131,6 +168,8 @@ You must replace the correct value for the `c.OAuthenticator.client_secret` prop
 
 TODO: describe the contents of this file.
 
+TODO: work our how to change the login message from "Sign in with GenericOAUth2" to something more meaningful.
+
 TODO: work out how to specify the need for specific role(s) for authorisation.
 
 ### Deploy
@@ -141,7 +180,7 @@ oc new-app --template jupyterhub-deployer --param JUPYTERHUB_CONFIG="`cat jupyte
 ```
 
 ## Delete
-Delete the deployment (buildconfigs and imagestreams will remain):
+Delete the deployment (imagestreams will remain):
 ```
 oc delete all,configmap,pvc,serviceaccount,rolebinding --selector app=jupyterhub
 ```
