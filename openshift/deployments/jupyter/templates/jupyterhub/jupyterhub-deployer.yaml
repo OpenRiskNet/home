@@ -13,6 +13,8 @@ parameters:
 - name: APPLICATION_NAME
   value: jupyterhub
   required: true
+- name: ROUTE_NAME
+  value: ''
 - name: JUPYTERHUB_IMAGE
   value: jupyterhub:3.0.6
   required: true
@@ -22,10 +24,6 @@ parameters:
 - name: JUPYTERHUB_CONFIG
   value: ''
   required: false
-- name: DATABASE_PASSWORD
-  generate: expression
-  from: "[a-zA-Z0-9]{16}"
-  required: true
 - name: COOKIE_SECRET
   generate: expression
   from: "[a-f0-9]{32}"
@@ -34,9 +32,9 @@ parameters:
   description: Amount of memory available to JupyterHub.
   value: 512Mi
   required: true
-- name: DATABASE_MEMORY
-  description: Amount of memory available to PostgreSQL.
-  value: 512Mi
+- name: DATABASE_CREDENTIALS_SECRET
+  description: Name of the secret with the PostgreSQL database credentials
+  value: database-credentials-jupyterhub
   required: true
 - name: NOTEBOOK_MEMORY
   description: Amount of memory available to each notebook.
@@ -108,21 +106,6 @@ objects:
           deploymentconfig: "${APPLICATION_NAME}"
       spec:
         serviceAccountName: "${APPLICATION_NAME}-hub"
-        initContainers:
-        - name: wait-for-database
-          image: "${JUPYTERHUB_IMAGE}"
-          command:
-          - wait-for-database
-          resources:
-            limits:
-              memory: "${JUPYTERHUB_MEMORY}"
-          env:
-          - name: JUPYTERHUB_DATABASE_PASSWORD
-            value: "${DATABASE_PASSWORD}"
-          - name: JUPYTERHUB_DATABASE_HOST
-            value: "${APPLICATION_NAME}-db"
-          - name: JUPYTERHUB_DATABASE_NAME
-            value: postgres
         containers:
         - name: jupyterhub
           image: "${JUPYTERHUB_IMAGE}"
@@ -140,11 +123,21 @@ objects:
           - name: JUPYTERHUB_NOTEBOOK_MEMORY
             value: "${NOTEBOOK_MEMORY}"
           - name: JUPYTERHUB_DATABASE_PASSWORD
-            value: "${DATABASE_PASSWORD}"
+            # the database user is fixed as 'jupyterhub'
+            valueFrom:
+              secretKeyRef:
+                name: ${DATABASE_CREDENTIALS_SECRET}
+                key: db-user-password
           - name: JUPYTERHUB_DATABASE_HOST
-            value: "${APPLICATION_NAME}-db"
+            valueFrom:
+              secretKeyRef:
+                name: ${DATABASE_CREDENTIALS_SECRET}
+                key: db-service
           - name: JUPYTERHUB_DATABASE_NAME
-            value: postgres
+            valueFrom:
+              secretKeyRef:
+                name: ${DATABASE_CREDENTIALS_SECRET}
+                key: db
           - name: JUPYTERHUB_COOKIE_SECRET
             value: "${COOKIE_SECRET}"
           volumeMounts:
@@ -182,8 +175,10 @@ objects:
     name: "${APPLICATION_NAME}"
     labels:
       app: "${APPLICATION_NAME}"
+    annotations:
+      kubernetes.io/tls-acme: 'false'
   spec:
-    host: ''
+    host: ${ROUTE_NAME}
     to:
       kind: Service
       name: "${APPLICATION_NAME}"
@@ -193,101 +188,3 @@ objects:
     tls:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
-
-- kind: PersistentVolumeClaim
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}-db"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 1Gi
-
-- kind: DeploymentConfig
-  apiVersion: apps.openshift.io/v1
-  metadata:
-    name: "${APPLICATION_NAME}-db"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    replicas: 1
-    selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}-db"
-    strategy:
-      type: Recreate
-    template:
-      metadata:
-        labels:
-          app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}-db"
-      spec:
-        containers:
-        - name: postgresql
-          env:
-          - name: POSTGRESQL_USER
-            value: jupyterhub
-          - name: POSTGRESQL_PASSWORD
-            value: "${DATABASE_PASSWORD}"
-          - name: POSTGRESQL_DATABASE
-            value: postgres
-          livenessProbe:
-            tcpSocket:
-              port: 5432
-          ports:
-          - containerPort: 5432
-            protocol: TCP
-          resources:
-            limits:
-              memory: "${DATABASE_MEMORY}"
-          readinessProbe:
-            exec:
-              command:
-              - "/bin/sh"
-              - "-i"
-              - "-c"
-              - psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c
-                'SELECT 1'
-          volumeMounts:
-          - mountPath: "/var/lib/pgsql/data"
-            name: data
-        volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "${APPLICATION_NAME}-db"
-        - name: config
-          configMap:
-            name: "${APPLICATION_NAME}-cfg"
-            defaultMode: 420
-    triggers:
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - postgresql
-        from:
-          kind: ImageStreamTag
-          name: postgresql:9.5
-          namespace: openshift
-      type: ImageChange
-    - type: ConfigChange
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}-db"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    ports:
-    - name: 5432-tcp
-      protocol: TCP
-      port: 5432
-      targetPort: 5432
-    selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}-db"
-
