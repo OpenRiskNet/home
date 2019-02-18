@@ -146,7 +146,7 @@
     "PubChemCID":           "http://semanticscience.org/resource/CHEMINF_000140",
     "CompoundName":         "http://semanticscience.org/resource/CHEMINF_000043",
     "InChIKey":             "http://semanticscience.org/resource/CHEMINF_000059",
-    "SMILES":               "http://semanticscience.org/resource/CHEMINF_000018",
+    "SMILES":               "http://purl.obolibrary.org/obo/NCIT_C101282",
     "CAS":                  "http://semanticscience.org/resource/CHEMINF_000446",
     "Concentration":        "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C41185",
     "Activity":             "http://www.bioassayontology.org/bao#BAO_0080024"
