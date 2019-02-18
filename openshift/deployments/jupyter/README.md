@@ -110,7 +110,7 @@ You must replace the correct value for the `c.OAuthenticator.client_secret` prop
 other values. 
 
 TODO: work out how to specify the need for specific role(s) for authorisation.
-TODO: it might be better to specify this a a ConfigMap?
+
 
 ### Deploy
 
@@ -118,9 +118,12 @@ Deploy it using:
 ```
 oc new-app --template jupyterhub-deployer --param JUPYTERHUB_CONFIG="`cat jupyterhub_configs/jupyterhub_config.py`"
 ```
-If you want a differnt hostname for the route (the default will be something like `jupyterhub-jupyter.your.domain.org`)
+If you want a different hostname for the route (the default will be something like `jupyterhub-jupyter.your.domain.org`)
 you can specify this as the `ROUTE_NAME` parameter. e.g. add `--param ROUTE_NAME=jupyter.prod.openrisknet.org` to that 
 command.
+
+The value of the `JUPYTERHUB_CONFIG` is used to create a ConfigMap named `jupyterhub-cfg`. If you need to change the settings
+you can edit that ConfigMap and re-deploy JupyterHub.
 
 ## Delete
 Delete the deployment (buildconfigs, imagestreams, secrets and pvcs (user's notebooks) will remain):
@@ -140,6 +143,10 @@ the value of the `kubernetes.io/tls-acme` annotation for the route to `true`. Yo
 file to set the appropriate TLS settings (in two places) and then redeploy.
 
 ## Database backups
+
+__Note__: This section is no longer relevant as the database is now located in the `openrisknet-infra` project so backups 
+need to be handled there.
+
 These example templates provide backups of your JupyterHub database
 using the Informatics Matters backup container image.
 
