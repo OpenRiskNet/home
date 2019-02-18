@@ -77,7 +77,7 @@
                             "x-orn-@id": "http://semanticscience.org/resource/CHEMINF_000018",
                             "title": "SMILES",
                             "type": "string",
-                            "description": "Test Compound SMILES"
+                            "description": "The subject to this should be CHEMINF_000018"
                           },
                           "CAS": {
                             "title": "CAS",
