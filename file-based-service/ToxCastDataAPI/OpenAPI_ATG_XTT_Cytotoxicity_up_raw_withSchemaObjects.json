@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Generated schema",
+    "title": "ATG_XTT_Cytotoxicity_up_raw with OpenAPI schemas",
     "description": "",
     "version": "1.0.0"
   },
@@ -77,7 +77,7 @@
                             "x-orn-@id": "http://semanticscience.org/resource/CHEMINF_000018",
                             "title": "SMILES",
                             "type": "string",
-                            "description": "The subject to this should be CHEMINF_000018"
+                            "description": "The SMILES"
                           },
                           "CAS": {
                             "title": "CAS",
