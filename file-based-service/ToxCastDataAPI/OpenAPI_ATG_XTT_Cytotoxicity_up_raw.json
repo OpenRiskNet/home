@@ -48,6 +48,7 @@
                       "items": {
                         "type": "object",
                         "properties": {
+                          "x-orn-@id": "http://bigdatau.org/dseo#tabular_data",
                           "id": {
                             "title": "ID",
                             "type": "integer",
