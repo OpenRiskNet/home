@@ -104,7 +104,7 @@
                             "title": "Activity Unit",
                             "type": "string",
                             "description": "The Activity Unit"
-                          },
+                          }
                         },
                         "description": "A result row with values for each column"
                       }
@@ -134,6 +134,6 @@
     "Concentration":        "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C41185?value",
     "ConcentrationUnit":    "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C41185?unit",
     "Activity":             "http://www.bioassayontology.org/bao#BAO_0080024?value",
-    "ActivityUnit":         "http://www.bioassayontology.org/bao#BAO_0080024?unit",
+    "ActivityUnit":         "http://www.bioassayontology.org/bao#BAO_0080024?unit"
   }
 }
