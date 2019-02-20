@@ -1,0 +1,190 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: jupyterhub-deployer
+  annotations:
+    openshift.io/display-name: JupyterHub
+    description: Template for deploying a JupyterHub instance.
+    iconClass: icon-python
+    tags: python,jupyter,jupyterhub
+
+parameters:
+- name: APPLICATION_NAME
+  value: jupyterhub
+  required: true
+- name: ROUTE_NAME
+  value: ''
+- name: JUPYTERHUB_IMAGE
+  value: jupyterhub:3.0.6
+  required: true
+- name: NOTEBOOK_IMAGE
+  value: s2i-minimal-notebook:3.6
+  required: true
+- name: JUPYTERHUB_CONFIG
+  value: ''
+  required: false
+- name: COOKIE_SECRET
+  generate: expression
+  from: "[a-f0-9]{32}"
+  required: true
+- name: JUPYTERHUB_MEMORY
+  description: Amount of memory available to JupyterHub.
+  value: 512Mi
+  required: true
+- name: DATABASE_CREDENTIALS_SECRET
+  description: Name of the secret with the PostgreSQL database credentials
+  value: database-credentials-jupyterhub
+  required: true
+- name: NOTEBOOK_MEMORY
+  description: Amount of memory available to each notebook.
+  value: 512Mi
+  required: true
+
+objects:
+
+- kind: ConfigMap
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-cfg"
+    labels:
+      app: "${APPLICATION_NAME}"
+  data:
+    jupyterhub_config.py: "${JUPYTERHUB_CONFIG}"
+
+- kind: ServiceAccount
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-hub"
+    labels:
+      app: "${APPLICATION_NAME}"
+
+- kind: RoleBinding
+  apiVersion: authorization.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}-edit"
+    labels:
+      app: "${APPLICATION_NAME}"
+  subjects:
+  - kind: ServiceAccount
+    name: "${APPLICATION_NAME}-hub"
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: edit
+
+- kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - wait-for-database
+        - jupyterhub
+        from:
+          kind: ImageStreamTag
+          name: "${JUPYTERHUB_IMAGE}"
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        annotations:
+          alpha.image.policy.openshift.io/resolve-names: "*"
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}"
+      spec:
+        serviceAccountName: "${APPLICATION_NAME}-hub"
+        containers:
+        - name: jupyterhub
+          image: "${JUPYTERHUB_IMAGE}"
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources:
+            limits:
+              memory: "${JUPYTERHUB_MEMORY}"
+          env:
+          - name: APPLICATION_NAME
+            value: "${APPLICATION_NAME}"
+          - name: JUPYTERHUB_NOTEBOOK_IMAGE
+            value: "${NOTEBOOK_IMAGE}"
+          - name: JUPYTERHUB_NOTEBOOK_MEMORY
+            value: "${NOTEBOOK_MEMORY}"
+          - name: JUPYTERHUB_DATABASE_PASSWORD
+            # the database user is fixed as 'jupyterhub'
+            valueFrom:
+              secretKeyRef:
+                name: ${DATABASE_CREDENTIALS_SECRET}
+                key: db-user-password
+          - name: JUPYTERHUB_DATABASE_HOST
+            valueFrom:
+              secretKeyRef:
+                name: ${DATABASE_CREDENTIALS_SECRET}
+                key: db-service
+          - name: JUPYTERHUB_DATABASE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: ${DATABASE_CREDENTIALS_SECRET}
+                key: db
+          - name: JUPYTERHUB_COOKIE_SECRET
+            value: "${COOKIE_SECRET}"
+          volumeMounts:
+          - name: config
+            mountPath: "/opt/app-root/configs"
+        volumes:
+        - name: config
+          configMap:
+            name: "${APPLICATION_NAME}-cfg"
+            defaultMode: 420
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: 8081-tcp
+      protocol: TCP
+      port: 8081
+      targetPort: 8081
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+    annotations:
+      kubernetes.io/tls-acme: 'false'
+  spec:
+    host: ${ROUTE_NAME}
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 8080-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect

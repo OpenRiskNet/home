@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "ATG_XTT_Cytotoxicity_up_raw with OpenAPI schemas",
+    "title": "ATG_XTT_Cytotoxicity_up_raw with OpenAPI schemas and predicate annotation",
     "description": "",
     "version": "1.0.0"
   },
@@ -58,35 +58,9 @@
                             "type": "string",
                             "description": "Sample ID"
                           },
-                          "PubChemCID": {
-                            "title": "PubChem CID",
-                            "type": "string",
-                            "description": "Test Compound PubChem CID"
-                          },
-                          "CompoundName": {
-                            "title": "Compound Name",
-                            "type": "string",
-                            "description": "Test Compound Name"
-                          },
-                          "InChIKey": {
-                            "title": "InChIKey",
-                            "type": "string",
-                            "description": "Test Compound InChIKey"
-                          },
-                          "SMILES": {
-                            "x-orn-@id": "http://semanticscience.org/resource/CHEMINF_000018",
-                            "title": "SMILES",
-                            "type": "string",
-                            "description": "Test Compound SMILES"
-                          },
-                          "CAS": {
-                            "title": "CAS",
-                            "type": "string",
-                            "description": "Test Substance CAS"
-                          },
-                          "Concentration": {
-                            "$ref": "#/components/schemas/quantity",
-                            "description": "Test compound Concentration"
+                          "Substance": {
+                            "$ref": "#/components/schemas/substance",
+                            "description": "Test Substance"
                           },
                           "Activity": {
                             "$ref": "#/components/schemas/quantity",
@@ -131,6 +105,42 @@
             ]
           }
         }
+      },
+      "compound": {
+        "type": "object",
+        "properties": {
+          "PubChemCID": {
+            "title": "PubChem CID",
+            "type": "string"
+          },
+          "CompoundName": {
+            "title": "Compound Name",
+            "type": "string"
+          },
+          "InChIKey": {
+            "title": "InChIKey",
+            "type": "string"
+          },
+          "SMILES": {
+            "title": "SMILES",
+            "type": "string"
+          }
+        }
+      },
+      "substance": {
+        "type": "object",
+        "properties": {
+          "Compound": {
+            "$ref": "#/components/schemas/compound"
+          },
+          "CAS": {
+            "title": "CAS",
+            "type": "string"
+          },
+          "Concentration": {
+            "$ref": "#/components/schemas/quantity"
+          }
+        }
       }
     }
   },
@@ -139,6 +149,19 @@
     "x-orn-@id": "@id",
     "x-orn-@type": "@type",
     "@vocab": "http://openrisknet.org/schema#",
-    "x-orn": "http://openrisknet.org/schema#"
+    "x-orn": "http://openrisknet.org/schema#",
+
+    "unit":                 "http://purl.obolibrary.org/obo/UO_0000000",
+    "id":                   "http://edamontology.org/data_0842",
+    "SampleID":             "http://edamontology.org/data_3273",
+    "Substance":            "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C45306",
+    "Compound":             "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C43366",
+    "PubChemCID":           "http://semanticscience.org/resource/CHEMINF_000140",
+    "CompoundName":         "http://semanticscience.org/resource/CHEMINF_000043",
+    "InChIKey":             "http://semanticscience.org/resource/CHEMINF_000059",
+    "SMILES":               "http://semanticscience.org/resource/CHEMINF_000018",
+    "CAS":                  "http://semanticscience.org/resource/CHEMINF_000446",
+    "Concentration":        "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C41185",
+    "Activity":             "http://www.bioassayontology.org/bao#BAO_0080024"
   }
 }

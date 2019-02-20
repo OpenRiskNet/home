@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Generated schema",
+    "title": "ATG_XTT_Cytotoxicity_up_raw no OpenAPI schemas",
     "description": "",
     "version": "1.0.0"
   },
@@ -48,6 +48,7 @@
                       "items": {
                         "type": "object",
                         "properties": {
+                          "x-orn-@id": "http://bigdatau.org/dseo#tabular_data",
                           "id": {
                             "title": "ID",
                             "type": "integer",
@@ -74,6 +75,7 @@
                             "description": "The InChIKey"
                           },
                           "SMILES": {
+                            "x-orn-@id": "http://semanticscience.org/resource/CHEMINF_000018",
                             "title": "SMILES",
                             "type": "string",
                             "description": "The SMILES"
@@ -102,7 +104,7 @@
                             "title": "Activity Unit",
                             "type": "string",
                             "description": "The Activity Unit"
-                          },
+                          }
                         },
                         "description": "A result row with values for each column"
                       }
@@ -127,11 +129,11 @@
     "PubChemCID":           "http://semanticscience.org/resource/CHEMINF_000140",
     "CompoundName":         "http://semanticscience.org/resource/CHEMINF_000043",
     "InChIKey":             "http://semanticscience.org/resource/CHEMINF_000059",
-    "SMILES":               "http://semanticscience.org/resource/CHEMINF_000018",
+    "SMILES":               "http://purl.obolibrary.org/obo/NCIT_C101282",
     "CAS":                  "http://semanticscience.org/resource/CHEMINF_000446",
     "Concentration":        "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C41185?value",
     "ConcentrationUnit":    "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C41185?unit",
     "Activity":             "http://www.bioassayontology.org/bao#BAO_0080024?value",
-    "ActivityUnit":         "http://www.bioassayontology.org/bao#BAO_0080024?unit",
+    "ActivityUnit":         "http://www.bioassayontology.org/bao#BAO_0080024?unit"
   }
 }
