@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "ATG_XTT_Cytotoxicity_up_raw with OpenAPI schemas",
+    "title": "ATG_XTT_Cytotoxicity_up_raw with OpenAPI schemas and subject annotation",
     "description": "",
     "version": "1.0.0"
   },
