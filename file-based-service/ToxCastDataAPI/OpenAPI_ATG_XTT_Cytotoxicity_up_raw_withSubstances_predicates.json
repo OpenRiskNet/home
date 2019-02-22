@@ -12,6 +12,9 @@
   ],
   "paths": {
     "/datasets/749ea637-1262-46cc-b7cd-a8c2c6004245/data": {
+      "x-orn-@id": "https://datasets/802a506e-2e08-4baf-b4f0-c3b89cbddd4d/data",
+      "x-orn-@type": "orn:Endpoint",
+
       "get": {
         "summary": "Returns the data",
         "parameters": [
@@ -150,6 +153,28 @@
     "x-orn-@type": "@type",
     "@vocab": "http://openrisknet.org/schema#",
     "x-orn": "http://openrisknet.org/schema#",
+
+    "title": "x-orn:title",
+    "info": "x-orn:info",
+    "paths":
+      { "@id": "x-orn:paths",
+        "@container": "@id"
+       },
+    "description": "x-orn:description",
+    "get": "x-orn:Get",
+    "post": "x-orn:Post",
+    "put": "x-orn:Put",
+    "patch": "x-orn:Patch",
+    "delete": "x-orn:Delete",
+    "parameters": "x-orn:OperationParameters",
+    "responses":
+      {"@id": "x-orn:OperationResponses",
+                "@container": "@index"
+      },
+    "schema": "x-orn:Schema",
+    "properties": "x-orn:Properties",
+    "content": "x-orn:Content",
+    "application/json": "x-orn:application/json",
 
     "unit":                 "http://purl.obolibrary.org/obo/UO_0000000",
     "id":                   "http://edamontology.org/data_0842",
