@@ -114,6 +114,14 @@ The following playbook produces a report file in `/tmp/cert-expiry-report.json`:
     is deployed check the route and, if the application is not responding,
     review the solution suggested in the
     [knowledge base](../../knowledge-base/post-certificate-renewal-problems.md) article.
+
+1.  You may find Route problems, possibly related to routes that had already
+    expired. The following errors, caught in the acme-controller** log,
+    may indicate that the route is corrupt in some way and needs to be
+    recreated: `Failed to GET "???/.well-known/acme-challenge/???": 404 Not Found`. 
+    It's not clear why this happens and whether prior expiry has anything to
+    do with the fault but the current advice is that carefully recreating
+    the affected routes may resolve the problem.
  
 ---
 
@@ -121,6 +129,6 @@ Alan Christie
 January 2019
 
 [ansible]: https://docs.ansible.com
-[tls-sni-01]: https://community.letsencrypt.org/t/how-to-stop-using-tls-sni-01-with-certbot/83210)
+[tls-sni-01]: https://community.letsencrypt.org/t/how-to-stop-using-tls-sni-01-with-certbot/83210
 [roles]: https://docs.ansible.com/ansible/2.5/user_guide/playbooks_reuse_roles.html
 [certbot]: https://certbot.eff.org
