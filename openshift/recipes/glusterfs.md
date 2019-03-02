@@ -10,12 +10,12 @@ Info on Ansible playbooks:
 * https://github.com/openshift/openshift-ansible/tree/master/roles/openshift_storage_glusterfs
 * https://github.com/openshift/openshift-ansible/blob/master/playbooks/openshift-glusterfs/README.md
 
-## Using Hekati
+## Using Heketi
 
-Identify the hekati pod in the glusterfs project.
+Identify the heketi pod in the glusterfs project.
 
 ```
-oc rsh <hekati-pod>
+oc rsh <heketi-pod>
 ```
 
 ### Credentials
@@ -23,13 +23,13 @@ oc rsh <hekati-pod>
 You need to set the `HEKETI_CLI_USER` and `HEKETI_CLI_KEY` environment variables.
 Key can be found in the `heketi-storage-admin-secret` secret.
 
-In the hekati pod:
+In the heketi pod:
 
 ```
 # export HEKETI_CLI_USER=admin
 # export HEKETI_CLI_KEY="<key-from-secret>"
 #
-# hekati-cli help
+# heketi-cli help
 ...
 ```
 
