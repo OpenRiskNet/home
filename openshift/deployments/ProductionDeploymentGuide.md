@@ -25,7 +25,7 @@ Avoid running as the root user unless that is absolutely necessary, and that sho
 
 AIM: your containers can be run without the need to modify the default security settings.
 
-## Create project-specific users
+## Create project-specific users
 
 Do not rely on an OpenShift `admin` user. where possible use `admin` to create
 a user that is specific to your deployment/project with limited privileges
