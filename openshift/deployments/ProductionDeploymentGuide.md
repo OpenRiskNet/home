@@ -1,9 +1,9 @@
 # Guide for deploying production services
 
-So you have managed to deploy your apps and/or services, hopefully by means of creating some templates that
-allow simple deployment and undeployment. So are you done?
+So you have managed to deploy your apps and/or services to an OpenRiskNet Virtual Environment (VE),
+probably by means of creating some templates that allow simple deployment and undeployment. So are you done?
 
-NO, certainly not. OpenRiskNet needs services to be of production quality, so that third parties will find
+Certainly not! OpenRiskNet needs services to be of production quality, so that third parties will find
 them easy to deploy, and will satisfy strict security requirements. Think of this as needing to have your
 services at a state that a security concious pharmaceutical company will be willing to us.
 
@@ -57,7 +57,7 @@ in the article [Understanding Service Accounts and SCCs](https://blog.openshift.
 The expectation nowadays is that HTTPS should be used for all traffic and that all certificates should be signed by 
 a trusted CA. Use of plain HTTP or self-signed certificates is frowned on.
 
-The [ACME Controller](acme-controller) tool that is expected to be deployed to any ORN VRE makes this very simple to 
+The [ACME Controller](acme-controller) tool that is expected to be deployed to any ORN Vhttps://github.com/OpenRiskNet/home/wiki/Annotating-your-service-to-make-it-discoverable VE makes this very simple to 
 achieve. All that is needed is to add this annotation to your route and [Let's Encrypt](https://letsencrypt.org/) 
 certificates will be generated and automatically renewed for your routes.
 ```
@@ -72,7 +72,6 @@ can be generated and its easy to exceed this when testing.
 ## Availability
 
 ### Publish your application
-
 Let users know that your application is available for use.
 On the currnet ORN production site this involved adding a link to your app (the public routes) in this 
 [landing page](https://home.prod.openrisknet.org/).
@@ -82,9 +81,10 @@ Committing a change to this repo will result in the page automatically being red
 later.
 
 ### Service discoverability
-Make your services discoverable by the ORN Service Registry.
+Make your services discoverable by the ORN Service Registry by adding annotations to your Service defintions that the 
+registry will discover when your services start or stop.
 
-_TODO: describe how to do this once it's working_.
+This is described in the [Wiki](https://github.com/OpenRiskNet/home/wiki/Annotating-your-service-to-make-it-discoverable).
 
 ## Health checks
 Make sure your pods have health checks.
@@ -114,7 +114,7 @@ deployment guide.
 
 ## Consider use of Infrastructure components
 
-An ORN VRE provides a number of `infrastructure` components. If your application provides these themselves consider
+An ORN VE provides a number of `infrastructure` components. If your application provides these themselves consider
 switching to using these so that you can avoid needing to manage them yourself.
 
 The current infrastructure components are:
@@ -128,7 +128,7 @@ of database) then work with us to make this happen.
 
 ## Deployability
 
-Managers of other VREs will want to deploy your application. Make this easy by adding it to the 
+Managers of other VEs will want to deploy your application. Make this easy by adding it to the 
 [OpenShift Service Catalog](https://docs.openshift.org/latest/architecture/service_catalog/index.html)
 (not to be confused with the OpenRiskNet Registry).
 
