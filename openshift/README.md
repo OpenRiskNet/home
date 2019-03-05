@@ -70,6 +70,6 @@ Take a look at these OpenRiskNet examples that are also in this repository:
 * [environments](environments/) - concrete examples of creating different types of OpenShift environments
 * [deployments](deployments/) - concrete examples of deploying infrastructure and application components to OpenShift
 
-Also of interst:
+Also of interest:
 
-* [Guide to production deployments](deployments/ProductionDeploymentGuide.md)
+* [Deployment and development guidelines](https://github.com/OpenRiskNet/home/wiki#openrisknet-application-deployments)
