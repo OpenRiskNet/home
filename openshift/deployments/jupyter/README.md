@@ -79,11 +79,14 @@ These are stored in a secret in the `jupyter` project and used by the `jupyterhu
 __Note__: this playbook is currently located in the [Squonk repo](https://github.com/InformaticsMatters/squonk). It will soon 
 be added to this repo. 
 
-As an admin user you need to source the appropriate `setenv.sh` file that describes your OpenShift environment. This is the file 
-that you used to create the environment. Then run:
+As an admin user you need to source the appropriate `setenv.sh` file that describes your OpenShift environment. 
+This is the file that you used to create the environment (if not available then these environment variables need to be set:
+OC_MASTER_URL, OC_ADMIN, OC_ADMIN_PASSWORD, OC_INFRA_PROJECT, OC_POSTGRESQL_SERVICE, OC_INFRA_SA).
+
+Then run:
 
 ```
-ansible-playbook playbooks/squonk-infra/create-user-db.yaml -e new_db=jupyterhub -e new_db_user=jupyterhub -e new_db_namespace=jupyter
+ansible-playbook playbooks/infra/create-user-db.yaml -e new_db=jupyterhub -e new_db_user=jupyterhub -e new_db_namespace=jupyter
 ```
 
 Once added you can check for a secret named `database-credentials-jupyterhub` in the `jupyter` project that contains the
@@ -92,7 +95,7 @@ database connection details.
 If you need to delete these you can run:
 
 ```
-ansible-playbook playbooks/squonk-infra/delete-user-db.yaml -e db=jupyterhub -e db_user=jupyterhub
+ansible-playbook playbooks/infra/delete-user-db.yaml -e db=jupyterhub -e db_user=jupyterhub
 ```
 
 After running those playbooks you need to switch back to the jupyter project:
