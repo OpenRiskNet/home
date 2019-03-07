@@ -1,8 +1,10 @@
 # OpenShift deployments
 
 The [OKD Orchestrator] is the _preferred_ tool for the formation of
-OpenShift VRE deployments. The role of the orchestrator is to provide
-a simplified installation process that supports these types of deployments:
+OpenShift VRE deployments. The `standard-openstack` directory seen here
+is kept as a historical reference for the early (pre-orchestrator) deployments.
+The role of the **OKD Orchestrator** is to provide a simplified
+installation process that supports these types of deployments:
 
 * simple one-server deployment for basic experimentation
 * standard availability allowing moderate scaleability
