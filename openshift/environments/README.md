@@ -1,10 +1,8 @@
 # OpenShift deployments
 
-This directory will contain examples of different types of OpenShift deployments.
-The aim is to make it easy to deploy different scale deployments to different infrastructures
-(e.g. different cloud providers).
-
-We anticipate are the very least to support these types of deployments:
+The [OKD Orchestrator] is the _preferred_ tool for the formation of
+OpenShift VRE deployments. The role of the orchestrator is to provide
+a simplified installation process that supports these types of deployments:
 
 * simple one-server deployment for basic experimentation
 * standard availability allowing moderate scaleability
@@ -14,6 +12,14 @@ We anticipate at the very least to support these infrastructures:
 
 * OpenStack - for flexible use and deployment to in-house clusters
 * Amazon AWS - for robust cloud production deployments
+* Google CE - for robust cloud production deployments
+* Bare Metal - for custom/on-premise infrastructure
 * Scaleway - for low cost cloud deployments
 
-Examples will be located in the sub-directories.
+For further details and an installation guide refer to the
+orchestrator's built-in [documentation].
+
+---
+
+[Documentation]: https://docs.informaticsmatters.com/build/html/index.html
+[OKD Orchestrator]: https://github.com/InformaticsMatters/okd-orchestrator.git
