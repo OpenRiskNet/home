@@ -1,0 +1,37 @@
+---
+
+- name: Move to Squonk Infrastructure Project
+  shell: oc project {{ oc_infra_project }}
+  changed_when: False
+
+- name: Login (user)
+  shell: >
+    oc login {{ oc_master_url }} -u {{ oc_user }} -p {{ oc_user_password }}
+    --insecure-skip-tls-verify=true
+  changed_when: False
+
+- name: Check RabbitMQ Deployment
+  shell: oc get dc
+  register: dc_result
+  changed_when: False
+
+- name: Create RabbitMQ Deployment
+  shell: >
+    oc process
+    -f {{ role_path }}/files/rabbitmq.yaml
+    -p INFRA_NAMESPACE={{ oc_infra_project }}
+    -p INFRA_SA={{ oc_infra_sa }}
+    -p RABBITMQ_HOST=rabbitmq.{{ oc_infra_project }}.svc
+    | oc create -f -
+  when:  not dc_result.stdout | regex_search('^rabbitmq\s', multiline=True)
+
+# Wait for running pods
+
+- name: Wait for RabbitMQ
+  shell: oc get po | grep rabbitmq | grep -v deploy | grep 1/1 > /dev/null
+  delay: 20
+  retries: "{{ (pod_ready_timeout | int / 20) | int }}"
+  register: result
+  until: result.rc == 0
+  when: wait_for_pods
+  changed_when: False

@@ -26,6 +26,9 @@ parameters:
 - name: INFRA_NAMESPACE
   value: openrisknet-infra
 
+- name: INFRA_SA
+  value: default
+
 # --------
 # RabbitMQ
 # --------
@@ -67,11 +70,11 @@ parameters:
   generate: expression
 
 - name: RABBITMQ_CPU_REQUEST
-  value: 100m
+  value: 200m
 - name: RABBITMQ_CPU_LIMIT
   value: 1000m
 - name: RABBITMQ_MEM_REQUEST
-  value: 100Mi
+  value: 250Mi
 - name: RABBITMQ_MEM_LIMIT
   value: 500Mi
 
@@ -129,11 +132,16 @@ objects:
     replicas: 1
     selector:
       name: rabbitmq
+    strategy:
+      type: Recreate
+      recreateParams:
+        timeoutSeconds: 100
     template:
       metadata:
         labels:
           name: rabbitmq
       spec:
+        serviceAccountName: ${INFRA_SA}
         containers:
         - image: rabbitmq:${RABBITMQ_IMAGE_TAG}
           name: rabbitmq
@@ -162,13 +170,13 @@ objects:
           ports:
           - containerPort: 5672
           - containerPort: 15672
-#          resources:
-#            limits:
-#              cpu: ${RABBITMQ_CPU_LIMIT}
-#              memory: ${RABBITMQ_MEM_LIMIT}
-#            requests:
-#              cpu: ${RABBITMQ_CPU_REQUEST}
-#              memory: ${RABBITMQ_MEM_REQUEST}
+          resources:
+            limits:
+              cpu: ${RABBITMQ_CPU_LIMIT}
+              memory: ${RABBITMQ_MEM_LIMIT}
+            requests:
+              cpu: ${RABBITMQ_CPU_REQUEST}
+              memory: ${RABBITMQ_MEM_REQUEST}
           volumeMounts:
           - name: rabbitmq-mnesia
             mountPath: ${RABBITMQ_MNESIA_BASE}

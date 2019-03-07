@@ -1,3 +1,5 @@
+---
+
 # SSO template adapted from https://github.com/jboss-openshift/application-templates/blob/master/sso/sso72-x509-postgresql-persistent.json
 # This was changed in the following ways:
 # 1.  The PVC definition was removed so that it could be decoupled from deploying the app
@@ -15,7 +17,7 @@
 # 13. Standardized randomly generated password pattern to "[a-zA-Z0-9]{12}"
 # 14. Added HOSTNAME_HTTPS parameter and use for HTTPS route name
 # 15. Removed HTTP route
----
+
 kind: Template
 apiVersion: v1
 metadata:
@@ -166,8 +168,21 @@ parameters:
   name: HOSTNAME_HTTPS
   value: ''
   required: false
+- displayName: Termination policy for insecure traffic
+  description: 'indicates the desired behavior for insecure connections to
+    the route. Typically one of Allow, Disable or Redirect'
+  name: ROUTE_INSECURE_POLICY
+  value: Disable
+  required: false
+
+- name: SSO_SA
+  value: default
 
 objects:
+
+# NOTE: As it's currently hard-coded,
+#       if you modify the 'database-service' secret
+#       you *MUST* check the rest of the project.
 
 - kind: Secret
   apiVersion: v1
@@ -278,6 +293,7 @@ objects:
     to:
       name: secure-${APPLICATION_NAME}
     tls:
+      insecureEdgeTerminationPolicy: "${ROUTE_INSECURE_POLICY}"
       termination: reencrypt
 
 - kind: DeploymentConfig
@@ -311,6 +327,7 @@ objects:
           application: "${APPLICATION_NAME}"
       spec:
         terminationGracePeriodSeconds: 75
+        serviceAccountName: ${SSO_SA}
         containers:
         - name: "${APPLICATION_NAME}"
           image: "${APPLICATION_NAME}"
@@ -326,13 +343,20 @@ objects:
             mountPath: "/etc/x509/jgroups"
             readOnly: true
           livenessProbe:
+            timeoutSeconds: 4
+            initialDelaySeconds: 120
+            failureThreshold: 3
+            periodSeconds: 30
             exec:
               command:
               - "/bin/bash"
               - "-c"
               - "/opt/eap/bin/livenessProbe.sh"
-            initialDelaySeconds: 60
           readinessProbe:
+            timeoutSeconds: 4
+            initialDelaySeconds: 90
+            failureThreshold: 10
+            periodSeconds: 15
             exec:
               command:
               - "/bin/bash"
@@ -429,6 +453,9 @@ objects:
           application: "${APPLICATION_NAME}"
       spec:
         terminationGracePeriodSeconds: 60
+        serviceAccountName: ${SSO_SA}
+#        securityContext:
+#          fsGroup: 1000100001
         containers:
         - name: "db-postgresql"
           image: postgresql
@@ -438,19 +465,26 @@ objects:
             protocol: TCP
           readinessProbe:
             timeoutSeconds: 1
-            initialDelaySeconds: 5
+            initialDelaySeconds: 60
+            failureThreshold: 10
+            periodSeconds: 15
             exec:
               command:
               - "/bin/sh"
               - "-i"
               - "-c"
-              - psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c
-                'SELECT 1'
+              - pg_isready -h 127.0.0.1 -p 5432
           livenessProbe:
             timeoutSeconds: 1
-            initialDelaySeconds: 30
-            tcpSocket:
-              port: 5432
+            initialDelaySeconds: 90
+            failureThreshold: 3
+            periodSeconds: 30
+            exec:
+              command:
+              - "/bin/sh"
+              - "-i"
+              - "-c"
+              - pg_isready -h 127.0.0.1 -p 5432
           volumeMounts:
           - mountPath: "/var/lib/pgsql/data"
             name: "postgresql-pvol"
@@ -475,4 +509,3 @@ objects:
         - name: "postgresql-pvol"
           persistentVolumeClaim:
             claimName: "postgresql-claim"
-

@@ -1,0 +1,42 @@
+---
+
+# The Infrastructure Persistant storage using dynamic provisioning.
+# With dynamic provisioning you only need to provide the PVC and specify
+# the storage class.
+#
+# oc process -f infra-backup-pvc-dynamic.yaml | oc create -n $OC_INFRA_PROJECT -f -
+# oc delete pvc --selector template=infra-backup-pvc-dynamic -n $OC_INFRA_PROJECT
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: infra-persistence-dynamic
+  annotations:
+    description: Infrastructure Persistence using dynamic provisioning
+    tags: infra,pv,pvc
+labels:
+  template: infra-backup-pvc-dynamic
+
+parameters:
+
+- name: STORAGE_CLASS
+  value: standard
+
+- name: POSTGRESQL_BACKUP_VOLUME_SIZE
+  value: 50Gi
+
+objects:
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: postgresql-backup-claim
+    labels:
+      application: postgresql-backup
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: "${POSTGRESQL_BACKUP_VOLUME_SIZE}"
+    storageClassName: ${STORAGE_CLASS}

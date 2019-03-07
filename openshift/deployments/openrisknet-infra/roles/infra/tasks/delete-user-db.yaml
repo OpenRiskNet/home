@@ -1,0 +1,49 @@
+---
+
+# Deletes a database user and database.
+# The database name and user to be supplied: -
+#
+#  db
+#  db_user
+#
+# This playbook *does not* remove the credentials from the user's
+# project.
+#
+# At the successful end of this play: -
+#
+# - The DB user and database will have been deleted.
+
+- name: Assert required variables have been defined
+  assert:
+    that:
+    - db is defined
+    - db_user is defined
+
+- name: Login as Admin
+  shell: oc login {{ oc_master_url }} -u {{ oc_admin }} -p {{ oc_admin_password }}
+  changed_when: False
+
+- name: Move to Infrastructure Project
+  shell: oc project {{ oc_infra_project }}
+  changed_when: False
+
+- name: Remove prior temporary Objects (Infrastructure)
+  shell: oc delete all,cm --selector template=db-delete
+
+- name: Delete User and Database
+  shell: >
+    oc process
+    -f {{ role_path }}/files/infra-db-delete.yaml
+    -p DB_USER={{ db_user }}
+    -p DB={{ db }}
+    -p INFRA_SA={{ oc_infra_sa }}
+    -p DB_HOST={{ oc_postgresql_service }}.{{ oc_infra_project }}.svc
+    | oc create -f -
+
+- name: Wait for User and Database Job
+  shell: oc describe jobs/db-deleter | grep '1 Succeeded'
+  delay: 20
+  retries: "{{ (pod_ready_timeout | int / 20) | int }}"
+  register: result
+  until: result.rc == 0
+  changed_when: False

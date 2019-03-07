@@ -1,0 +1,78 @@
+---
+
+# oc process -f sso-backup-daily.yaml | oc create -f -
+# oc delete cronjob --selector template=sso-backup-daily
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: pg-backup-daily
+  annotations:
+    description: Infrastructure Backups
+    tags: infra,postgresql,backup
+labels:
+  template: sso-backup-daily
+
+parameters:
+
+- name: BACKUP_SA
+  value: default
+
+- name: BACKUP_REGISTRY
+  value: 'docker.io'
+- name: BACKUP_IMAGE
+  value: 'informaticsmatters/sql-backup'
+- name: BACKUP_TAG
+  value: 'stable'
+
+- name: BACKUP_SCHEDULE
+  value: '37 3 * * *'
+- name: BACKUP_COUNT
+  value: '7'
+- name: BACKUP_PRIOR_COUNT
+  value: '24'
+
+objects:
+
+# The DAILY CronJob (running at 03:37).
+# This job will keep the oldest of the hourly backups
+# (when there are 24 hourly backups).
+# Keeping the last 7 backups in the directory /backup/daily
+- kind: CronJob
+  apiVersion: batch/v2alpha1
+  metadata:
+    name: postgresql-backup-daily
+  spec:
+    schedule: ${BACKUP_SCHEDULE}
+    startingDeadlineSeconds: 180
+    concurrencyPolicy: Forbid
+    jobTemplate:
+      spec:
+        template:
+          metadata:
+            labels:
+              name: postgresql-backup-daily
+          spec:
+            serviceAccountName: ${BACKUP_SA}
+            # Application containers
+            containers:
+            - image: ${BACKUP_REGISTRY}/${BACKUP_IMAGE}:${BACKUP_TAG}
+              name: postgresql-backup-daily
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+              - name: postgresql-backup-data
+                mountPath: /backup
+
+              env:
+              - name: BACKUP_TYPE
+                value: daily
+              - name: BACKUP_COUNT
+                value: ${BACKUP_COUNT}
+              - name: BACKUP_PRIOR_COUNT
+                value: ${BACKUP_PRIOR_COUNT}
+
+            volumes:
+            - name: postgresql-backup-data
+              persistentVolumeClaim:
+                claimName: postgresql-backup-claim
+            restartPolicy: Never

@@ -1,0 +1,105 @@
+---
+
+# What volume type are we using? One of: -
+#
+# - dynamic
+# - nfs
+# - minishift
+# - none
+#
+#   When using `dynamic' remember to set
+#   the accompanying 'volume_storage_class' variable (see below)
+#
+#   When using 'nfs' you must have provisioned the NFS volumes
+#
+#   When set to 'none' the user is expected to have provisioned
+#   the persistent volumes and claims suitable for the project.
+oc_infra_volume_type: "{{ ansible_env.OC_INFRA_VOLUME_TYPE }}"
+
+# When using dynamic volumes the storage
+# class needs to be defined...
+oc_infra_volume_storage_class: "{{ ansible_env.OC_INFRA_VOLUME_STORAGE_CLASS }}"
+
+keycloak_insecure_route: "{{ ansible_env.KEYCLOAK_INSECURE_ROUTE }}"
+keycloak_realm: "{{ ansible_env.KEYCLOAK_REALM }}"
+keycloak_server_url: "{{ ansible_env.KEYCLOAK_SERVER_URL }}"
+keycloak_service_user: manager
+keycloak_service_user_password_field: sso-service-password
+
+# Infrastructure backup schedules.
+#
+# We basically run upto two backup processes in the infrastructure project,
+# one called 'hourly' (which actually runs at the rate you define) and one
+# called 'daily'.
+#
+# Define the schedule and number of backups required.
+# If the number is zero the corresponding backup is not deployed.
+#
+# The 'hourly' backup is the only backup type that actually creates new backup
+# files, the others simply copy the oldest backup file from the prior backup
+# type. Consequently you *must* have an hourly backup if you are running any
+# other backup (daily, weekly etc). So set all counts to zero or only set
+# the non-hourly counts to zero.
+oc_infra_backup_hourly_schedule: "{{ ansible_env.OC_INFRA_HOURLY_BACKUP_SCHEDULE }}"
+oc_infra_backup_hourly_count: "{{ ansible_env.OC_INFRA_HOURLY_BACKUP_COUNT }}"
+oc_infra_backup_daily_schedule: "{{ ansible_env.OC_INFRA_DAILY_BACKUP_SCHEDULE }}"
+oc_infra_backup_daily_count: "{{ ansible_env.OC_INFRA_DAILY_BACKUP_COUNT }}"
+
+oc_infra_backup_volume_size: "{{ ansible_env.OC_INFRA_BACKUP_VOLUME_SIZE }}"
+oc_infra_project_display_name: "{{ ansible_env.OC_INFRA_PROJECT_DISPLAY_NAME }}"
+
+oc_infra_project: "{{ ansible_env.OC_INFRA_PROJECT }}"
+oc_infra_sa: "{{ ansible_env.OC_INFRA_SA }}"
+
+oc_admin: "{{ ansible_env.OC_ADMIN }}"
+oc_admin_password: "{{ ansible_env.OC_ADMIN_PASSWORD }}"
+oc_master_url: "{{ ansible_env.OC_MASTER_URL }}"
+oc_master_hostname: "{{ ansible_env.OC_MASTER_HOSTNAME }}"
+oc_nfs_server: "{{ ansible_env.OC_NFS_SERVER }}"
+oc_nfs_path: "{{ ansible_env.OC_NFS_PATH }}"
+oc_postgresql_service: "{{ ansible_env.OC_POSTGRESQL_SERVICE }}"
+oc_postgresql_volume_size: "{{ ansible_env.OC_POSTGRESQL_VOLUME_SIZE }}"
+oc_routes_basename: "{{ ansible_env.OC_ROUTES_BASENAME }}"
+
+oc_user: "{{ ansible_env.OC_USER }}"
+oc_user_password: "{{ ansible_env.OC_USER_PASSWORD }}"
+
+postgresql_shared_buffer_size: 1GB
+rabbitmq_volume_size: 1Gi
+
+# Here PVs used by the application (the squonk-work-dir for example)
+# are returned to an Available state if they're currently
+# in a Released state. Note: it is the user's responsibility
+# to protect themselves for data loss here. This will inspect the
+# "state" of all PVs in the squonk *and* infrastructure projects.
+recycle_released_pvs: yes
+
+# Keycloak default roles.
+# A list of roles that need to be added to Keycloak.
+# Each is also added to the default set of roles for the realm.
+keycloak_default_roles:
+  - standard-user
+
+# Default values for variables used when creating
+# new database for projects. The following  (not defined here)
+# must be defined by the user on the command-line:
+#
+# db
+# db_namespace
+db_user: "{{ lookup('password','/dev/null chars=lowercase length=10') }}"
+db_user_password: "{{ lookup('password','/dev/null chars=ascii_letters,digits length=10') }}"
+
+# Various retry timeouts (seconds)...
+pod_ready_timeout: 600
+pod_terminate_timeout: 300
+pv_create_timeout: 200
+pvc_bind_timeout: 200
+
+# Validate certificates
+# With tasks like curl
+validate_certificates: no
+
+# If set each deployment of Pods
+# will be followed by a monitoring step that waits for the
+# expected Pods to initialise before moving on to the next step.
+wait_for_pods: yes

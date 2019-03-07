@@ -1,0 +1,10 @@
+---
+
+- hosts: localhost
+
+  tasks:
+
+  - name: Run the User Database Tasks
+    include_role:
+      name: infra
+      tasks_from: delete-user-db.yaml

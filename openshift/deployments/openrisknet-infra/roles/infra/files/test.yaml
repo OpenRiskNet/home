@@ -1,0 +1,54 @@
+---
+
+# A minimal OpenShift template
+# to create a BusyBox container with
+# a volume claim that can be used to
+# launch a Job and inspect a PVC.
+#
+# Create with:
+#   oc process -p PVC_CLAIM_NAME=my-claim -f busy-job.yaml | oc create -f -
+# Destroy with:
+#   oc delete job --selector template=busy-job
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: busy-job
+labels:
+  template: busy-job
+
+parameters:
+
+- name: PVC_CLAIM_NAME
+  value: busy-job-claim
+
+objects:
+
+- kind: Job
+  apiVersion: batch/v1
+  metadata:
+    name: busy-job
+  spec:
+    replicas: 1
+    selector:
+      name: busy-job
+    template:
+      metadata:
+        labels:
+          name: busy-job
+      spec:
+        containers:
+        - image: busybox
+          name: busy-job
+          command:
+          - "sh"
+          - "-c"
+          - "tail -f /dev/null"
+          volumeMounts:
+          - name: busy-job-vol
+            mountPath: /test
+        volumes:
+        - name: busy-job-vol
+          persistentVolumeClaim:
+            claimName: ${{PVC_CLAIM_NAME}}
+        restartPolicy: Never

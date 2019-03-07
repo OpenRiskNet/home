@@ -1,0 +1,80 @@
+---
+
+# oc process -f sso-backup-hourly.yaml | oc create -f -
+# oc delete cronjob --selector template=sso-backup-hourly
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: pg-backup-hourly
+  annotations:
+    description: Infrastructure Backups
+    tags: infra,postgresql,backup
+labels:
+  template: sso-backup-hourly
+
+parameters:
+
+- name: BACKUP_SA
+  value: default
+
+- name: BACKUP_REGISTRY
+  value: 'docker.io'
+- name: BACKUP_IMAGE
+  value: 'informaticsmatters/sql-backup'
+- name: BACKUP_TAG
+  value: 'stable'
+
+- name: BACKUP_SCHEDULE
+  value: '7 * * * *'
+- name: BACKUP_COUNT
+  value: '24'
+
+objects:
+
+# The HOURLY CronJob (running at HH:07).
+# This job will create new postgres backups
+# Keeping the last 24 backups in the directory /backup/hourly
+- kind: CronJob
+  apiVersion: batch/v2alpha1
+  metadata:
+    name: postgresql-backup-hourly
+  spec:
+    schedule: ${BACKUP_SCHEDULE}
+    startingDeadlineSeconds: 180
+    concurrencyPolicy: Forbid
+    jobTemplate:
+      spec:
+        template:
+          metadata:
+            labels:
+              name: postgresql-backup-hourly
+          spec:
+            serviceAccountName: ${BACKUP_SA}
+            # Application containers
+            containers:
+            - image: ${BACKUP_REGISTRY}/${BACKUP_IMAGE}:${BACKUP_TAG}
+              name: postgresql-backup-hourly
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+              - name: postgresql-backup-data
+                mountPath: /backup
+
+              env:
+              - name: BACKUP_TYPE
+                value: hourly
+              - name: BACKUP_COUNT
+                value: ${BACKUP_COUNT}
+              - name: PGHOST
+                value: db-postgresql
+              - name: PGADMINPASS
+                valueFrom:
+                  secretKeyRef:
+                    name: postgresql-secrets
+                    key: database-admin-password
+
+            volumes:
+            - name: postgresql-backup-data
+              persistentVolumeClaim:
+                claimName: postgresql-backup-claim
+            restartPolicy: Never
