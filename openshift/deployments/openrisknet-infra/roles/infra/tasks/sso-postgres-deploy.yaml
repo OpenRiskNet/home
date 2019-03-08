@@ -48,7 +48,7 @@
   shell: >
     oc process
     -f {{ role_path }}/files/sso-backup-hourly.yaml
-    -p BACKUP_SCHEDULE={{ oc_infra_backup_hourly_schedule }}
+    -p BACKUP_SCHEDULE="{{ oc_infra_backup_hourly_schedule }}"
     -p BACKUP_COUNT={{ oc_infra_backup_hourly_count }}
     -p BACKUP_SA={{ oc_infra_sa }}
     | oc create -f -
@@ -59,7 +59,7 @@
   shell: >
     oc process
     -f {{ role_path }}/files/sso-backup-daily.yaml
-    -p BACKUP_SCHEDULE={{ oc_infra_backup_daily_schedule }}
+    -p BACKUP_SCHEDULE="{{ oc_infra_backup_daily_schedule }}"
     -p BACKUP_COUNT={{ oc_infra_backup_daily_count }}
     -p BACKUP_PRIOR_COUNT={{ oc_infra_backup_hourly_count }}
     -p BACKUP_SA={{ oc_infra_sa }}
