@@ -7,18 +7,21 @@
 - name: Delete Infrastructure?
   pause:
     prompt: >-
-      Delete the Infrastructure project?
+      Delete the Infrastructure from {{ oc_master_url }}?
       Press return to continue.
       Press Ctrl+c and then "a" if you've changed your mind
 
 - name: Login (admin)
-  shell: >
-    oc login {{ oc_master_url }} -u {{ oc_user }} -p {{ oc_user_password }}
-    --insecure-skip-tls-verify=true
+  shell: oc login {{ oc_master_url }} -u {{ oc_admin }} -p {{ oc_admin_password }}
   changed_when: False
 
 # To un-deploy the infrastructure, the fastest way is to
 # simply delete the project.
+
+- name: Check Infra Project
+  shell: oc get projects
+  register: projects_result
+  changed_when: False
 
 - name: Delete Infra Project
   shell: oc delete project/{{ oc_infra_project }}
