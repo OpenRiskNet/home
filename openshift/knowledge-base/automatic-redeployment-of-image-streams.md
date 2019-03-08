@@ -1,4 +1,4 @@
-# Automatic Redeployment of ImageStreams
+# Automatic Redeployment with ImageStreams
 This technical note provides advice on how to ensure that an application
 Pod is redeployed when the source Docker image (assumed to be in DockerHub)
 has changed.

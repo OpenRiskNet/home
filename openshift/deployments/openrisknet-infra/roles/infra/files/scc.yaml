@@ -1,0 +1,54 @@
+---
+
+# Infrastructure Security Context Constraints.
+# Essentially we start with the 'restricted' SCC and add what we need.
+# For background, refer to the blog article:
+#
+#   https://blog.openshift.com/understanding-service-accounts-sccs/
+#
+# And:
+#
+#   https://docs.openshift.com/container-platform/3.11/
+#     admin_guide/manage_scc.html
+#
+#   https://docs.openshift.com/container-platform/3.11/
+#     install_config/persistent_storage/pod_security_context.html
+#
+# oc process -f scc.yaml | oc create -f -
+# oc delete scc --selector template=scc-infra
+
+kind: Template
+apiVersion: v1
+metadata:
+ name: scc-infra
+ annotations:
+   description: Infrastructure SCC Definition
+   tags: scc,infratsrtucture
+labels:
+  template: scc-infra
+  app: scc-infra
+
+parameters:
+
+- name: INFRA_NAMESPACE
+  value: infra
+- name: INFRA_SA
+  value: infra
+
+objects:
+
+- kind: SecurityContextConstraints
+  apiVersion: v1
+  metadata:
+    name: scc-infra
+  allowPrivilegedContainer: false
+  runAsUser:
+    type: MustRunAsRange
+  seLinuxContext:
+    type: MustRunAs
+  fsGroup:
+    type: MustRunAs
+  supplementalGroups:
+    type: RunAsAny
+  volumes:
+  - "*"

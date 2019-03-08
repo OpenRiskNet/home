@@ -1,0 +1,116 @@
+---
+
+# Get a keycloak token (sets the fact 'keycloak_token').
+# Remember that the login user may have changed to admin.
+
+- import_tasks: get-keycloak-token.yaml
+
+# Adding keycloak roles.
+# The steps here are: -
+#
+# 1. Get a list of roles using the 'users_file'
+#    that are already known (this might be nobody)
+# 2. Add all the users from the 'users_file' that aren't known
+# 3. Get user identities for all the users in the users_file
+# 4. Set (reset) passwords for all the users that were added in step 2.
+
+#####
+# 1 #
+#####
+#
+# Get a list of roles that are already known.
+
+- name: Get exisiting Roles for the Realm
+  uri:
+    url: "{{ keycloak_server_url }}/admin/realms/{{ keycloak_realm }}/roles"
+    validate_certs: no
+    headers:
+      Authorization: bearer {{ keycloak_token }}
+  register: realm_roles
+  changed_when: False
+
+# The above 'query' results in a `realm_roles' variable. A structure
+# with each query represented as an element in the 'json' array.
+# i.e.
+#
+#  "json": [{
+#    "name": "standard-user"
+#
+# To simplify further processing, we'd like a nice flat list.
+# So, to collect all known role names into a list it's...
+#
+#   realm_roles | json_query('json[*].name') | flatten
+#
+- name: Collect known Roles
+  set_fact:
+    known_roles: "{{ realm_roles | json_query('json[*].name') | flatten }}"
+  changed_when: False
+
+#####
+# 2 #
+#####
+#
+# Now, add all the roles we need.
+
+- name: Add Roles (that do not exist)
+  uri:
+    url: "{{ keycloak_server_url }}/admin/realms/{{ keycloak_realm }}/roles"
+    method: POST
+    body: >-
+      {"name": "{{ item }}"}
+    body_format: json
+    status_code: 201
+    validate_certs: no
+    headers:
+      Authorization: bearer {{ keycloak_token }}
+  with_items:
+  - "{{ keycloak_default_roles }}"
+  when:
+  - item not in known_roles
+
+#####
+# 3 #
+#####
+#
+# Update the top-level Realm Representation
+# which contains the array of 'default roles'.
+#
+# To do this we:
+# -   Get the current representation
+# -   Collect the default roles from it
+# -   Extend the list of default roles
+# -   Update the role Representation by putting the array back
+
+- name: Get the top-level Realm Representation
+  uri:
+    url: "{{ keycloak_server_url }}/admin/realms/{{ keycloak_realm }}"
+    validate_certs: no
+    headers:
+      Authorization: bearer {{ keycloak_token }}
+  register: realm_representation
+  changed_when: False
+
+- name: Collect known Default Roles
+  set_fact:
+    known_default_roles: "{{ realm_representation | json_query('json.defaultRoles') }}"
+  changed_when: False
+
+- name: Extend Realm Representation Default Roles
+  set_fact:
+    known_default_roles: "{{ known_default_roles }} + [ '{{ item }}' ]"
+  with_items:
+  - "{{ keycloak_default_roles }}"
+  when: item not in known_default_roles
+  changed_when: False
+
+- name: Update Realm Representation
+  uri:
+    url: "{{ keycloak_server_url }}/admin/realms/{{ keycloak_realm }}"
+    method: PUT
+    body: >-
+      {"defaultRoles": {{ known_default_roles }}}
+    body_format: json
+    status_code: 204
+    validate_certs: no
+    headers:
+      Authorization: bearer {{ keycloak_token }}

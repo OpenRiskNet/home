@@ -1,0 +1,89 @@
+---
+
+- name: Move to Infrastructure Project
+  shell: oc project {{ oc_infra_project }}
+  changed_when: False
+
+- name: Login (admin)
+  shell: >
+    oc login {{ oc_master_url }} -u {{ oc_admin }} -p {{ oc_admin_password }}
+    --insecure-skip-tls-verify=true
+  changed_when: False
+
+# Check/Create PVs
+
+- name: Check Infrastructure PVs
+  shell: oc get pv
+  register: i_pv_result
+  changed_when: False
+
+- name: Create Infrastructure PVs
+  shell: >
+    oc process
+    -p INFRA_NAMESPACE={{ oc_infra_project }}
+    -p NFS_SERVER={{ oc_nfs_server }}
+    -p NFS_PATH={{ oc_nfs_path }}
+    -f {{ role_path }}/files/infra-pv-nfs.yaml
+    | oc create -f -
+  when: not i_pv_result.stdout | regex_search('^pv-rabbitmq\s', multiline=True)
+
+# Wait for PVs to become "Available"...
+
+- name: Wait for PVs to become Available
+  shell: >
+    oc get pv/{{ item }} | grep Available
+  retries: 6
+  delay: 5
+  register: result
+  until: result.rc == 0
+  loop:
+  - pv-postgresql
+  - pv-rabbitmq
+  when: not i_pv_result.stdout | regex_search('^pv-rabbitmq\s', multiline=True)
+
+# Deal with "Released" volumes.
+# Those PVs that are "Released"
+# must be "Available" to accept new binds...
+
+- name: Check Released volumes
+  shell: oc get pv | grep Released | grep {{ oc_infra_project }}/ | cut -f 1 -d " "
+  register: released_vols
+  when: recycle_released_pvs
+  changed_when: False
+
+- name: Recover Released volumes
+  shell: >
+    oc patch pv/{{ item }} --type json
+    -p $'- op: remove\n  path: /spec/claimRef'
+  with_items:
+  - "{{ released_vols.stdout_lines }}"
+  when: recycle_released_pvs
+
+# Check/Create PVCs
+
+- name: Check Infrastructure PVCs (nfs)
+  shell: oc get pvc
+  register: i_pvc_result
+  changed_when: False
+
+- name: Create Infrastructure PVCs (nfs)
+  shell: >
+    oc process
+    -p INFRA_NAMESPACE={{ oc_infra_project }}
+    -f {{ role_path }}/files/infra-pvc-nfs.yaml
+    | oc create -f -
+  when: not i_pvc_result.stdout | regex_search('^rabbitmq-claim\s', multiline=True)
+
+# Wait for PVCs to become "Bound"...
+
+- name: Wait for PVCs to become Bound (nfs)
+  shell: >
+    oc get pvc/{{ item }} | grep Bound
+  retries: 6
+  delay: 5
+  register: result
+  until: result.rc == 0
+  loop:
+  - postgresql-claim
+  - rabbitmq-claim
+  when: not i_pvc_result.stdout | regex_search('^rabbitmq-claim\s', multiline=True)

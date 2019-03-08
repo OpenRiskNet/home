@@ -1,26 +1,25 @@
 ---
 
-# The Infrastructure Persistant storage using dynamic provisioning.
-# With dynamic provisioning you only need to provide the PVC and specify
-# the storage class.
+# The Infrastructure Persistance for Minishift.
+# PVs are already provided by Minishift so we only need to create PVCs
 #
-# oc process -f infra-pvc-dynamic.yaml | oc create -n $OC_INFRA_PROJECT -f -
-# oc delete pvc --selector template=infra-pvc-dynamic -n $OC_INFRA_PROJECT
+# oc process -f infra-pvc-minishift.yaml | oc create -n $OC_INFRA_PROJECT -f -
+# oc delete pvc --selector template=infra-pvc-minishift -n $OC_INFRA_PROJECT
 
 kind: Template
 apiVersion: v1
 metadata:
-  name: infra-persistence-dynamic
+  name: infra-persistence-minishift
   annotations:
-    description: Squonk Infrastructure Persistence using dynamic provisioning
-    tags: squonk,infra,pv,pvc
+    description: Infrastructure Persistent Volume Claims for Minishift
+    tags: infra,pvc
 labels:
-  template: infra-pvc-dynamic
+  template: infra-pvc-minishift
 
 parameters:
 
-- name: STORAGE_CLASS
-  value: standard
+- name: INFRA_NAMESPACE
+  value: openrisknet-infra
 
 - name: RABBITMQ_VOLUME_SIZE
   value: 1Gi
@@ -34,6 +33,7 @@ objects:
   apiVersion: v1
   metadata:
     name: rabbitmq-claim
+    namespace: ${INFRA_NAMESPACE}
     labels:
       application: rabbitmq
   spec:
@@ -42,12 +42,12 @@ objects:
     resources:
       requests:
         storage: ${RABBITMQ_VOLUME_SIZE}
-    storageClassName: ${STORAGE_CLASS}
 
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: postgresql-claim
+    namespace: ${INFRA_NAMESPACE}
     labels:
       application: postgresql
   spec:
@@ -56,6 +56,3 @@ objects:
     resources:
       requests:
         storage: "${POSTGRESQL_VOLUME_SIZE}"
-    storageClassName: ${STORAGE_CLASS}
-
-

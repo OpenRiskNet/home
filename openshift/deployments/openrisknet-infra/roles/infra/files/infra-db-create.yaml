@@ -1,0 +1,148 @@
+---
+
+# Create a user and database...
+#
+#   oc process -f infra-db-create.yaml \
+#     -p DB_USER=user \
+#     -p DB_USER_PASSWORD=password123 \
+#     -p DB=databse-name \
+#     -p INFRA_SA=squonk | oc create -f -
+#
+# Once done, remove the detritus (like the ConfigMap and Job) with...
+#
+#   oc delete all,cm --selector template=db-create
+#
+# To manually remove the database artifacts from Postgres
+# open a terminal to the postgresql pod, run the psql command
+# and execute these commands:
+#
+#   drop database <db>;
+#   drop role <db-user>;
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: db-create
+labels:
+  template: db-create
+message: DB created
+
+parameters:
+
+- displayName: DB User
+  description: The required DB user
+  name: DB_USER
+  required: true
+
+- displayName: DB User password
+  description: The DB user's password
+  name: DB_USER_PASSWORD
+  required: true
+
+- displayName: DB Name
+  description: The DB to be created for the user
+  name: DB
+  required: true
+
+- displayName: DB Namespace
+  description: The Namespace (Project) that will be using the DB
+  name: DB_NAMESPACE
+  required: true
+
+- displayName: DB Host
+  description: The DB host
+  name: DB_HOST
+  required: true
+
+- displayName: Postgres Admin user
+  description: Postgres Admin user
+  name: POSTGRESQL_ADMIN_USER
+  value: postgres
+
+- displayName: Infrastructure Service Account
+  description: Infrastructure Service Account
+  name: INFRA_SA
+  value: openrisknet-infra
+
+objects:
+
+- kind: Secret
+  apiVersion: v1
+  metadata:
+    name: database-credentials-${DB}
+    namespace: ${DB_NAMESPACE}
+  stringData:
+    db-user: ${DB_USER}
+    db-user-password: ${DB_USER_PASSWORD}
+    db: ${DB}
+    db-service: ${DB_HOST}
+
+- kind: ConfigMap
+  apiVersion: v1
+  metadata:
+    name: db-creator
+  data:
+    create-db.sh: |
+      #!/bin/bash
+
+      export PGUSER=${POSTGRESQL_ADMIN_USER:-postgres}
+      export PGPASSWORD=${POSTGRESQL_ADMIN_PASSWORD}
+      export PGHOST=${POSTGRESQL_HOST:-postgres}
+
+      psql --command "CREATE USER ${DB_USER}"
+      psql --command "ALTER USER ${DB_USER} WITH PASSWORD '${DB_USER_PASSWORD}'"
+      echo "# Created user (${DB_USER})"
+
+      createdb -O ${DB_USER} ${DB}
+      echo "# Created database (${DB})"
+
+      psql --command "GRANT CONNECT ON DATABASE ${DB} to ${DB_USER}"
+      psql -d ${DB} --command "CREATE SCHEMA users AUTHORIZATION ${DB_USER}"
+      psql -d ${DB} --command "GRANT USAGE ON SCHEMA users TO ${DB_USER}"
+      psql -d ${DB} --command "CREATE SCHEMA notebooks AUTHORIZATION ${DB_USER}"
+      psql -d ${DB} --command "GRANT USAGE ON SCHEMA notebooks TO ${DB_USER}"
+
+      echo "# Create complete"
+
+- kind: Job
+  apiVersion: batch/v1
+  metadata:
+    name: db-creator
+  spec:
+    template:
+      metadata:
+        name: db-creator
+      spec:
+        serviceAccountName: ${INFRA_SA}
+        volumes:
+        - name: db-creator
+          configMap:
+            name: db-creator
+        containers:
+        - name: db-creator
+          image: centos/postgresql-95-centos7
+          command:
+            - /bin/bash
+            - /create-db/create-db.sh
+          env:
+          # DB Administration credentials (and host)
+          - name: POSTGRESQL_ADMIN_USER
+            value: ${POSTGRESQL_ADMIN_USER}
+          - name: POSTGRESQL_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgresql-secrets
+                key: database-admin-password
+          - name: POSTGRESQL_HOST
+            value: ${DB_HOST}
+          # Required user, password and database
+          - name: DB_USER
+            value: ${DB_USER}
+          - name: DB_USER_PASSWORD
+            value: ${DB_USER_PASSWORD}
+          - name: DB
+            value: ${DB}
+          volumeMounts:
+          - mountPath: /create-db
+            name: db-creator
+        restartPolicy: OnFailure

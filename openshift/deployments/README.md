@@ -40,6 +40,14 @@ Alternatively change the value of the OC_ADMIN environment variable that is set 
 
 It is suggested you deploy these projects in this order.
 
-1. acme-controller (recommended) - provides TLS support for routes using Let's Encrypt certificates
-1. openrisknet-infra (essential) - Core OpenRiskNet infrastructure that can used by any OpenRiskNet application. Currently includes PostgreSQL database and Keycloak Single Sign On (SSO)
-1. jenkins (optional) - Jenkins CI/CD system
+1.  **acme-controller** (recommended) - provides TLS support for routes using Let's
+    Encrypt certificates
+1.  **openrisknet-infra** (essential) - Core OpenRiskNet infrastructure that can
+    used by any OpenRiskNet application. A [README] explains the playbook and
+    role, which includes RabbitMQ, a PostgreSQL database and
+    Keycloak Single Sign On (SSO)
+1.  **jenkins** (optional) - Jenkins CI/CD system
+
+---
+
+[README]: openrisknet-infra/README.md

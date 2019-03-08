@@ -1,0 +1,42 @@
+---
+
+- name: Move to Infrastructure Project
+  shell: oc project {{ oc_infra_project }}
+  changed_when: False
+
+- name: Login (user)
+  shell: >
+    oc login {{ oc_master_url }} -u {{ oc_user }} -p {{ oc_user_password }}
+    --insecure-skip-tls-verify=true
+  changed_when: False
+
+# Infrastructure claims
+
+- name: Check Infrastructure PVCs (minishift)
+  shell: oc get pvc
+  register: i_pvc_result
+  changed_when: False
+
+- name: Create Infrastructure PVCs (minishift)
+  shell: >
+    oc process
+    -p INFRA_NAMESPACE={{ oc_infra_project }}
+    -p POSTGRESQL_VOLUME_SIZE={{ oc_postgresql_volume_size }}
+    -p RABBITMQ_VOLUME_SIZE={{ rabbitmq_volume_size }}
+    -f {{ role_path }}/files/infra-pvc-minishift.yaml
+    | oc create -f -
+  when: not i_pvc_result.stdout | regex_search('^rabbitmq-claim\s', multiline=True)
+
+# Wait for claims to become bound...
+
+- name: Wait for PVCs to become Bound (minishift)
+  shell: >
+    oc get pvc/{{ item }} | grep Bound
+  delay: 15
+  retries: "{{ (pvc_bind_timeout | int / 15) | int }}"
+  register: result
+  until: result.rc == 0
+  loop:
+  - postgresql-claim
+  - rabbitmq-claim
+  when: not i_pvc_result.stdout | regex_search('^rabbitmq-claim\s', multiline=True)

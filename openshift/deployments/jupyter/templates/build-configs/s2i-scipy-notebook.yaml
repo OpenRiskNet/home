@@ -25,7 +25,7 @@ items:
       type: Git
       git:
         uri: https://github.com/jupyter-on-openshift/jupyter-notebooks
-        ref: 2.1.0
+        ref: 2.1.1
       contextDir: scipy-notebook
     strategy:
       type: Source

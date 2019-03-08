@@ -11,7 +11,7 @@ written.
 >   Before continuing make sure you're familiar with OpenShift [templates]
 
 >   As a good working reference of a TSB-compliant template you can refer to
-    the **BridgeDB** template (`BridgeDb-Version 2/bridgedb.yaml`).
+    the **BridgeDB** [template].
 
 ## Preparing your template
 
@@ -108,4 +108,5 @@ an oc command: -
 [built-in]: https://rawgit.com/openshift/openshift-logos-icon/master/demo.html
 [font awesome]: https://fontawesome.com/v4.7.0/icons/
 [templates]: https://docs.openshift.com/container-platform/3.7/dev_guide/templates.html#dev-guide-templates
+[template]: https://raw.githubusercontent.com/OpenRiskNet/home/master/openshift/deployments/bridgedb/BridgeDb-Version%202/bridgedb.yaml
 [tsb]: https://docs.openshift.com/container-platform/3.7/architecture/service_catalog/template_service_broker.html

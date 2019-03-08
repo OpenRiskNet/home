@@ -1,26 +1,41 @@
 #!/bin/bash
 
-# for openshift the public hostname master
-# for minishift the IP address of the minishift VM. eg. `minishift ip`  
-export OC_MASTER_HOSTNAME=prod.openrisknet.org
-export OC_ADMIN=admin
-export OC_MASTER_URL=https://${OC_MASTER_HOSTNAME}
-# change this to the hostname of the infra node hosting the router (which might be the same)
+# Here we use the 'dev' site values as an example.
+# Once you set the admin user and password that was created
+# when the cluster was installed these variable values should deploy
+# the dev-site's infrastructure as the 'developer' user.
+#
+# Modify values to suit your requirements...
+
+# You MUST define these...
+
+export OC_ADMIN=SetMe
+export OC_ADMIN_PASSWORD=SetMe
+export OC_USER=SetMe
+export OC_USER_PASSWORD=SetMe
+
+# You CAN define these...
+
+export OC_MASTER_HOSTNAME=dev.openrisknet.org
+export OC_MASTER_URL=https://${OC_MASTER_HOSTNAME}:8443
 export OC_ROUTES_BASENAME=${OC_MASTER_HOSTNAME}
+
+export OC_INFRA_VOLUME_TYPE=dynamic
+export OC_INFRA_VOLUME_STORAGE_CLASS=glusterfs-storage
+
+export KEYCLOAK_INSECURE_ROUTE=Redirect
 export KEYCLOAK_SERVER_URL=https://sso.${OC_ROUTES_BASENAME}/auth
 export KEYCLOAK_REALM=openrisknet
-export KEYCLOAK_LOGOUT_REDIRECT_TO=http://home.${OC_ROUTES_BASENAME}/
+
+export OC_INFRA_HOURLY_BACKUP_COUNT=0
+export OC_INFRA_HOURLY_BACKUP_SCHEDULE="7 23 * * *"
+export OC_INFRA_DAILY_BACKUP_COUNT=0
+export OC_INFRA_DAILY_BACKUP_SCHEDULE="37 3 * * *"
+export OC_INFRA_BACKUP_VOLUME_SIZE=10Gi
+
 export OC_INFRA_PROJECT=openrisknet-infra
-export OC_DOMAIN_NAME=novalocal
-export OC_NFS_SERVER=xchem-infra.$OC_DOMAIN_NAME
+export OC_INFRA_PROJECT_DISPLAY_NAME="OpenRiskNet Infrastructure"
+export OC_INFRA_SA=openrisknet
 
-
-
-echo "OC_INFRA_PROJECT set to $OC_INFRA_PROJECT"
-echo "OC_MASTER_HOSTNAME set to $OC_MASTER_HOSTNAME"
-echo "OC_ROUTES_BASENAME set to $OC_ROUTES_BASENAME"
-echo "OC_ADMIN set to $OC_ADMIN"
-echo "OC_NFS_SERVER set to $OC_NFS_SERVER"
-echo "KEYCLOAK_SERVER_URL set to $KEYCLOAK_SERVER_URL"
-echo "KEYCLOAK_REALM set to $KEYCLOAK_REALM"
-
+export OC_POSTGRESQL_SERVICE=db-postgresql
+export OC_POSTGRESQL_VOLUME_SIZE=5Gi

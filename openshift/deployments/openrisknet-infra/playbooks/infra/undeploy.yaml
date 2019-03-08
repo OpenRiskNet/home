@@ -1,0 +1,9 @@
+---
+
+- hosts: localhost
+
+  tasks:
+  - name: Run the Infra Role Undeploy Tasks
+    include_role:
+      name: infra
+      tasks_from: undeploy.yaml

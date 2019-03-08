@@ -1,0 +1,23 @@
+---
+
+# Just run these plays...
+
+- import_tasks: create-project.yaml
+- import_tasks: create-service-account.yaml
+
+# NFS volumes...
+- import_tasks: create-nfs-pv-pvc.yaml
+  when: oc_infra_volume_type == 'nfs'
+# Dynamic volumes...
+- import_tasks: create-dynamic-pvc.yaml
+  when: oc_infra_volume_type == 'dynamic'
+# MiniShift volumes...
+- import_tasks: create-minishift-pvc.yaml
+  when: oc_infra_volume_type == 'minishift'
+- import_tasks: patch-minishift.yaml
+  when: oc_infra_volume_type == 'minishift'
+
+- import_tasks: sso-postgres-deploy.yaml
+- import_tasks: add-keycloak-roles.yaml
+
+- import_tasks: rabbitmq-deploy.yaml

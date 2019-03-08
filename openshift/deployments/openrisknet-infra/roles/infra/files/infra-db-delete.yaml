@@ -1,0 +1,110 @@
+---
+
+# Removes a user and database...
+#
+#   oc process -f infra-db-delete.yaml \
+#     -p DB_USER=user \
+#     -p DB=databse-name \
+#     -p INFRA_SA=squonk | oc create -f -
+#
+# Once done, remove the detritus (like the ConfigMap and Job) with...
+#
+#   oc delete all,cm --selector template=db-delete
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: db-delete
+labels:
+  template: db-delete
+message: DB deleted
+
+parameters:
+
+- displayName: DB User
+  description: The required DB user
+  name: DB_USER
+  required: true
+
+- displayName: DB Name
+  description: The DB to be created for the user
+  name: DB
+  required: true
+
+- displayName: DB Host
+  description: The DB host
+  name: DB_HOST
+  required: true
+
+- displayName: Postgres Admin user
+  description: Postgres Admin user
+  name: POSTGRESQL_ADMIN_USER
+  value: postgres
+
+- displayName: Infrastructure Service Account
+  description: Infrastructure Service Account
+  name: INFRA_SA
+  value: openrisknet-infra
+
+objects:
+
+- kind: ConfigMap
+  apiVersion: v1
+  metadata:
+    name: db-deleter
+  data:
+    delete-db.sh: |
+      #!/bin/bash
+
+      export PGUSER=${POSTGRESQL_ADMIN_USER:-postgres}
+      export PGPASSWORD=${POSTGRESQL_ADMIN_PASSWORD}
+      export PGHOST=${POSTGRESQL_HOST:-postgres}
+
+      echo "# Deleting database (${DB})..."
+      psql --command "DROP DATABASE IF EXISTS ${DB}"
+
+      echo "# Deleting user (${DB_USER})..."
+      psql --command "DROP USER IF EXISTS ${DB_USER}"
+
+      echo "# Delete complete"
+
+- kind: Job
+  apiVersion: batch/v1
+  metadata:
+    name: db-deleter
+  spec:
+    template:
+      metadata:
+        name: db-deleter
+      spec:
+        serviceAccountName: ${INFRA_SA}
+        volumes:
+        - name: db-deleter
+          configMap:
+            name: db-deleter
+        containers:
+        - name: db-deleter
+          image: centos/postgresql-95-centos7
+          command:
+            - /bin/bash
+            - /delete-db/delete-db.sh
+          env:
+          # DB Administration credentials (and host)
+          - name: POSTGRESQL_ADMIN_USER
+            value: ${POSTGRESQL_ADMIN_USER}
+          - name: POSTGRESQL_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgresql-secrets
+                key: database-admin-password
+          - name: POSTGRESQL_HOST
+            value: ${DB_HOST}
+          # Required user, password and database
+          - name: DB_USER
+            value: ${DB_USER}
+          - name: DB
+            value: ${DB}
+          volumeMounts:
+          - mountPath: /delete-db
+            name: db-deleter
+        restartPolicy: OnFailure
