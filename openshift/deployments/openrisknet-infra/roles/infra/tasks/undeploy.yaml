@@ -20,11 +20,6 @@
 # To un-deploy the infrastructure, the fastest way is to
 # simply delete the project.
 
-- name: Check Squonk Project
-  shell: oc get projects
-  register: projects_result
-  changed_when: False
-
 - name: Delete Infra Project
   shell: oc delete project/{{ oc_infra_project }}
   when:  projects_result.stdout | regex_search('^%s\s.*Active$' % oc_infra_project, multiline=True)
