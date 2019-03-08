@@ -25,13 +25,6 @@
   register: projects_result
   changed_when: False
 
-# But stop if Squonk is deployed!
-
-- name: Check Squonk Project
-  fail:
-    msg: 'You cannot delete the infrastructure while Squonk exists as a project'
-  when:  projects_result.stdout | regex_search('^%s\s.*Active$' % oc_project, multiline=True)
-
 - name: Delete Infra Project
   shell: oc delete project/{{ oc_infra_project }}
   when:  projects_result.stdout | regex_search('^%s\s.*Active$' % oc_infra_project, multiline=True)
