@@ -50,4 +50,4 @@ It is suggested you deploy these projects in this order.
 
 ---
 
-[README]: https://raw.githubusercontent.com/OpenRiskNet/home/master/openshift/deployments/openrisknet-infra/README.md
+[README]: openrisknet-infra/README.md

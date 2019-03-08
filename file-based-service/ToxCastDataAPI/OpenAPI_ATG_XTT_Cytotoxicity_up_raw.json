@@ -96,6 +96,7 @@
                             "description": "The Concentration Unit"
                           },
                           "Activity": {
+                            "x-orn-@id": "http://www.bioassayontology.org/bao#BAO_0080024",
                             "title": "Activity",
                             "type": "number",
                             "description": "The Activity"
