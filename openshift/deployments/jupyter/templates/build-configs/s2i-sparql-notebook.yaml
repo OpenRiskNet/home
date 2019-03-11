@@ -2,6 +2,17 @@
 kind: List
 apiVersion: v1
 items:
+
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    name: s2i-graphviz-base
+    labels:
+      build: s2i-graphvis-base
+  spec:
+    lookupPolicy:
+      local: true
+
 - kind: ImageStream
   apiVersion: image.openshift.io/v1
   metadata:
@@ -11,6 +22,35 @@ items:
   spec:
     lookupPolicy:
       local: true
+
+- kind: BuildConfig
+  apiVersion: build.openshift.io/v1
+  metadata:
+    name: s2i-graphviz-base
+    labels:
+      build: s2i-graphviz-base
+  spec:
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+    source:
+      type: Dockerfile
+      dockerfile: |
+        FROM s2i-minimal-notebook:3.6
+        USER root
+        RUN yum -y install graphviz
+        USER 1001
+    type: Docker
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: 's2i-minimal-notebook:3.6'
+    output:
+      to:
+        kind: ImageStreamTag
+        name: s2i-graphviz-base:latest
+
 - kind: BuildConfig
   apiVersion: build.openshift.io/v1
   metadata:
@@ -31,7 +71,7 @@ items:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: s2i-minimal-notebook:3.6
+          name: s2i-graphviz-base:latest
     output:
       to:
         kind: ImageStreamTag
@@ -39,4 +79,3 @@ items:
     resources:
       limits:
         memory: 1Gi
-
