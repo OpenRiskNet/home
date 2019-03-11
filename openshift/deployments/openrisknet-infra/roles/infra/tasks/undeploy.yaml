@@ -42,7 +42,6 @@
   register: scc_result
   changed_when: False
 
-- name: Delete Squonk SCC
+- name: Delete Infra SCC
   shell: oc delete scc/scc-squonk
   when: scc_result.stdout | regex_search('^scc-squonk', multiline=True)
-
