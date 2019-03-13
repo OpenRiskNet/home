@@ -108,10 +108,10 @@ objects:
           resources:
             requests:
               cpu: 1500m
-              memory: 4000Mi
+              memory: 5000Mi
             limits:
               cpu: 3000m
-              memory: 8000Mi
+              memory: 10000Mi
 
 - kind: Service
   apiVersion: v1
