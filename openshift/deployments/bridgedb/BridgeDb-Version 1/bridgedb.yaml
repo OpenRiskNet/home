@@ -43,7 +43,7 @@ parameters:
 - name: IMAGE_TAG
   description: >-
     The BridgeDb container image tag
-  value: all-v1
+  value: all-v2
 
 - name: ROUTES_BASENAME
   description: >-
