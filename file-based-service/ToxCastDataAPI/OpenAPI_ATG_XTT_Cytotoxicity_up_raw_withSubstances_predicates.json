@@ -65,7 +65,7 @@
                             "description": "Generated row id"
                           },
                           "SampleID": {
-                            "title": "Sample ID",
+                            "title": "SampleID",
                             "type": "string",
                             "description": "Sample ID"
                           },
@@ -127,19 +127,19 @@
         "type": "object",
         "properties": {
           "PubChemCID": {
-            "title": "PubChem CID",
+            "title": "Substance.Component.PubChemCID",
             "type": "string"
           },
           "CompoundName": {
-            "title": "Compound Name",
+            "title": "Substance.Component.CompoundName",
             "type": "string"
           },
           "InChIKey": {
-            "title": "InChIKey",
+            "title": "Substance.Component.InChIKey",
             "type": "string"
           },
           "SMILES": {
-            "title": "SMILES",
+            "title": "Substance.Component.SMILES",
             "type": "string"
           }
         }
@@ -148,17 +148,17 @@
         "type": "object",
         "properties": {
           "Compound": {
-            "title": "Compound",
+            "title": "Substance.Compound",
             "x-orn-@id": "x-orn:Compound",
             "x-orn-@type": "x-orn:Compound",
             "$ref": "#/components/schemas/compound"
           },
           "CAS": {
-            "title": "CAS",
+            "title": "Substance.CAS",
             "type": "string"
           },
           "Concentration": {
-            "title": "Concentration",
+            "title": "Substance.Concentration",
             "x-orn-@id": "x-orn:Concentration",
             "x-orn-@type": "x-orn:Concentration",
             "$ref": "#/components/schemas/quantity"
