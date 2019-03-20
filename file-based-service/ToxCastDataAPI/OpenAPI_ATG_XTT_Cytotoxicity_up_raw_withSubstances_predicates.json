@@ -127,19 +127,19 @@
         "type": "object",
         "properties": {
           "PubChemCID": {
-            "title": "Substance.Component.PubChemCID",
+            "title": "Substance.Compound.PubChemCID",
             "type": "string"
           },
           "CompoundName": {
-            "title": "Substance.Component.CompoundName",
+            "title": "Substance.Compound.CompoundName",
             "type": "string"
           },
           "InChIKey": {
-            "title": "Substance.Component.InChIKey",
+            "title": "Substance.Compound.InChIKey",
             "type": "string"
           },
           "SMILES": {
-            "title": "Substance.Component.SMILES",
+            "title": "Substance.Compound.SMILES",
             "type": "string"
           }
         }
