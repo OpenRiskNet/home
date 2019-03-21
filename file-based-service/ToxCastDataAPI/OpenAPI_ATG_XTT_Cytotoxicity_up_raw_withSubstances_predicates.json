@@ -146,9 +146,6 @@
       },
       "substance": {
         "type": "object",
-        "title": "Substance",
-        "x-orn-@id": "x-orn:TestSubstance",
-        "x-orn-@type": "x-orn:TestSubstance",
         "properties": {
           "Compound": {
             "title": "Substance.Compound",
