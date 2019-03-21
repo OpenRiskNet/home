@@ -73,9 +73,7 @@
                             "title": "Substance",
                             "x-orn-@id": "x-orn:TestSubstance",
                             "x-orn-@type": "x-orn:TestSubstance",
-                            "values": {
-                              "$ref": "#/components/schemas/substance"
-                            },
+                            "$ref": "#/components/schemas/substance",
                             "description": "Test Substance"
                           },
                           "Activity": {
