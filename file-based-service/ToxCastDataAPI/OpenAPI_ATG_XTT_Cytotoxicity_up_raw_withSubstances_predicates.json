@@ -72,7 +72,7 @@
                           "Substance": {
                             "x-orn-@id": "x-orn:TestSubstance",
                             "x-orn-@type": "x-orn:TestSubstance",
-                            "$ref": "#/components/schemas/substance",
+                            "$ref": "#/components/schemas/substance"
                           },
                           "Activity": {
                             "title": "Activity",
@@ -145,7 +145,7 @@
       "substance": {
         "type": "object",
         "title": "Substance",
-        "description": "Test Substance"
+        "description": "Test Substance",
         "properties": {
           "Compound": {
             "title": "Substance.Compound",
