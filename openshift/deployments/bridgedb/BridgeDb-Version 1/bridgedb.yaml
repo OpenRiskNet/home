@@ -8,19 +8,58 @@ apiVersion: v1
 metadata:
   name: bridgedbfull
   annotations:
-    description: BridgeDB
-    tags: bridge
+    openshift.io/display-name: BridgeDb identifier mapping
+    openshift.io/provider-display-name: Maastricht University, Department of Bioinformatics - BiGCaT
+    openshift.io/documentation-url: https://github.com/OpenRiskNet/home.git
+    openshift.io/support-url: https://github.com/OpenRiskNet/home/issues
+    iconClass: icon-openjdk
+    description: >-
+      BridgeDb (https://www.bridgedb.org/) is a platform for database
+      identifier mapping, both simple identifiers (e.g. CHEBI:1234) and
+      universal resource identifiers
+      (URIs, e.g. http://identifiers.org/chebi/CHEBI:1234). It is the workhorse
+      of data integration and supports the essential FAIR aspect of
+      interoperability, with recent efforts adding detailed provenance and
+      meaning to mappings (“scientific lenses”).
+      BridgeDb provides the glue between bioinformatics processing pipeline
+      blocks, and has an OpenAPI-based interface. Documentation on the
+      Docker image is available on https://github.com/bridgedb/docker.
+      This service provides identifier mapping for metabolites and
+      genes/proteins from Homo sapiens, Mus musculus and Rattus norvegicus.
+    tags: bridgedb
 labels:
   template: bridgedbfull
   app: bridgedbfull
-
+  
+# A message displayed on the deployment console on completion...
+message: >-
+  BridgeDbfull has been deployed to your project.
+  To remove the deployment you can use the command-line
+  and run "oc delete all --selector template=bridgedbfull" for the
+  project you deployed to.
+  
 parameters:
 
 - name: IMAGE_TAG
-  value: orn-v1
+  description: >-
+    The BridgeDb container image tag
+  value: all-v2
 
 - name: ROUTES_BASENAME
+  description: >-
+    The base name of the service endpoint.
+    This is typically the PROD or DEV URL basename.
   value: prod.openrisknet.org
+  
+- name: BRIDGEDB_PORT
+  description: >-
+    The HTTP port for the BridgeDb service
+  value: "8183"
+
+- name: SWAGGER_PORT
+  description: >-
+    The HTTP port for the BridgeDb swagger service
+  value: "8080"
 
 # -----------------------------------------------------------------------------
 # BridgeDB
@@ -43,10 +82,36 @@ objects:
       spec:
         containers:
         - image: bigcatum/bridgedb:${IMAGE_TAG}
+          imagePullPolicy: IfNotPresent
           name: bridgedbfull
           ports:
           - containerPort: 8080
           - containerPort: 8183
+          readinessProbe:
+            failureTreshold: 4
+            httpGet:
+              path: /swagger/
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 1
+          livenessProbe:
+            failureTreshold: 4
+            httpGet:
+              path: /swagger/
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: 1500m
+              memory: 5000Mi
+            limits:
+              cpu: 3000m
+              memory: 10000Mi
 
 - kind: Service
   apiVersion: v1
@@ -67,7 +132,7 @@ objects:
   spec:
     ports:
     - name: bridgedbfull-swagger
-      port: 8080
+      port: ${SWAGGER_PORT}
       targetPort: 8080
     selector:
       name: bridgedbfull
@@ -82,7 +147,7 @@ objects:
       # Change this to true when you are ready for secure the route with TLS.
       kubernetes.io/tls-acme: 'false'
   spec:
-    host: bridgedbfull-app.${ROUTES_BASENAME}
+    host: bridgedbfull.${ROUTES_BASENAME}
     to:
       kind: Service
       name: bridgedbfull-app

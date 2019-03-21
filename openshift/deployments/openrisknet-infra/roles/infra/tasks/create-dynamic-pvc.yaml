@@ -1,6 +1,6 @@
 ---
 
-- name: Move to Squonk Infrastructure Project
+- name: Move to Infrastructure Project
   shell: oc project {{ oc_infra_project }}
   changed_when: False
 

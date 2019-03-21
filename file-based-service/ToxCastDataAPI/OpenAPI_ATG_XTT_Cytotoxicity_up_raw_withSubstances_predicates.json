@@ -12,10 +12,18 @@
   ],
   "paths": {
     "/datasets/749ea637-1262-46cc-b7cd-a8c2c6004245/data": {
-      "x-orn-@id": "https://datasets/802a506e-2e08-4baf-b4f0-c3b89cbddd4d/data",
-      "x-orn-@type": "orn:Endpoint",
-
       "get": {
+        "x-orn-@id": "https://datasets/802a506e-2e08-4baf-b4f0-c3b89cbddd4d/data",
+        "x-orn-@type": "x-orn:EdelweissDataSet",
+
+        "x-orn:expects":
+          {
+          },
+        "x-orn:returns":
+          {
+            "x-orn-@id": "x-orn:ToxCastRawDataSet"
+          },
+
         "summary": "Returns the data",
         "parameters": [
           {
@@ -57,16 +65,23 @@
                             "description": "Generated row id"
                           },
                           "SampleID": {
-                            "title": "Sample ID",
+                            "title": "SampleID",
                             "type": "string",
                             "description": "Sample ID"
                           },
                           "Substance": {
-                            "x-orn-@type": "orn:TestSubstance",
-                            "$ref": "#/components/schemas/substance",
+                            "title": "Substance",
+                            "x-orn-@id": "x-orn:TestSubstance",
+                            "x-orn-@type": "x-orn:TestSubstance",
+                            "values": {
+                              "$ref": "#/components/schemas/substance"
+                            },
                             "description": "Test Substance"
                           },
                           "Activity": {
+                            "title": "Activity",
+                            "x-orn-@id": "x-orn:BiologicalActivity",
+                            "x-orn-@type": "x-orn:BiologicalActivity",
                             "$ref": "#/components/schemas/quantity",
                             "description": "Experimental Activity in ATG XTT Cytotoxicity Assay"
                           }
@@ -114,19 +129,19 @@
         "type": "object",
         "properties": {
           "PubChemCID": {
-            "title": "PubChem CID",
+            "title": "Substance.Compound.PubChemCID",
             "type": "string"
           },
           "CompoundName": {
-            "title": "Compound Name",
+            "title": "Substance.Compound.CompoundName",
             "type": "string"
           },
           "InChIKey": {
-            "title": "InChIKey",
+            "title": "Substance.Compound.InChIKey",
             "type": "string"
           },
           "SMILES": {
-            "title": "SMILES",
+            "title": "Substance.Compound.SMILES",
             "type": "string"
           }
         }
@@ -135,13 +150,19 @@
         "type": "object",
         "properties": {
           "Compound": {
+            "title": "Substance.Compound",
+            "x-orn-@id": "x-orn:Compound",
+            "x-orn-@type": "x-orn:Compound",
             "$ref": "#/components/schemas/compound"
           },
           "CAS": {
-            "title": "CAS",
+            "title": "Substance.CAS",
             "type": "string"
           },
           "Concentration": {
+            "title": "Substance.Concentration",
+            "x-orn-@id": "x-orn:Concentration",
+            "x-orn-@type": "x-orn:Concentration",
             "$ref": "#/components/schemas/quantity"
           }
         }
