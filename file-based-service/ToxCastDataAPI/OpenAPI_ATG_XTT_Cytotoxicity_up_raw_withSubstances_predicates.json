@@ -151,7 +151,6 @@
         "properties": {
           "Compound": {
             "title": "Substance.Compound",
-            "x-orn-@id": "x-orn:Compound",
             "x-orn-@type": "x-orn:Compound",
             "allOf": [
               "$ref": "#/components/schemas/compound"
@@ -163,7 +162,6 @@
           },
           "Concentration": {
             "title": "Substance.Concentration",
-            "x-orn-@id": "x-orn:Concentration",
             "x-orn-@type": "x-orn:Concentration",
             "allOf": [
               "$ref": "#/components/schemas/quantity"
