@@ -73,7 +73,9 @@
                             "title": "Substance",
                             "x-orn-@id": "x-orn:TestSubstance",
                             "x-orn-@type": "x-orn:TestSubstance",
-                            "$ref": "#/components/schemas/substance",
+                            "allOf": [
+                              "$ref": "#/components/schemas/substance"
+                            ],
                             "description": "Test Substance"
                           },
                           "Activity": {
