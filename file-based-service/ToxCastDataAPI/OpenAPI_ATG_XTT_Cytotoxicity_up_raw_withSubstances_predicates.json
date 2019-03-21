@@ -70,9 +70,13 @@
                             "description": "Sample ID"
                           },
                           "Substance": {
+                            "title": "Substance",
                             "x-orn-@id": "x-orn:TestSubstance",
                             "x-orn-@type": "x-orn:TestSubstance",
-                            "$ref": "#/components/schemas/substance"
+                            "value": {
+                              "$ref": "#/components/schemas/substance"
+                            },
+                            "description": "Test Substance"
                           },
                           "Activity": {
                             "title": "Activity",
@@ -144,7 +148,6 @@
       },
       "substance": {
         "type": "object",
-        "title": "Substance",
         "properties": {
           "Compound": {
             "title": "Substance.Compound",
