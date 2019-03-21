@@ -70,7 +70,7 @@
                             "description": "Sample ID"
                           },
                           "Substance": {
-                            "x-orn-@title": "Substance",
+                            "x-orn:title": "Substance",
                             "x-orn-@id": "x-orn:TestSubstance",
                             "x-orn-@type": "x-orn:TestSubstance",
                             "$ref": "#/components/schemas/substance",
