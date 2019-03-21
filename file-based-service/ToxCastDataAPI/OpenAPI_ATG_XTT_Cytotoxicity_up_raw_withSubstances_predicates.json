@@ -145,7 +145,6 @@
       "substance": {
         "type": "object",
         "title": "Substance",
-        "description": "Test Substance",
         "properties": {
           "Compound": {
             "title": "Substance.Compound",
