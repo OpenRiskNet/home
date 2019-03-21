@@ -149,7 +149,6 @@
         "title": "Substance",
         "x-orn-@id": "x-orn:TestSubstance",
         "x-orn-@type": "x-orn:TestSubstance",
-        "description": "Test Substance"
         "properties": {
           "Compound": {
             "title": "Substance.Compound",
