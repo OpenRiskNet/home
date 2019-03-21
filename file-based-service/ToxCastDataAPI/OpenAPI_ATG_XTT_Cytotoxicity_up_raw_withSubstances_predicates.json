@@ -71,7 +71,6 @@
                           },
                           "Substance": {
                             "title": "Substance",
-                            "x-orn-@id": "x-orn:TestSubstance",
                             "x-orn-@type": "x-orn:TestSubstance",
                             "allOf": [
                               "$ref": "#/components/schemas/substance"
@@ -80,9 +79,10 @@
                           },
                           "Activity": {
                             "title": "Activity",
-                            "x-orn-@id": "x-orn:BiologicalActivity",
                             "x-orn-@type": "x-orn:BiologicalActivity",
-                            "$ref": "#/components/schemas/quantity",
+                            "allOf": [
+                              "$ref": "#/components/schemas/quantity"
+                            ],
                             "description": "Experimental Activity in ATG XTT Cytotoxicity Assay"
                           }
                         },
@@ -153,7 +153,9 @@
             "title": "Substance.Compound",
             "x-orn-@id": "x-orn:Compound",
             "x-orn-@type": "x-orn:Compound",
-            "$ref": "#/components/schemas/compound"
+            "allOf": [
+              "$ref": "#/components/schemas/compound"
+            ]
           },
           "CAS": {
             "title": "Substance.CAS",
@@ -163,7 +165,9 @@
             "title": "Substance.Concentration",
             "x-orn-@id": "x-orn:Concentration",
             "x-orn-@type": "x-orn:Concentration",
-            "$ref": "#/components/schemas/quantity"
+            "allOf": [
+              "$ref": "#/components/schemas/quantity"
+            ]
           }
         }
       }
