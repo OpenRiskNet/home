@@ -173,6 +173,11 @@
   },
 
   "x-orn-@context": {
+    "x-orn-@id": "@id",
+    "x-orn-@type": "@type",
+    "@vocab": "http://openrisknet.org/schema#",
+    "x-orn": "http://openrisknet.org/schema#",
+
     "unit":                 "http://purl.obolibrary.org/obo/UO_0000000",
     "id":                   "http://edamontology.org/data_0842",
     "SampleID":             "http://edamontology.org/data_3273",
