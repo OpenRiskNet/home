@@ -73,7 +73,7 @@
                             "title": "Substance",
                             "x-orn-@type": "x-orn:TestSubstance",
                             "allOf": [
-                              "$ref": "#/components/schemas/substance"
+                              {"$ref": "#/components/schemas/substance"}
                             ],
                             "description": "Test Substance"
                           },
@@ -81,7 +81,7 @@
                             "title": "Activity",
                             "x-orn-@type": "x-orn:BiologicalActivity",
                             "allOf": [
-                              "$ref": "#/components/schemas/quantity"
+                              {"$ref": "#/components/schemas/quantity"}
                             ],
                             "description": "Experimental Activity in ATG XTT Cytotoxicity Assay"
                           }
@@ -153,7 +153,7 @@
             "title": "Substance.Compound",
             "x-orn-@type": "x-orn:Compound",
             "allOf": [
-              "$ref": "#/components/schemas/compound"
+              {"$ref": "#/components/schemas/compound"}
             ]
           },
           "CAS": {
@@ -164,7 +164,7 @@
             "title": "Substance.Concentration",
             "x-orn-@type": "x-orn:Concentration",
             "allOf": [
-              "$ref": "#/components/schemas/quantity"
+              {"$ref": "#/components/schemas/quantity"}
             ]
           }
         }
@@ -173,33 +173,6 @@
   },
 
   "x-orn-@context": {
-    "x-orn-@id": "@id",
-    "x-orn-@type": "@type",
-    "@vocab": "http://openrisknet.org/schema#",
-    "x-orn": "http://openrisknet.org/schema#",
-
-    "title": "x-orn:title",
-    "info": "x-orn:info",
-    "paths":
-      { "@id": "x-orn:paths",
-        "@container": "@id"
-       },
-    "description": "x-orn:description",
-    "get": "x-orn:Get",
-    "post": "x-orn:Post",
-    "put": "x-orn:Put",
-    "patch": "x-orn:Patch",
-    "delete": "x-orn:Delete",
-    "parameters": "x-orn:OperationParameters",
-    "responses":
-      {"@id": "x-orn:OperationResponses",
-                "@container": "@index"
-      },
-    "schema": "x-orn:Schema",
-    "properties": "x-orn:Properties",
-    "content": "x-orn:Content",
-    "application/json": "x-orn:application/json",
-
     "unit":                 "http://purl.obolibrary.org/obo/UO_0000000",
     "id":                   "http://edamontology.org/data_0842",
     "SampleID":             "http://edamontology.org/data_3273",
