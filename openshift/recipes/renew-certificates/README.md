@@ -1,7 +1,9 @@
 # Certificate Renewal
 
 >   Caution: Depending on your OpenShift version the playbooks may be limited to
-    [Ansible] v2.5 or v2.4.
+    [Ansible] v2.5 or v2.4 but the playbook described here **MUST** run with Ansible
+    2.5 or later (as it uses the loop command). When last executed on the production
+    site it was used with Ansbile v2.7.9.
 
 >   From March 13th 2019 TLS-SNI-01 validation will have reached
     its end-of-life for support. If you have problems renewing
