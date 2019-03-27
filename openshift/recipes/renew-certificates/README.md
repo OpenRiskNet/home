@@ -43,7 +43,7 @@ files and deploy them to the master.
 An execution example follows.
 
 ## Running the playbook (production system)
-You need to make sure that you have ssh access to the master node form the
+You need to make sure that you have ssh access to the master node from the
 bastion, an expectation of the renewal Ansible playbook.
 
 With this repository checked out on the bastion to `~/github/openrisknet/home`
