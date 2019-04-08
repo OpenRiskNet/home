@@ -25,7 +25,7 @@ metadata:
       blocks, and has an OpenAPI-based interface. Documentation on the
       Docker image is available on https://github.com/bridgedb/docker.
       This service provides identifier mapping for metabolites and
-      genes/proteins from Homo sapiens, Mus musculus and Rattus norvegicus.
+      genes/proteins from a wide variety of species.
     tags: bridgedb
 labels:
   template: bridgedbfull
