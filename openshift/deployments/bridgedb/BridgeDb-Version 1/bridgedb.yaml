@@ -43,7 +43,7 @@ parameters:
 - name: IMAGE_TAG
   description: >-
     The BridgeDb container image tag
-  value: 2.3.0
+  value: 2.3.1
 
 - name: ROUTES_BASENAME
   description: >-
@@ -88,21 +88,21 @@ objects:
           - containerPort: 8080
           - containerPort: 8183
           readinessProbe:
-            failureTreshold: 4
+            failureTreshold: 6
             httpGet:
               path: /swagger/
               port: 8080
               scheme: HTTP
-            initialDelaySeconds: 60
+            initialDelaySeconds: 300
             periodSeconds: 30
             timeoutSeconds: 1
           livenessProbe:
-            failureTreshold: 4
+            failureTreshold: 6
             httpGet:
               path: /swagger/
               port: 8080
               scheme: HTTP
-            initialDelaySeconds: 60
+            initialDelaySeconds: 300
             periodSeconds: 30
             timeoutSeconds: 1
           resources:
