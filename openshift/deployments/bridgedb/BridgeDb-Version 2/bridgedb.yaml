@@ -21,7 +21,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: bridgedb
+  name: bridgedbsub
   annotations:
     openshift.io/display-name: BridgeDb identifier mapping
     openshift.io/provider-display-name: Maastricht University, Department of Bioinformatics - BiGCaT
@@ -47,14 +47,14 @@ metadata:
       genes/proteins from Homo sapiens, Mus musculus and Rattus norvegicus.
     tags: bridgedb
 labels:
-  template: bridgedb
-  app: bridgedb
+  template: bridgedbsub
+  app: bridgedbsub
 
 # A message displayed on the deployment console on completion...
 message: >-
   BridgeDb has been deployed to your project.
   To remove the deployment you can use the command-line
-  and run "oc delete all --selector template=bridgedb" for the
+  and run "oc delete all --selector template=bridgedbsub" for the
   project you deployed to.
 
 # -----------------------------------------------------------------------------
@@ -93,20 +93,20 @@ objects:
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
-    name: bridgedb
+    name: bridgedbsub
   spec:
     replicas: 1
     selector:
-      name: bridgedb
+      name: bridgedbsub
     template:
       metadata:
         labels:
-          name: bridgedb
+          name: bridgedbsub
       spec:
         containers:
         - image: bigcatum/bridgedb:${IMAGE_TAG}
           imagePullPolicy: IfNotPresent
-          name: bridgedb
+          name: bridgedbsub
           ports:
           - containerPort: 8080
           - containerPort: 8183
@@ -139,52 +139,52 @@ objects:
 - kind: Service
   apiVersion: v1
   metadata:
-    name: bridgedb-app
+    name: bridgedbsub-app
   spec:
     ports:
-    - name: bridgedb-app
+    - name: bridgedbsub-app
       port: ${BRIDGEDB_PORT}
       targetPort: 8183
     selector:
-      name: bridgedb
+      name: bridgedbsub
 
 - kind: Service
   apiVersion: v1
   metadata:
-    name: bridgedb-swagger
+    name: bridgedbsub-swagger
   spec:
     ports:
-    - name: bridgedb-swagger
+    - name: bridgedbsub-swagger
       port: ${SWAGGER_PORT}
       targetPort: 8080
     selector:
-      name: bridgedb
+      name: bridgedbsub
 
 - kind: Route
   apiVersion: v1
   metadata:
-    name: bridgedb-app
+    name: bridgedbsub-app
     annotations:
       # Note: Set to false to avoid exhausting certificate generation request quota.
       # Change this to true when you are ready for secure the route with TLS.
       kubernetes.io/tls-acme: 'false'
   spec:
-    host: bridgedb.${ROUTES_BASENAME}
+    host: bridgedbsub.${ROUTES_BASENAME}
     to:
       kind: Service
-      name: bridgedb-app
+      name: bridgedbsub-app
 
 - kind: Route
   apiVersion: v1
   metadata:
-    name: bridgedb-swagger
+    name: bridgedbsub-swagger
     annotations:
       # Note: Set to false to avoid exhausting certificate generation request quota.
       # Change this to true when you are ready for secure the route with TLS.
       kubernetes.io/tls-acme: 'false'
   spec:
-    host: bridgedb.${ROUTES_BASENAME}
+    host: bridgedbsub.${ROUTES_BASENAME}
     path: /swagger/
     to:
       kind: Service
-      name: bridgedb-swagger
+      name: bridgedbsub-swagger
