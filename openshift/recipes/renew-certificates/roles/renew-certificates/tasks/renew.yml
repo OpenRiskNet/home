@@ -14,10 +14,13 @@
 # In order for this to work with the more recent certbot I believe we
 # need to suspend the master's API service during the renewal...
 
+# Don't fail if stopping the service fails.
+# This can occur on the DEV-site (an OKD 3.11 deployment)
 - name: Stop Master API service
   service:
     name: origin-master-api.service
     state: stopped
+  ignore_errors: yes
 
 - name: Renew an existing certificate
   shell: "{{ certbot_renew_command }}"
@@ -33,4 +36,4 @@
   service:
     name: origin-master-api.service
     state: started
-
+  ignore_errors: yes
