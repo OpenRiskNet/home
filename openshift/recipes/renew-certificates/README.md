@@ -142,7 +142,7 @@ The following playbook produces a report file in `/tmp/cert-expiry-report.json`:
 ---
 
 Alan Christie  
-January 2019
+April 2019
 
 [ansible]: https://docs.ansible.com
 [tls-sni-01]: https://community.letsencrypt.org/t/how-to-stop-using-tls-sni-01-with-certbot/83210
