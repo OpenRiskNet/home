@@ -2,7 +2,7 @@
 
 # Load distribution/OS-dependent variables
 # relying on default.yml if no matching distribution file is found
-- name: Load systemn-dependent variables
+- name: Load system-dependent variables
   include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
