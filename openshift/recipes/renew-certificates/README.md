@@ -10,7 +10,9 @@
     certificates you probably just need to make sure that you're running
     an up-to-date certbot binary. If `certbot --version` reports `0.28` or
     higher you should be OK. For further details refer to
-    the [tls-sni-01] article. 
+    the [tls-sni-01] article.
+    
+>   Always try to renew the master API certrificate before it expires.
     
 An [ansible] playbook and roles for a CentOS deployment that can be used to renew
 Let's Encrypt/[Certbot]-like SSL certificates in an OpenShift cluster.
@@ -39,6 +41,15 @@ The playbook contains two [roles] that involve...
 When certificate renewal has taken place you need to deploy them using
 the OpenShift-provided playbook, which will pickup the new certificate
 files and deploy them to the master.
+
+-   **Redeploying** certificates with recent OpenShift playbooks may result in
+    in failure if the existing certificates are about to expire (typically
+    within 30 days). If the `redeploy-certificates` playbook fails on the
+    task ` Fail when certs are near or already expired` with the error
+    `Cluster certificates found to be expired or within 365 days of expiring`
+    you can try adjusting the expiry length to something shorter, like 7 days,
+    and then re-running the playbook by adding the following to the deployment
+    command: `-e openshift_certificate_expiry_warning_days=7`.
 
 An execution example follows.
 
@@ -86,6 +97,9 @@ In OpenShift 3.9 the certificate redeployment playbook has moved. In 3.9 you'd r
 
     $ ansible-playbook -i inventory \
         ~/github/openshift-ansible-release-3.9/playbooks/redeploy-certificates.yml
+
+>   You might need to adjust the `openshift_certificate_expiry_warning_days`
+    variable for the above playbooks, see the **Redeploying** note above.
 
 ## Renewing certificates for a specific node
 You can renew certificates for a specific node by placing the node hostname
