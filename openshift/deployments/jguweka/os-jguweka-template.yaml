@@ -97,7 +97,7 @@ objects:
       spec:
         containers:
         - name: jguweka
-          image: docker.io/rautenberg/jguweka:${IMAGE_TAG}
+          image: docker.io/jguweka/jguweka:${IMAGE_TAG}
           ports:
           - containerPort: 8080
             protocol: TCP
