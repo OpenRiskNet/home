@@ -1,5 +1,18 @@
 {
   "openapi": "3.0.1",
+  "operationId": "datasetService",
+  "x-orn-@id": "https://raw.githubusercontent.com/OpenRiskNet/home/master/file-based-service/ToxCastDataAPI/ATG_XTT_Cytotoxicity_up_raw_withSubstances.json",
+  "x-orn-@type": "x-orn:Service",
+  "operationId": "dataset",
+
+  "x-orn:expects":
+    {
+    },
+  "x-orn:returns":
+    {
+      "x-orn-@id": "x-orn:EdelweissDataSet"
+    },
+
   "info": {
     "title": "ATG_XTT_Cytotoxicity_up_raw with OpenAPI schemas and predicate annotation",
     "description": "",
@@ -15,14 +28,6 @@
       "get": {
         "x-orn-@id": "https://datasets/802a506e-2e08-4baf-b4f0-c3b89cbddd4d/data",
         "x-orn-@type": "x-orn:EdelweissDataSet",
-
-        "x-orn:expects":
-          {
-          },
-        "x-orn:returns":
-          {
-            "x-orn-@id": "x-orn:ToxCastRawDataSet"
-          },
 
         "summary": "Returns the data",
         "parameters": [
