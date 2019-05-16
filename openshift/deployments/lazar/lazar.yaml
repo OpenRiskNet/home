@@ -26,6 +26,12 @@ parameters:
     description:
       The lazar docker image tag
     value: latest
+  - name: ROUTE_NAME
+    description:
+      The name of the service endpoint.
+      This is typically *lazar* but if you want different instances
+      you can pass another name like *lazar-2*.
+    value: lazar
   - name: ROUTES_BASENAME
     description:
       The base name of the service endpoint.
@@ -35,6 +41,10 @@ parameters:
     description:
       The port for the lazar service inside your project
     value: "8088"
+  - name: TLS
+    description:
+      If you want TLS certificate
+    value: "false"
 objects:
 - kind: ImageStream
   apiVersion: v1
@@ -122,7 +132,7 @@ objects:
     name: lazar
     namespace: lazar
     annotations:
-      openrisknet-static-services: http://lazar.lazar.svc.cluster.local:8088/api/api.json
+      openrisknet-static-services: http://${ROUTE_NAME}.lazar.svc.cluster.local:8088/api/api.json
   spec:
     ports:
     - name: lazar
@@ -139,11 +149,11 @@ objects:
 - kind: Route
   apiVersion: v1
   metadata:
-    name: lazar
+    name: ${ROUTE_NAME}
     annotations:
-      kubernetes.io/tls-acme: 'true'
+      kubernetes.io/tls-acme: ${TLS}
   spec:
-    host: lazar.${ROUTES_BASENAME}
+    host: ${ROUTE_NAME}.${ROUTES_BASENAME}
     to:
       kind: Service
       name: lazar
