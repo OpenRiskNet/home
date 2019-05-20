@@ -45,6 +45,26 @@ parameters:
     description:
       If you want TLS certificate
     value: "false"
+  - name: STORAGE_SIZE
+    description:
+      Defines the size of your persistent volume claim
+    value: 5Gi
+  - name: CPU_LIMIT
+    description:
+      Set CPU limit
+    value: "2000m"
+  - name: CPU_REQUEST
+    description:
+      Set CPU request
+    value: "1000m"
+  - name: MEMORY_LIMIT
+    description:
+      Set RAM limit
+    value: "4Gi"
+  - name: MEMORY_REQUEST
+    description:
+      Set RAM request
+    value: "2Gi"
 objects:
 - kind: ImageStream
   apiVersion: v1
@@ -123,6 +143,13 @@ objects:
             initialDelaySeconds: 180
             periodSeconds: 30
             timeoutSeconds: 4
+          resources:
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
+            limits:
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
         restartPolicy: Always
         dnsPolicy: ClusterFirst
   status: {}
@@ -164,12 +191,11 @@ objects:
 - kind: PersistentVolumeClaim
   apiVersion: v1
   metadata:
-    name: lazar-glusterfs-storage
+    name: lazar-storage
     namespace: lazar
   spec:
     accessModes:
     - ReadWriteMany
     resources:
       requests:
-        storage: 10Gi
-    storageClassName: glusterfs-storage
+        storage: ${STORAGE_SIZE}
