@@ -85,3 +85,89 @@ You can the check that the persistent volumes with the `oc get pv` command:
     NAME      CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS    CLAIM                   STORAGECLASS   REASON    AGE
     pv0001    1Gi        RWO,RWX       Recycle         Available                                                  2m
     pv0002    5Gi        RWO           Recycle         Available                                                  2m
+
+## Binding a PVC to your NFS PV
+
+Often you create a NFS PV for a specific reason and want to create a specific PVC for it.
+This can be error prone if not done correctly as the PVC might not bind to the PV you want.
+To fix this you can tell the PVC the name of the PV you want it to bind to and tell the PV
+the name of the PVC that is allowed to claim it. To be absolutely sure you need to do both.
+
+This can be done using the following template:
+
+```
+
+# Usage:
+#
+# oc process -f pvc-nfs.yaml -p NAME=myvol -p NFS_SERVER=myserver -p NFS_PATH=/data/mydir -p SIZE=5Gi -p NAMESPACE=myproject | oc create -f -
+#
+# The NFS export specified by the NFS_PATH parameter must exist on the server specified by the NFS_SERVER parameter. 
+
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: fs-pv-nfs
+  annotations:
+    description: Creates a NFS PV and binds a PVC to it
+labels:
+  template: pvc-nfs
+
+parameters:
+
+# the NFS server name
+- name: NFS_SERVER
+  required: True
+# the directory path to mount
+- name: NFS_PATH
+  required: True
+# the name to use for the PV and PVC. Will end up with names like pv-name and pvc-name
+- name: NAME
+  required: True
+# the size of the pv/pvc e.g. 5Gi
+- name: SIZE
+  required: True
+# the read/write mode.
+- name: MODE
+  value: ReadWriteMany
+# the PVs persistentVolumeReclaimPolicy
+- name: RECLAIM
+  value: Retain
+# the naemspces we are in
+- name: NAMESPACE
+  required: True
+
+objects:
+
+- kind: PersistentVolume
+  apiVersion: v1
+  metadata:
+    name: pv-${NAME}
+  spec:
+    capacity:
+      storage: ${SIZE}
+    accessModes:
+    - ${MODE}
+    persistentVolumeReclaimPolicy: ${RECLAIM}
+    nfs:
+      server: ${NFS_SERVER}
+      path: ${NFS_PATH}
+    claimRef:
+      name: pvc-${NAME}
+      namespace: ${NAMESPACE}
+
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: pvc-${NAME}
+    namespace: ${NAMESPACE}
+  spec:
+    volumeName: pv-${NAME}
+    accessModes:
+    - ${MODE}
+    resources:
+      requests:
+        storage: ${SIZE}
+    storageClassName: ''
+```
+
