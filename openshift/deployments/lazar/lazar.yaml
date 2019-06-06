@@ -164,7 +164,7 @@ objects:
     ports:
     - name: lazar
       protocol: TCP
-      port: ${LAZAR_SERVICE_PORT}
+      port: ${{LAZAR_SERVICE_PORT}}
       targetPort: 8088
       nodePort: 0
     selector:
