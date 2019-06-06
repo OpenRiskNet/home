@@ -45,10 +45,6 @@ parameters:
     description:
       If you want TLS certificate
     value: "false"
-  - name: STORAGE_SIZE
-    description:
-      Defines the size of your persistent volume claim
-    value: 5Gi
   - name: CPU_LIMIT
     description:
       Set CPU limit
@@ -188,14 +184,3 @@ objects:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
   status: {}
-- kind: PersistentVolumeClaim
-  apiVersion: v1
-  metadata:
-    name: lazar-storage
-    namespace: lazar
-  spec:
-    accessModes:
-    - ReadWriteMany
-    resources:
-      requests:
-        storage: ${STORAGE_SIZE}
