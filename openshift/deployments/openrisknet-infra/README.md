@@ -14,6 +14,12 @@ On a machine with: -
 
 This can be your development machine, the bastion or master instance.
 
+>   This material is a copy of on-going infrastructure development activities
+    that take place in [Squonk]. An _up-to-date_ version can always be
+    found in its `openshift/ansible` directory where you'll find infrastructure
+    playbooks in `playbooks/infra`. At significant points in development
+    the playbooks in Squonk are copied here.
+
 You will need to define a number of variables to suit your environment
 before running the main playbook by using `setenv-template.sh` as
 a starting point: -
@@ -56,3 +62,8 @@ You can put these in a yaml file (i.e. `db.params`) which would look like this: 
 And the DB and user can be removed with the following: -
 
     $ ansible-playbook playbooks/infra/delete-user-db.yaml -e '@db.params'
+    
+---
+
+[squonk]: https://github.com/InformaticsMatters/squonk.git
+
