@@ -127,7 +127,7 @@ objects:
               port: 8088
               scheme: "HTTP"
             failureTreshold: 4
-            initialDelaySeconds: 120
+            initialDelaySeconds: 30
             periodSeconds: 30
             timeoutSeconds: 4
           livenessProbe:
@@ -136,7 +136,7 @@ objects:
                 - ls
                 - /home/ist
             failureTreshold: 4
-            initialDelaySeconds: 180
+            initialDelaySeconds: 60
             periodSeconds: 30
             timeoutSeconds: 4
           resources:
