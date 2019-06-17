@@ -36,16 +36,21 @@ The [`lazar.yaml`](https://github.com/OpenRiskNet/home/blob/master/openshift/dep
   #!/bin/bash
   export IMAGE_TAG=latest
   export ROUTES_BASENAME=SERVER_URI
+  export ROUTE_NAME=lazar
   export LAZAR_SERVICE_PORT=XXXX
+  export TLS="true"
   ```
   *deploy*
   ```
   ./deploy.sh
+  IMAGE_TAG set to latest
+  ROUTES_BASENAME set to dev.openrisknet.org
+  ROUTE_NAME set to lazar
+  LAZAR_SERVICE_PORT set to 8088
   imagestream "lazar-rest" created
   deploymentconfig "lazar" created
   service "lazar" created
   route "lazar" created
-  persistentvolumeclaim "lazar-glusterfs-storage" created
   ```
   *undeploy*
   ```
@@ -54,7 +59,6 @@ The [`lazar.yaml`](https://github.com/OpenRiskNet/home/blob/master/openshift/dep
   imagestream "lazar-rest" deleted
   route "lazar" deleted
   service "lazar" deleted
-  persistentvolumeclaim "lazar-glusterfs-storage" deleted
   ```
 
 
