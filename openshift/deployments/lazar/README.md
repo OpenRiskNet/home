@@ -26,6 +26,7 @@ The *lazar* application in the OpenRiskNet e-Infrastructure is based on a single
 
 ## Deploying
 
+Before you can start you need to create a project and in order to have the right execution permissions for the user inside the docker image you need to contact one of the administrators to execute `oc adm policy add-scc-to-user scc-lazar -z default` for your project. 
 The [`lazar.yaml`](https://github.com/OpenRiskNet/home/blob/master/openshift/deployments/lazar/lazar.yaml) file in this repository provides everything you need to deploy the *lazar* service in an OpenShift environment. There are two ways you can use it.
   1. Take the template and load it into the OpenShift web console. You will be asked to adjust the parameter values to your environment.
 

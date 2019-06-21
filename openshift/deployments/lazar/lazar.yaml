@@ -148,6 +148,10 @@ objects:
               memory: ${MEMORY_LIMIT}
         restartPolicy: Always
         dnsPolicy: ClusterFirst
+        serviceAccountName: lazar
+        #securityContext:
+        # privileged: false
+        # runAsUser: 12
   status: {}
 - kind: Service
   apiVersion: v1
