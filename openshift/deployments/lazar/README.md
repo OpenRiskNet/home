@@ -38,7 +38,7 @@ The [`lazar.yaml`](https://github.com/OpenRiskNet/home/blob/master/openshift/dep
   export ROUTES_BASENAME=SERVER_URI
   export ROUTE_NAME=lazar
   export LAZAR_SERVICE_PORT=XXXX
-  export TLS="true"
+  export TLS=true
   ```
   *deploy*
   ```
@@ -47,6 +47,7 @@ The [`lazar.yaml`](https://github.com/OpenRiskNet/home/blob/master/openshift/dep
   ROUTES_BASENAME set to dev.openrisknet.org
   ROUTE_NAME set to lazar
   LAZAR_SERVICE_PORT set to 8088
+  TLS set to true
   imagestream "lazar-rest" created
   deploymentconfig "lazar" created
   service "lazar" created
