@@ -46,6 +46,14 @@ of [Font Awesome].
 >   Adding icons using CSS stylesheets is currently
     beyond the scope of this note.
 
+Depending on which OpenShift release has been installed you should have
+access to a simple monochrome set of icons from Font Awesome's v4.7.0 set.
+These can be used in your `iconClass` definition. For example, to use the
+[cogs](https://fontawesome.com/v4.7.0/icon/cogs) you'd set the following
+in your template: -
+
+    iconClass: 'fa fa-cogs'
+
 ## Installing an application template
 
 An **OpenRiskNet Applications** namespace should be available on the production
