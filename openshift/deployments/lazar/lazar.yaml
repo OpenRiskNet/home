@@ -11,7 +11,7 @@ metadata:
     description: lazar (lazy structure–activity relationships) is a modular framework for predictive toxicology. 
       Similar to the read across procedure in toxicological risk assessment, lazar creates local 
       QSAR (quantitative structure–activity relationship) models for each compound to be predicted.
-    iconClass: ''
+    iconClass: 'fa fa-cogs'
     tags: lazar,prediction,rest
 labels:
   template: lazar
@@ -126,8 +126,8 @@ objects:
               path: "/"
               port: 8088
               scheme: "HTTP"
-            failureTreshold: 4
-            initialDelaySeconds: 30
+            failureTreshold: 20
+            initialDelaySeconds: 90
             periodSeconds: 30
             timeoutSeconds: 4
           livenessProbe:
@@ -135,7 +135,7 @@ objects:
               command:
                 - ls
                 - /home/ist
-            failureTreshold: 4
+            failureTreshold: 10
             initialDelaySeconds: 60
             periodSeconds: 30
             timeoutSeconds: 4
