@@ -1,5 +1,5 @@
 The Squonk Computational Notebook and its related services can be deployed to the OpenRiskNet environment using Ansible
-and the playbooks we've written. Instructions for this can be found in the
+and the playbooks we've written. Instructions for this can be found in
 [Squonk's Ansible Directory](https://github.com/InformaticsMatters/squonk/tree/master/openshift/ansible) on GitHub.
 
 Specifically for OpenRiskNet the `openrisknet-infra` project is used to provide the Squonk infrastructure (RabbitMQ, 
