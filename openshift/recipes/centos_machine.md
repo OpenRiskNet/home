@@ -9,11 +9,11 @@ On Openstack download a centos image from here:
 https://cloud.centos.org/centos/7/images/
 Choose the qcow2 image format.
 
-The openstack client needed to be present (`yum -y install python-openstackclient`) 
+The openstack client needed to be present (`pip install openstackclient`) 
 
 Upload the image to Openstack using:
 ```
-openstack image create --file <image-file>
+openstack image create --file <image-file> <image-name>
 ```
 You will see the new image in the console.
 
