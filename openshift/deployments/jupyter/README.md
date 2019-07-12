@@ -86,7 +86,7 @@ OC_MASTER_URL, OC_ADMIN, OC_ADMIN_PASSWORD, OC_INFRA_PROJECT, OC_POSTGRESQL_SERV
 Then run:
 
 ```
-ansible-playbook playbooks/infra/create-user-db.yaml -e new_db=jupyterhub -e new_db_user=jupyterhub -e new_db_namespace=jupyter
+ansible-playbook playbooks/infra/create-user-db.yaml -e oc_db=jupyterhub -e oc_db_user=jupyterhub -e db_namespace=jupyter
 ```
 
 Once added you can check for a secret named `database-credentials-jupyterhub` in the `jupyter` project that contains the
@@ -95,7 +95,7 @@ database connection details.
 If you need to delete these you can run:
 
 ```
-ansible-playbook playbooks/infra/delete-user-db.yaml -e db=jupyterhub -e db_user=jupyterhub
+ansible-playbook playbooks/infra/delete-user-db.yaml -e db=jupyterhub -e oc_db_user=jupyterhub
 ```
 
 After running those playbooks you need to switch back to the jupyter project:
