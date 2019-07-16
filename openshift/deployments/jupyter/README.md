@@ -85,14 +85,17 @@ be added to this repo.
 As an admin user you need to source the appropriate `setenv.sh` file that
 describes your OpenShift environment and where the `IM_PARAMETER_FILE`
 variable in it points to a suitable YAML-based parameter file that defines
-values for: - 
+values for the following variables, an example with some typical values
+is shown below: -
 
--   `oc_master_url`
--   `oc_admin` (normally `admin`)
--   `oc_admin_password`
--   `oc_infra_project`
--   `oc_postgresql_service` (normally `db-postgresql`)
--   `oc_infra_sa`
+```yaml
+oc_admin: admin
+oc_admin_password: -SetMe-
+oc_infra_project: orn-infra
+oc_infra_sa: -SetMe-
+oc_master_url: -SetMe-
+oc_postgresql_service: db-postgresql
+```
 
 Then run:
 
