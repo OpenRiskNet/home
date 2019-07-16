@@ -70,32 +70,48 @@ You will need to know the client secret that is generated.
 
 ### Set up the PostgreSQL database
 
-Unlike Graham Dumpleton's templates which provision a PostgreSQL database in the `jupyter` project just for the `jupyterhub`
-application we instead use the central database that is in the `openrisknet-infra` project.
-To do this we run a database provisioner playbook that creates a new database named `jupyterhub`, a database user named
-`jupyterhub` and a randomly generated password for that user.
-These are stored in a secret in the `jupyter` project and used by the `jupyterhub` pod.
+Unlike Graham Dumpleton's templates which provision a PostgreSQL database in
+the `jupyter` project just for the `jupyterhub` application we instead use the
+central database that is in the `openrisknet-infra` project.
+To do this we run a database provisioner playbook that creates a new
+database named `jupyterhub`, a database user named `jupyterhub` and a
+randomly generated password for that user. These are stored in a secret in
+the `jupyter` project and used by the `jupyterhub` pod.
 
-__Note__: this playbook is currently located in the [Squonk repo](https://github.com/InformaticsMatters/squonk). It will soon 
+__Note__: this playbook is currently located in the
+[Squonk repo](https://github.com/InformaticsMatters/squonk). It will soon 
 be added to this repo. 
 
-As an admin user you need to source the appropriate `setenv.sh` file that describes your OpenShift environment. 
-This is the file that you used to create the environment (if not available then these environment variables need to be set:
-OC_MASTER_URL, OC_ADMIN, OC_ADMIN_PASSWORD, OC_INFRA_PROJECT, OC_POSTGRESQL_SERVICE, OC_INFRA_SA).
+As an admin user you need to source the appropriate `setenv.sh` file that
+describes your OpenShift environment and where the `IM_PARAMETER_FILE`
+variable in it points to a suitable YAML-based parameter file that defines
+values for: - 
+
+-   `oc_master_url`
+-   `oc_admin` (normally `admin`)
+-   `oc_admin_password`
+-   `oc_infra_project`
+-   `oc_postgresql_service` (normally `db-postgresql`)
+-   `oc_infra_sa`
 
 Then run:
 
 ```
-ansible-playbook playbooks/infra/create-user-db.yaml -e oc_db=jupyterhub -e oc_db_user=jupyterhub -e db_namespace=jupyter
+ansible-playbook playbooks/infra/create-user-db.yaml \
+    -e oc_db=jupyterhub \
+    -e oc_db_user=jupyterhub \
+    -e db_namespace=jupyter
 ```
 
-Once added you can check for a secret named `database-credentials-jupyterhub` in the `jupyter` project that contains the
-database connection details.
+Once added you can check for a secret named `database-credentials-jupyterhub`
+in the `jupyter` project that contains the database connection details.
 
 If you need to delete these you can run:
 
 ```
-ansible-playbook playbooks/infra/delete-user-db.yaml -e db=jupyterhub -e oc_db_user=jupyterhub
+ansible-playbook playbooks/infra/delete-user-db.yaml \
+    -e db=jupyterhub \
+    -e oc_db_user=jupyterhub
 ```
 
 After running those playbooks you need to switch back to the jupyter project:
