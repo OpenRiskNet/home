@@ -133,6 +133,61 @@ other values.
 
 TODO: work out how to specify the need for specific role(s) for authorisation.
 
+### Custom JupyterHub image
+
+Sometimes you might need to build a custom jupyterhub image rather than using the prebuilt ones.
+One way to do this is
+
+1. Fork the https://github.com/jupyter-on-openshift/jupyterhub-quickstart repo
+2. Make appropriate changes e.g. to the `requirements.txt` and `build-configs/jupyterhub.json` files
+3. Delete the jupyterhub imagestream that was created above
+4. Create a new build config for the jupyterhub image using soemthing like this: 
+`oc create -f https://raw.githubusercontent.com/tdudgeon/jupyterhub-quickstart/develop/build-configs/jupyterhub.json`
+(change the GitHub location to your fork). You need to make sure the image stream tag being built 
+corresponds to the one in the `jupyterhub-deployer` template.
+
+### Persistent Volumes
+
+JupyterHub uses a separate persistent volume claim for each user. These PVCs are retained so if the notebook pod is depeted
+(which happens automatically after a period of inactivity) then the PVC with your notebooks will still be present and will be
+re-claimed next time the user's pod starts.
+
+The easiest way to handle provisioning of PVCs is using dynamic provisioning (e.g. using GlusterFS or Cinder) but if this is not possible
+then you can use a pool of pre-generated PVs. For example, this can be done using NFS volumes.
+
+First create a number of NFS exports e.g. /nfs-jupyter/jupyter-1, /nfs-jupyter/jupyter-2 ...
+This can be done with a PV definition like this:
+```
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jupyter-1
+  labels:
+    purpose: jupyter
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: prod-infra
+    path: "/nfs-jupyter/vol1"
+```
+
+Set the ownership of these directories to root.root and the permissions to 770
+
+In your `jupyterhub_config.py` file you will need to add these additional properties:
+
+```
+c.KubeSpawner.supplemental_gids = [ 65534 ]
+c.KubeSpawner.storage_class = ''
+c.KubeSpawner.storage_selector = { 'matchLabels': {'purpose': 'jupyter'}}
+```
+
+The `storage_selector` label ensures the Jupyter PVC only bind the expected PVs.
+
+**Note**: the `storage_class` and `storage_selector` properties are not yet in the main JupyterHub codebase.
+You might need to build a custom image as described above. An example repo can be found at https://github.com/tdudgeon/jupyterhub-quickstart/tree/develop 
 
 ### Deploy
 

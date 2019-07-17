@@ -10,8 +10,8 @@ items:
     lookupPolicy:
       local: true
     tags:
-    - name: 3.0.6
+    - name: 3.1.0
       from:
         kind: DockerImage
-        name: quay.io/jupyteronopenshift/jupyterhub:3.0.6
+        name: quay.io/jupyteronopenshift/jupyterhub:3.1.0
 
