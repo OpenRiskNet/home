@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: pv-nfs-template
+  labels:
+    template: pv-nfs-template
+
+parameters:
+- description: PV number
+  name: NUMBER
+  required: true
+- description: NFS server
+  name: SERVER
+  value: prod-infra
+- description: Mount path
+  name: PATH
+  value: /nfs-jupyter
+- description: Volume size
+  name: SIZE
+  value: 1Gi
+
+objects:
+
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: jupyter-${NUMBER}
+    labels:
+      purpose: jupyter
+  spec:
+    capacity:
+      storage: ${SIZE}
+    accessModes:
+      - ReadWriteOnce
+    nfs:
+      server: ${SERVER}
+      path: "${PATH}/vol${NUMBER}"
