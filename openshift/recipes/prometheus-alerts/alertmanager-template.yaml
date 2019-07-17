@@ -1,0 +1,22 @@
+global:
+  resolve_timeout: 5m
+route:
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 12h
+  receiver: slack_general
+  routes:
+  - match:
+      alertname: DeadMansSwitch
+    repeat_interval: 5m
+    receiver: deadmansswitch
+receivers:
+- name: default
+- name: deadmansswitch
+- name: slack_general
+  slack_configs:
+  - api_url: https://hooks.slack.com/services/<path-to-webhook>
+    channel: '#prometheus_alerts'
+    icon_url: https://avatars3.githubusercontent.com/u/3380462
+    send_resolved: true
+    text: "<!channel> \nsummary: {{ .CommonAnnotations.summary }}\n{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}"

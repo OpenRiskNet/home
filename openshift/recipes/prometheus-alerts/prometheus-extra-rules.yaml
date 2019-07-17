@@ -1,0 +1,23 @@
+﻿apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    prometheus: k8s
+    role: alert-rules
+  name: prometheus-extra-rules
+  namespace: openshift-monitoring
+spec:
+  groups:
+    - name: pod.rules
+      rules:
+        - alert: PodCpuUsage
+          annotations:
+            description: >-
+              {{ $labels.namespace }}/{{ $labels.pod_name }} has excessive CPU
+              usage of {{ $value }}
+            summary: Excessive Pod CPU
+          expr: |
+            pod_name:container_cpu_usage:sum > 0.8
+          for: 5m
+          labels:
+            severity: warning
