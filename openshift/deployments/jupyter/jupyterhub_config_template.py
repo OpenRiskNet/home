@@ -1,6 +1,6 @@
 c.JupyterHub.spawner_class = 'kubespawner.KubeSpawner'
 
-c.KubeSpawner.start_timeout = 180
+c.KubeSpawner.start_timeout = 240
 c.KubeSpawner.http_timeout = 120
 
 c.KubeSpawner.environment = dict(JUPYTER_ENABLE_LAB='true')
@@ -22,6 +22,12 @@ c.KubeSpawner.profile_list = [
         'display_name': 'Tensorflow Notebook (CentOS 7 / Python 3.6)',
         'kubespawner_override': {
             'image_spec': 's2i-tensorflow-notebook:3.6'
+        }
+    },{
+        'display_name': 'Datascience (Python, R and Julia) - this is large, so slow to start',
+        'kubespawner_override': {
+            'image_spec': 'docker.io/jupyter/datascience-notebook:7a3e968dd212',
+            'supplemental_gids': [100]
         }
     }
 ]
