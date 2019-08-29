@@ -5,6 +5,7 @@ It is essentially a _knowledge base_ of hints, tips and tricks.
 
 ## Knowledge Base
 
+- [Project Service Accounts](project-service-accounts.md)
 - [Automatic Redeployment of Image Streams](automatic-redeployment-of-image-streams.md)
 - [Synchronising Service Startup](synchronising-service-startup.md)
 - [Logging in using your GitHub account](github-login.md)
