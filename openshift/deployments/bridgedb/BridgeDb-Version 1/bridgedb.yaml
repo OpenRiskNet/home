@@ -28,7 +28,7 @@ metadata:
       This service provides identifier mapping for metabolites and
       genes/proteins from a wide variety of species.
     tags: bridgedb
-    openrisknet-static-services: bridgedb-app.bridgedb.svc.localhost:8080/swagger/swagger.json
+    openrisknet-static-services: http://bridgedb.prod.openrisknet.org/swagger/swagger.json
 labels:
   template: bridgedb
   app: bridgedb
