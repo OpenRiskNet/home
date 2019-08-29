@@ -114,7 +114,7 @@ objects:
             limits:
               cpu: 3000m
               memory: 10000Mi
-
+        serviceAccountName: bridgedb
 - kind: Service
   apiVersion: v1
   metadata:
