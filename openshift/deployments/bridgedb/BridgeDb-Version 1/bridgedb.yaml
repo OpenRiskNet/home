@@ -44,7 +44,7 @@ parameters:
 - name: IMAGE_TAG
   description: >-
     The BridgeDb container image tag
-  value: 2.3.3-test
+  value: 2.3.3-test2
 
 - name: ROUTES_BASENAME
   description: >-
@@ -119,7 +119,7 @@ objects:
   metadata:
     name: bridgedb-app
     annotations:
-      openrisknet-static-services: http://bridgedb-app.bridgedb.svc:8080/swagger/swagger.json
+      openrisknet-static-services: https://raw.githubusercontent.com/bridgedb/docker/98ec7baf26bbd8d26935b53f34ef428a1e8a5f56/swagger-annotated.json
   spec:
     ports:
     - name: bridgedb-app
@@ -132,8 +132,6 @@ objects:
   apiVersion: v1
   metadata:
     name: bridgedb-swagger
-    annotations:
-      openrisknet-static-services: http://bridgedb-swagger.bridgedb.svc:8080/swagger/swagger.json
   spec:
     ports:
     - name: bridgedb-swagger
