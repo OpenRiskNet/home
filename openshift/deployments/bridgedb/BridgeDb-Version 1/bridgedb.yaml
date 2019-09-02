@@ -28,7 +28,6 @@ metadata:
       This service provides identifier mapping for metabolites and
       genes/proteins from a wide variety of species.
     tags: bridgedb
-    openrisknet-static-services: http://bridgedb.prod.openrisknet.org/swagger/swagger.json
 labels:
   template: bridgedb
   app: bridgedb
@@ -45,7 +44,7 @@ parameters:
 - name: IMAGE_TAG
   description: >-
     The BridgeDb container image tag
-  value: 2.3.1
+  value: 2.3.3-test
 
 - name: ROUTES_BASENAME
   description: >-
@@ -119,6 +118,8 @@ objects:
   apiVersion: v1
   metadata:
     name: bridgedb-app
+    annotations:
+      openrisknet-static-services: http://bridgedb-app.bridgedb.svc:8080/swagger/swagger.json
   spec:
     ports:
     - name: bridgedb-app
@@ -131,6 +132,8 @@ objects:
   apiVersion: v1
   metadata:
     name: bridgedb-swagger
+    annotations:
+      openrisknet-static-services: http://bridgedb-swagger.bridgedb.svc:8080/swagger/swagger.json
   spec:
     ports:
     - name: bridgedb-swagger
@@ -138,6 +141,7 @@ objects:
       targetPort: 8080
     selector:
       name: bridgedb
+    
 
 
 - kind: Route
