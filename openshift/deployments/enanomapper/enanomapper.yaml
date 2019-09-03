@@ -49,7 +49,7 @@ objects:
           name: enanomapper-mariadb
           ports:
           - containerPort: 3306
-
+        serviceAccountName: bridgedb
 - kind: Service
   apiVersion: v1
   metadata:
