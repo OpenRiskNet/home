@@ -82,7 +82,7 @@ objects:
       # Change this to true when you are ready for secure the route with TLS.
       kubernetes.io/tls-acme: 'false'
   spec:
-    host: nanomaterialdb-test.${ROUTES_BASENAME}
+    host: nanomaterialdb.${ROUTES_BASENAME}
     path: /ambit/
     to:
       kind: Service
@@ -97,7 +97,7 @@ objects:
       # Change this to true when you are ready for secure the route with TLS.
       kubernetes.io/tls-acme: 'false'
   spec:
-    host: enanomapper-mariadb.${ROUTES_BASENAME}
+    host: enanomapper.${ROUTES_BASENAME}
     to:
       kind: Service
       name: enanomapper-mariadb
