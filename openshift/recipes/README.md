@@ -35,6 +35,7 @@ Then learn about deploying applications
 1. [Renewal of Certificates](renew-certificates/README.md) - an ansible play for renewing certificates
 1. [Postgres backup and recovery](postgres-backup-and-recovery/README.md) - images and templates for automated backup and recovery of a PostgresQL server
 1. [Serving Apps from the TSB](serving-via-the-tsb.md) - how to deploy applications using the Template Service Broker
+1. [Local Volume Provisioner](local-volume-provisioner/README.md) - how to configure and use a Logical Volume Local Volume Provisioner
 
 Then learn about CI/CD
 
