@@ -21,8 +21,41 @@ parameters:
 - name: MONGODB_TAG
   value: latest 
 
+- name: ROUTE_NAME
+  description:
+    The name of the service endpoint.
+  value: jguweka
+
 - name: ROUTES_BASENAME
+  description:
+    The base name of the service endpoint.
+    This is typically the PROD or DEV URL basename.
   value: prod.openrisknet.org
+
+- name: TLS
+  description:
+    If you want TLS certificate
+  value: "false"
+
+- name: CPU_LIMIT
+  description:
+    Set CPU limit
+  value: "2000m"
+
+- name: CPU_REQUEST
+  description:
+    Set CPU request
+  value: "1000m"
+
+- name: MEMORY_LIMIT
+  description:
+    Set RAM limit
+  value: "4Gi"
+
+- name: MEMORY_REQUEST
+  description:
+    Set RAM request
+  value: "2Gi"
 
 objects:
 
@@ -101,7 +134,13 @@ objects:
           ports:
           - containerPort: 8080
             protocol: TCP
-          resources: {}
+          resources:
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
+            limits:
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
           terminationMessagePath: "/dev/termination-log"
           imagePullPolicy: Always
           securityContext:
@@ -154,7 +193,7 @@ objects:
     annotations:
       kubernetes.io/tls-acme: 'true'
   spec:
-    host: jguweka.${ROUTES_BASENAME}
+    host: ${ROUTE_NAME}.${ROUTES_BASENAME}
     to:
       kind: Service
       name: jguweka
