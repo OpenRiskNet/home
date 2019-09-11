@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: orn-registry # often the same as the name of the app
-  namespace: openrisknet
+  namespace: orn-infra
   labels:
     app: orn-registry # often the same as the name of the app
 spec:

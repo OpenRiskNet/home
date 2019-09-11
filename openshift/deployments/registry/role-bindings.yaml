@@ -4,7 +4,7 @@ metadata:
   name: service-reader
 rules:
 - apiGroups: [""]
-  resources: ["service"]
+  resources: ["services", "endpoints"]
   verbs: ["get", "watch", "list"]
 ---
 kind: ClusterRoleBinding
@@ -14,6 +14,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: registry-service-account
+  namespace: orn-infra
 roleRef:
   kind: ClusterRole
   name: service-reader
