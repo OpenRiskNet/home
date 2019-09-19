@@ -2,12 +2,10 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: chemidconvert-ingress
-  namespace: openrisknet
-  annotations:
-    kubernetes.io/ingress.class: "traefik" # this is supposed to tell the GCE default inress controller to ingore this
+  namespace: chemidconvert
 spec:
   rules:
-  - host: chemidconvert.cloud.douglasconnect.com
+  - host: chemidconvert.prod.openrisknet.org
     http:
       paths:
       - backend:

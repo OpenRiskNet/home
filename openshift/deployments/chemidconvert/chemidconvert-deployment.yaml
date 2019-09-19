@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: chemidconvert
-  namespace: openrisknet
+  namespace: chemidconvert
 spec:
   replicas: 1
   revisionHistoryLimit: 5
@@ -20,3 +20,6 @@ spec:
           requests:
             memory: "64Mi"
             cpu: "10m"
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
