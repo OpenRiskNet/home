@@ -49,7 +49,7 @@ objects:
           name: enanomapper-mariadb
           ports:
           - containerPort: 3306
-        serviceAccountName: bridgedb
+        serviceAccountName: enanomapper
 - kind: Service
   apiVersion: v1
   metadata:
@@ -82,7 +82,7 @@ objects:
       # Change this to true when you are ready for secure the route with TLS.
       kubernetes.io/tls-acme: 'false'
   spec:
-    host: nanomaterialdb.${ROUTES_BASENAME}
+    host: nanomaterialdb-test.${ROUTES_BASENAME}
     path: /ambit/
     to:
       kind: Service
@@ -97,7 +97,7 @@ objects:
       # Change this to true when you are ready for secure the route with TLS.
       kubernetes.io/tls-acme: 'false'
   spec:
-    host: enanomapper.${ROUTES_BASENAME}
+    host: enanomapper-mariadb.${ROUTES_BASENAME}
     to:
       kind: Service
       name: enanomapper-mariadb
