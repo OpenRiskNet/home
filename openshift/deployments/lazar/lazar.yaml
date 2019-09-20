@@ -32,6 +32,9 @@ parameters:
       This is typically *lazar* but if you want different instances
       you can pass another name like *lazar-2*.
     value: lazar
+  - name: PROJECT_NAME
+    description:
+      The name of your OKD project.
   - name: ROUTES_BASENAME
     description:
       The base name of the service endpoint.
@@ -155,7 +158,7 @@ objects:
     name: lazar
     namespace: lazar
     annotations:
-      openrisknet-static-services: http://${ROUTE_NAME}.lazar.svc.cluster.local:8088/api/api.json
+      openrisknet-static-services: http://${ROUTE_NAME}.${PROJECT_NAME}.svc.cluster.local:8088/api/api.json
   spec:
     ports:
     - name: lazar
