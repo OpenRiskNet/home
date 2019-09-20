@@ -32,9 +32,6 @@ parameters:
       This is typically *lazar* but if you want different instances
       you can pass another name like *mylazar*.
     value: lazar
-  - name: PROJECT_NAME
-    description:
-      The name of your OKD project.
   - name: ROUTES_BASENAME
     description:
       The base name of the service endpoint.
