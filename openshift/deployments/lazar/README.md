@@ -36,10 +36,10 @@ The [`lazar.yaml`](https://github.com/OpenRiskNet/home/blob/master/openshift/dep
   ```
   #!/bin/bash
   export IMAGE_TAG=latest
-  export ROUTES_BASENAME=SERVER_URI
-  export ROUTE_NAME=lazar
+  export ROUTES_BASENAME=XXX.XXXXX.XXX
+  export ROUTE_NAME=XXXX
   export LAZAR_SERVICE_PORT=XXXX
-  export TLS=true
+  export TLS=XXX
   ```
   *deploy*
   ```

@@ -48,19 +48,19 @@ parameters:
   - name: CPU_LIMIT
     description:
       Set CPU limit
-    value: "2000m"
+    value: "4000m"
   - name: CPU_REQUEST
     description:
       Set CPU request
-    value: "1000m"
+    value: "2000m"
   - name: MEMORY_LIMIT
     description:
       Set RAM limit
-    value: "4Gi"
+    value: "8Gi"
   - name: MEMORY_REQUEST
     description:
       Set RAM request
-    value: "2Gi"
+    value: "4Gi"
 objects:
 - kind: ImageStream
   apiVersion: v1
