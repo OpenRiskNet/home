@@ -30,7 +30,7 @@ Before you can start you need to create a project and in order to have the right
 The [`lazar.yaml`](https://github.com/OpenRiskNet/home/blob/master/openshift/deployments/lazar/lazar.yaml) file in this repository provides everything you need to deploy the *lazar* service in an OpenShift environment. There are two ways you can use it.
   1. Take the template and load it into the OpenShift web console. You will be asked to adjust the parameter values to your environment.
 
-  2. Take the template and load it by OpenShift command line interface (CLI). You have to define parameters in a file called `setenv.sh` in your working directory.
+  2. Take the template and load it by OpenShift command line interface (CLI). You have to define parameters in a executable file called `setenv.sh` in your working directory.
 
   *setenv.sh*
   ```
@@ -40,27 +40,36 @@ The [`lazar.yaml`](https://github.com/OpenRiskNet/home/blob/master/openshift/dep
   export ROUTE_NAME=XXXX
   export LAZAR_SERVICE_PORT=XXXX
   export TLS=XXX
+  export CPU_LIMIT=4000m
+  export CPU_REQUEST=2000m
+  export MEMORY_LIMIT=8Gi
+  export MEMORY_REQUEST=4Gi
   ```
   *deploy*
   ```
   ./deploy.sh
   IMAGE_TAG set to latest
-  ROUTES_BASENAME set to dev.openrisknet.org
+  ROUTES_BASENAME set to prod.openrisknet.org
   ROUTE_NAME set to lazar
   LAZAR_SERVICE_PORT set to 8088
   TLS set to true
-  imagestream "lazar-rest" created
-  deploymentconfig "lazar" created
-  service "lazar" created
-  route "lazar" created
+  CPU limit is set to 4000m
+  CPU request is set to 2000m
+  Memory limit is set to 8Gi
+  Memory request is set to 4Gi
+  imagestream.image.openshift.io/lazar-rest created
+  deploymentconfig.apps.openshift.io/lazar created
+  service/lazar created
+  route.route.openshift.io/lazar created
   ```
   *undeploy*
   ```
   ./undeploy.sh
-  deploymentconfig "lazar" deleted
-  imagestream "lazar-rest" deleted
-  route "lazar" deleted
+  replicationcontroller "lazar-1" deleted
   service "lazar" deleted
+  deploymentconfig.apps.openshift.io "lazar" deleted
+  imagestream.image.openshift.io "lazar-rest" deleted
+  route.route.openshift.io "lazar" deleted
   ```
 
 
