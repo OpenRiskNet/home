@@ -155,7 +155,7 @@ objects:
     name: lazar
     namespace: lazar
     annotations:
-      openrisknet-static-services: https://${ROUTE_NAME}.${BASE_NAME}/api/api.json
+      openrisknet-static-services: https://${ROUTE_NAME}.${ROUTES_BASENAME}/api/api.json
   spec:
     ports:
     - name: lazar
