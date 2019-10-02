@@ -253,7 +253,7 @@ we need (by name). In our ca`se we could provide the following: -
 >   Remember that a 50Gi logical volume will loose some space to the
     formatting overhead. So, if you do need 50Gi then you will need
     to create a larger volume, say 51Gi. The actual size you
-    need is left to your for experimentation.
+    will need is left for you to find through experimentation.
 
 ---
 
