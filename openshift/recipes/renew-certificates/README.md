@@ -80,6 +80,8 @@ playbook command, normally executed from the `~/site-okd` directory on the
     the playbook from the appropriate *inventories* directory.
     For the **Production** site this is
     `~/site-okd/okd-orchestrator/okd/inventories/standard-os-3-11`.
+    And, on the **Development** site, this is
+    `~/site-okd/okd-orchestrator/okd/inventories/simple-os-3-11`
     
 Once you have the correct inventory file run the playbook with the following
 command: -
@@ -88,8 +90,8 @@ command: -
         ~/github/openrisknet/home/openshift/recipes/renew-certificates/site.yml
 
 With this done you should then be able to run the OpenShift-provided certificate
-deployment playbook, which for our 3.11 production deployment can be achieved
-with this play: -
+deployment playbook, which for our 3.11 production and development sites
+can be achieved with this play: -
 
     $ ansible-playbook -i inventory.yaml \
         -e openshift_certificate_expiry_warning_days=1 \
