@@ -88,19 +88,16 @@ command: -
         ~/github/openrisknet/home/openshift/recipes/renew-certificates/site.yml
 
 With this done you should then be able to run the OpenShift-provided certificate
-deployment playbook, which for our 3.7 production deployment can be achieved
+deployment playbook, which for our 3.11 production deployment can be achieved
 with this play: -
 
-    $ ansible-playbook -i inventory \
-        ~/github/openshift-ansible-release-3.7/playbooks/byo/openshift-cluster/redeploy-certificates.yml
+    $ ansible-playbook -i inventory.yaml \
+        -e openshift_certificate_expiry_warning_days=1 \
+        ~/site-okd/okd-orchestrator/openshift-ansible/playbooks/redeploy-certificates.yml
 
-In OpenShift 3.9 the certificate redeployment playbook has moved. In 3.9 you'd run: -
-
-    $ ansible-playbook -i inventory \
-        ~/github/openshift-ansible-release-3.9/playbooks/redeploy-certificates.yml
-
->   You might need to adjust the `openshift_certificate_expiry_warning_days`
-    variable for the above playbooks, see the **Redeploying** note above.
+>   As illustrated, you might need to adjust the
+    `openshift_certificate_expiry_warning_days` variable for the above playbook.
+    Here we set it to 1 day. See the **Redeploying** note above.
 
 ## Renewing certificates for a specific node
 You can renew certificates for a specific node by placing the node hostname
@@ -143,7 +140,7 @@ The following playbook produces a report file in `/tmp/cert-expiry-report.json`:
 ---
 
 Alan Christie  
-April 2019
+October 2019
 
 [ansible]: https://docs.ansible.com
 [tls-sni-01]: https://community.letsencrypt.org/t/how-to-stop-using-tls-sni-01-with-certbot/83210
