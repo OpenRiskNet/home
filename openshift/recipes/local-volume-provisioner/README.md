@@ -68,7 +68,7 @@ With the device primary partition created we can create our logical volume
 with a **physical volume**, **volume group** and finally,
 an example **logical volume**.
 
-Create a physical volume for or partition (we've only created one partition
+Create a physical volume for our partition (we've only created one partition
 and so the partition will be `/dev/sdc1`)...
 
     # pvcreate /dev/sdc1
