@@ -117,7 +117,7 @@ objects:
             protocol: TCP
           resources: {}
           terminationMessagePath: "/dev/termination-log"
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           securityContext:
             capabilities: {}
             privileged: false
