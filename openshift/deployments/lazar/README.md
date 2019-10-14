@@ -20,13 +20,11 @@ The *lazar* application in the OpenRiskNet e-Infrastructure is based on a single
 ### Docker images
 
   Available pre-build Docker images:
-    [*lazar* service image with all dependencies](https://hub.docker.com/r/gebele/lazar-rest/)
-    [Rserve service for communication with all necessary R packages for *lazar* service](https://hub.docker.com/r/gebele/rserve/)
-    [MongoDB database](https://hub.docker.com/r/gebele/mongodb/)
+    [*lazar*](https://hub.docker.com/r/gebele/lazar-rest/) service image with all dependencies.
 
 ## Deploying
 
-Before you can start you need to create a project and in order to have the right execution permissions for the user inside the docker image you need to contact one of the administrators to execute `oc adm policy add-scc-to-user scc-lazar -z default` for your project. 
+First create a project. Inside the project you deploy the service. In order to have the right execution permissions for the user inside the docker image you need to contact one of the administrators to execute `oc adm policy add-scc-to-user scc-lazar -z default` for your project.
 The [`lazar.yaml`](https://github.com/OpenRiskNet/home/blob/master/openshift/deployments/lazar/lazar.yaml) file in this repository provides everything you need to deploy the *lazar* service in an OpenShift environment. There are two ways you can use it.
   1. Take the template and load it into the OpenShift web console. You will be asked to adjust the parameter values to your environment.
 
@@ -73,7 +71,7 @@ The [`lazar.yaml`](https://github.com/OpenRiskNet/home/blob/master/openshift/dep
   ```
 
 
-*lazar* will then be available as REST service, including a Swagger interface for the API and as a service with its own graphical user interface (GUI). Depending on your needs, the route or the name must be adapted. The template uses a method to automatically update the service if the base Docker image of the application is changed (trigger chain). If you do not want this, this must be changed in the template. Please read the notes in this instruction: [Automatic Redeployment of ImageStreams](https://github.com/OpenRiskNet/home/blob/master/openshift/knowledge-base/automatic-redeployment-of-image-streams.md). It is also possible to stop this process in the OpenShift environment by *pause rollouts*.
+*lazar* will then be available as REST service, including a Swagger interface for the API and as a service with its own graphical user interface (GUI). Depending on your needs, the route or the name must be adapted. The template uses a method to automatically update the service if the base Docker image of the application is changed (trigger chain). If you do not want automatic updates disable it in the template. Please read the notes in this instruction: [Automatic Redeployment of ImageStreams](https://github.com/OpenRiskNet/home/blob/master/openshift/knowledge-base/automatic-redeployment-of-image-streams.md). It is also possible to stop this process in the OpenShift environment by *pause rollouts*.
 
 ## Curl examples
 Following some cURL examples for a typical workflow when working with *lazar* as a REST service.
