@@ -8,6 +8,12 @@ CDK Depict is a small web service application for generating chemical structure 
 
 1. From the UI choose **Add to Project** -> **Browse Catalogue**, pick **Java** and then select **WildFly**
 2. Name it, e.g., "_cdkdepict_" and point to the github repository at: `https://github.com/cdk/depict.git`
+
+The first deployment may fail, as the wizards do not allow us to set which tag we want to use, e.g. the `1.3` tag.
+So, we may need to tweak the building.
+
+
+
 3. We need to tell Maven to only produce the `.war` file and no `.jar` file (becuase the wildfly template will try and fail on the `.jar` file). We also tell it to skip the tests.  
    So, show **advanced options**, and
 4. in **Context Dir** add `/cdkdepict-webapp` and
