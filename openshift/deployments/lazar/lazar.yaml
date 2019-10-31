@@ -126,19 +126,21 @@ objects:
               path: "/"
               port: 8088
               scheme: "HTTP"
-            failureTreshold: 20
-            initialDelaySeconds: 90
-            periodSeconds: 30
-            timeoutSeconds: 4
+            initialDelaySeconds: 8
+            periodSeconds: 15
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureTreshold: 3
           livenessProbe:
             exec:
               command:
                 - ls
                 - /home/ist
-            failureTreshold: 10
-            initialDelaySeconds: 60
-            periodSeconds: 30
-            timeoutSeconds: 4
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 60
+            successThreshold: 1
+            failureThreshold: 3
           resources:
             requests:
               cpu: ${CPU_REQUEST}
