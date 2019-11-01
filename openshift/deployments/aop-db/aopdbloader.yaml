@@ -1,0 +1,46 @@
+---
+
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: aopdbloader
+labels:
+  template: aopdbloader
+
+parameters:
+
+- name: LOADER_REGISTRY
+  value: bigcatum
+- name: LOADER_IMAGE
+  value: aopdbrdf
+- name: LOADER_TARGET_CLAIM_NAME
+  value: aopwiki-target-claim
+
+objects:
+
+- kind: Job
+  apiVersion: batch/v1
+  metadata:
+    name: aopdbloader
+
+
+
+  spec:
+    template:
+      metadata:
+        name: aopdbloader
+      spec:
+        containers:
+        - image: ${LOADER_REGISTRY}/${LOADER_IMAGE}
+          name: aopdbloader
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: aopdb-target
+            mountPath: /aopdbdata
+        volumes:
+        - name: aopdb-target
+          persistentVolumeClaim:
+            claimName: ${LOADER_TARGET_CLAIM_NAME}
+  
+        restartPolicy: Never

@@ -1,0 +1,41 @@
+log_enable(2);
+DB.DBA.XML_SET_NS_DECL ('dc', 'http://purl.org/dc/elements/1.1/',2);
+DB.DBA.XML_SET_NS_DECL ('dcterms', 'http://purl.org/dc/terms/',2);
+DB.DBA.XML_SET_NS_DECL ('rdfs', 'http://www.w3.org/2000/01/rdf-schema#',2);
+DB.DBA.XML_SET_NS_DECL ('foaf', 'http://xmlns.com/foaf/0.1/',2);
+DB.DBA.XML_SET_NS_DECL ('aop.events', 'http://identifiers.org/aop.events/',2);
+DB.DBA.XML_SET_NS_DECL ('aopo', 'http://aopkb.org/aop_ontology#',2);
+DB.DBA.XML_SET_NS_DECL ('skos', 'http://www.w3.org/2004/02/skos/core#',2);
+DB.DBA.XML_SET_NS_DECL ('foaf', 'http://xmlns.com/foaf/0.1/',2);
+DB.DBA.XML_SET_NS_DECL ('ncbitaxon', 'http://purl.bioontology.org/ontology/NCBITAXON/',2);
+DB.DBA.XML_SET_NS_DECL ('uberon', 'http://purl.obolibrary.org/obo/UBERON_',2);
+DB.DBA.XML_SET_NS_DECL ('mi', 'http://purl.obolibrary.org/obo/MI_',2);
+DB.DBA.XML_SET_NS_DECL ('mmo', 'http://purl.obolibrary.org/obo/MMO_',2);
+DB.DBA.XML_SET_NS_DECL ('ensembl', 'http://identifiers.org/ensembl/',2);
+DB.DBA.XML_SET_NS_DECL ('edam', 'http://edamontology.org/',2);
+DB.DBA.XML_SET_NS_DECL ('hgnc', 'https://identifiers.org/hgnc/',2);
+DB.DBA.XML_SET_NS_DECL ('ncbigene', 'https://identifiers.org/ncbigene/',2);
+DB.DBA.XML_SET_NS_DECL ('uniprot', 'https://identifiers.org/uniprot/',2);
+DB.DBA.XML_SET_NS_DECL ('bao', 'http://www.bioassayontology.org/bao#',2);
+DB.DBA.XML_SET_NS_DECL ('pw', 'http://purl.obolibrary.org/obo/PW_',2);
+DB.DBA.XML_SET_NS_DECL ('wp', 'http://vocabularies.wikipathways.org/wp',2);
+DB.DBA.XML_SET_NS_DECL ('loinc', 'http://purl.bioontology.org/ontology/LNC/',2);
+DB.DBA.XML_SET_NS_DECL ('assay', 'http://identifiers.org/assay',2);
+DB.DBA.XML_SET_NS_DECL ('path', 'http://identifiers.org/path',2);
+DB.DBA.XML_SET_NS_DECL ('proteinInteraction', 'http://identifiers.org/geneInteraction',2);
+DB.DBA.XML_SET_NS_DECL ('disease', 'http://identifiers.org/disease',2);
+DB.DBA.XML_SET_NS_DECL ('diseaseGeneAssociation', 'http://identifiers.org/diseaseGeneAssociation',2);
+
+
+log_enable(1);
+grant select on "DB.DBA.SPARQL_SINV_2" to "SPARQL";
+grant execute on "DB.DBA.SPARQL_SINV_IMP" to "SPARQL";
+ld_dir('.', 'AOP-DB.ttl', 'aopwiki.org');
+
+rdf_loader_run();
+
+select * from DB.DBA.load_list;
+
+quit;
+
+
