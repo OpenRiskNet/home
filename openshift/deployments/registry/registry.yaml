@@ -1,89 +1,101 @@
----
 apiVersion: v1
-kind: ServiceAccount
+kind: Template
 metadata:
-  name: registry-service-account
----
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: service-reader
-rules:
-- apiGroups: [""]
-  resources: ["services", "endpoints"]
-  verbs: ["get", "watch", "list"]
----
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: registry-service-reader
-subjects:
-- kind: ServiceAccount
-  name: registry-service-account
-  namespace: openrisknet-infra
-roleRef:
-  kind: ClusterRole
-  name: service-reader
-  apiGroup: rbac.authorization.k8s.io
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: orn-registry # e.g. myservice
-spec:
-  revisionHistoryLimit: 5
-  replicas: 1
-  strategy:
-    rollingUpdate:
-      maxUnavailable: 0 # if you only have 1 replica you probably want this to avoid downtime during rolling update
-  template:
-    metadata:
-      labels:
-        app: orn-registry # e.g. myservice
-    spec:
-      serviceAccountName: registry-service-account
-      volumes:
-      - name: temp
-        emptyDir: {}
-      - name: config
-        emptyDir: {}
-      containers:
-      - name: orn-registry # e.g. myservice
-        image: douglasconnect/orn-registry:latest # either offical images: <imagename> or our repo: eu.gcr.io/douglasconnect-docker/<imagename>:latest
-        ports:
-        - containerPort: 8085 # ports as per the dockerfile
-        resources:
-          requests:
-            memory: "1400Mi"
-            cpu: "20m"
-          limits:
-            memory: "1600Mi"
-        volumeMounts:
+  name: orn-registry
+  annotations:
+    openshift.io/display-name: "OpenRiskNet Service Registry"
+    description: >-
+      The central OpenRiskNet service registry that discovers OpenRiskNet services,
+      parses their OpenApi definition and makes the information queryable via SparQL
+    tags: "registry"
+    openshift.io/provider-display-name: "Edelweiss Connect GmbH"
+    openshift.io/documentation-url: "https://github.com/DouglasConnect/openrisknet-registry"
+    openshift.io/support-url: "https://openrisknet.org"
+objects:
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    name: registry-service-account
+- kind: ClusterRole
+  apiVersion: rbac.authorization.k8s.io/v1
+  metadata:
+    name: service-reader
+  rules:
+  - apiGroups: [""]
+    resources: ["services", "endpoints"]
+    verbs: ["get", "watch", "list"]
+- kind: ClusterRoleBinding
+  apiVersion: rbac.authorization.k8s.io/v1
+  metadata:
+    name: registry-service-reader
+  subjects:
+  - kind: ServiceAccount
+    name: registry-service-account
+    namespace: openrisknet-infra
+  roleRef:
+    kind: ClusterRole
+    name: service-reader
+    apiGroup: rbac.authorization.k8s.io
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    name: orn-registry # e.g. myservice
+  spec:
+    revisionHistoryLimit: 5
+    replicas: 1
+    strategy:
+      rollingUpdate:
+        maxUnavailable: 0 # if you only have 1 replica you probably want this to avoid downtime during rolling update
+    template:
+      metadata:
+        labels:
+          app: orn-registry # e.g. myservice
+      spec:
+        serviceAccountName: registry-service-account
+        volumes:
         - name: temp
-          mountPath: /tmp
-        livenessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /health
-            port: 8085
-            scheme: HTTP
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 3
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: orn-registry # often the same as the name of the app
-  namespace: openrisknet-infra
-  labels:
-    app: orn-registry # often the same as the name of the app
-spec:
-  ports:
-  - port: 8085 # port at the service ip
-    targetPort: 8085 # port on the container as per the deploymnet
-    protocol: TCP
-    name: http
-  selector:
-    app: orn-registry # often the same as the name of the app
+          emptyDir: {}
+        - name: config
+          emptyDir: {}
+        containers:
+        - name: orn-registry # e.g. myservice
+          image: douglasconnect/orn-registry:latest # either offical images: <imagename> or our repo: eu.gcr.io/douglasconnect-docker/<imagename>:latest
+          ports:
+          - containerPort: 8085 # ports as per the dockerfile
+          resources:
+            requests:
+              memory: "1400Mi"
+              cpu: "20m"
+            limits:
+              memory: "1600Mi"
+          volumeMounts:
+          - name: temp
+            mountPath: /tmp
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8085
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: orn-registry # often the same as the name of the app
+    namespace: openrisknet-infra
+    labels:
+      app: orn-registry # often the same as the name of the app
+  spec:
+    ports:
+    - port: 8085 # port at the service ip
+      targetPort: 8085 # port on the container as per the deploymnet
+      protocol: TCP
+      name: http
+    selector:
+      app: orn-registry # often the same as the name of the app
+parameters:
+labels:
+  orn-registry: main
