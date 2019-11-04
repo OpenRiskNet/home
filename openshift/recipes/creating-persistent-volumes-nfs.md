@@ -170,4 +170,6 @@ objects:
         storage: ${SIZE}
     storageClassName: ''
 ```
-
+>   Note the last line in this PVC definition where the `storageClassName` is set to the empty string. This is necessary if you have 
+    dynamic provisioning enabled otherwise the PVC will try to use the default StorageClass to dynamically create your volume rather
+    than use the PV that you wanted.

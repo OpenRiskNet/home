@@ -1,0 +1,138 @@
+---
+
+# oc process -f Virtuoso-aopdb.yaml | oc create -f -
+# oc delete all --selector template=virtuoso-aopdb
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: virtuoso-aopdb
+  annotations:
+    openshift.io/display-name: Virtuoso-aopdb
+    openshift.io/provider-display-name: Maastricht University, Department of Bioinformatics - BiGCaT
+    openshift.io/documentation-url: https://github.com/OpenRiskNet/home.git
+    openshift.io/support-url: https://github.com/OpenRiskNet/home/issues
+    iconClass: icon-openjdk
+    description: >-
+      This is a temporary description text
+    tags: Virtuoso, aopdb, SPARQL, RDF
+labels:
+  template: virtuoso-aopdb
+  app: virtuoso-aopdb
+  
+# A message displayed on the deployment console on completion...
+message: >-
+  Temporary message
+  
+parameters:
+
+- name: IMAGE_TAG
+  description: >-
+    The Virtuoso base image tag
+  value: latest
+
+- name: ROUTES_BASENAME
+  description: >-
+    The base name of the service endpoint.
+    This is typically the PROD or DEV URL basename.
+  value: prod.openrisknet.org
+  
+- name: VIRTUOSO_PORT
+  description: >-
+    The HTTP port for the Virtuoso service
+  value: "8890"
+
+- name: ISQL_PORT
+  description: >-
+    The HTTP port for the ISQL
+  value: "1111"
+
+# -----------------------------------------------------------------------------
+# Virtuoso-aopdb
+# -----------------------------------------------------------------------------
+
+objects: 
+
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: virtuoso-aopdb
+  spec:
+    replicas: 1
+    selector:
+      name: virtuoso-aopdb
+    template:
+      metadata:
+        labels:
+          name: virtuoso-aopdb
+      spec:
+        serviceAccountName: aopwiki
+
+        containers:
+        - image: openlink/virtuoso-opensource-7:${IMAGE_TAG}
+          imagePullPolicy: IfNotPresent
+          name: virtuoso-aopdb
+          ports:
+          - containerPort: 8890
+          - containerPort: 1111
+          volumeMounts:
+            - name: "aopdbdata"
+              mountPath: "/aopdbdata"
+              
+        volumes:
+        - name: "aopdbdata"
+          persistentVolumeClaim:
+            claimName: aopwiki-target-claim
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: virtuoso-aopdb
+  spec:
+    ports:
+    - name: virtuoso-aopdb
+      port: ${VIRTUOSO_PORT}
+      targetPort: 8890
+    selector:
+      name: virtuoso-aopdb
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: virtuoso-aopdb-isql
+  spec:
+    ports:
+    - name: virtuoso-aopdb-isql
+      port: ${ISQL_PORT}
+      targetPort: 1111
+    selector:
+      name: virtuoso-aopdb-isql
+
+
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: virtuoso-aopdb-isql
+    annotations:
+      # Note: Set to false to avoid exhausting certificate generation request quota.
+      # Change this to true when you are ready for secure the route with TLS.
+      kubernetes.io/tls-acme: 'false'
+  spec:
+    host: aopdb.${ROUTES_BASENAME}
+    to:
+      kind: Service
+      name: virtuoso-aopdb-isql
+
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: virtuoso-aopdb
+    annotations:
+      # Note: Set to false to avoid exhausting certificate generation request quota.
+      # Change this to true when you are ready for secure the route with TLS.
+      kubernetes.io/tls-acme: 'false'
+  spec:
+    host: aopdb-rdf.${ROUTES_BASENAME}
+    path: /sparql/
+    to:
+      kind: Service
+      name: virtuoso-aopdb

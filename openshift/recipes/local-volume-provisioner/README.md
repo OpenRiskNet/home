@@ -14,8 +14,8 @@ So they're local, fast but you're responsible for resilience (backups) but
 they're great for services that need low-latency access to disk-based data.
 
 In this document we're going to explain how you configure and use logical
-volumes as local volumes in your OpenShift deployment byt first configuring
-a local drive with logical volumes before configuring the provisioner
+volumes as local volumes in your OpenShift deployment by first configuring
+a local drive with logical volumes followed by configuration of the provisioner
 in OpenShift.
 
 Two valuable online resources that you might want to refer to are: - 
@@ -39,10 +39,11 @@ create and delete.
     Make sure you use the right device - some of the following commands are
     catastrophic to say the least if used on the wrong device.
 
-Let's start by starting the partitioning/formatting tool on a clean
-(empty) 4TByte device by creating a primary partition. In our device
-volume size is actually 3841Gi. You might have to remove any partitions
-that exist if the device is not clean.
+Let's start by running the partitioning/formatting tool on a clean
+(empty) 4TByte device to create a primary partition. In our device
+the volume size is actually 3841Gi.
+
+You might have to remove any partitions that exist if the device is not clean.
 
     $ sudo -i
     # parted /dev/sdc
@@ -64,11 +65,11 @@ that exist if the device is not clean.
     #
 
 With the device primary partition created we can create our logical volume
-management software with a **physical volume**, **volume group** and
-finally, an example **logical volume**.
+with a **physical volume**, **volume group** and finally,
+an example **logical volume**.
 
-Create a physical volume for or partition (we've only created on partition and
-so the partition will be `/dev/sdc1`)...
+Create a physical volume for our partition (we've only created one partition
+and so the partition will be `/dev/sdc1`)...
 
     # pvcreate /dev/sdc1
 
@@ -126,7 +127,7 @@ the following lines: -
 
 You should test the `/etc/fstab` entries by un-mounting the volumes and then
 remounting using the table entries. This is valuable to ensure that the table
-is correct - once the server reboots it's probably roo late. e.g.: -
+is correct - once the server reboots it's probably too late. e.g.: -
 
     # umount  /mnt/local-storage/ssd/a
     # mount -a
@@ -139,7 +140,7 @@ We've: -
 -   formatted the volumes
 -   mounted the volumes in the file-system
 
-Now we simply have to deploy configure and deploy the OpenShift provisioner...
+Now we simply have to configure and deploy the OpenShift provisioner...
 
 ## Configuring the OpenShift Local Volume Provisioner
 From this point it's essentially following the OpenShift documentation. Here
@@ -150,27 +151,27 @@ and we'll use the class name `local-ssd`
 (probably in the file `storage-class-ssd.yaml): -
 
     ---
-	apiVersion: storage.k8s.io/v1
-	kind: StorageClass
-	metadata:
-	  name: local-ssd
-	provisioner: kubernetes.io/no-provisioner
-	volumeBindingMode: WaitForFirstConsumer
+    apiVersion: storage.k8s.io/v1
+    kind: StorageClass
+    metadata:
+      name: local-ssd
+    provisioner: kubernetes.io/no-provisioner
+    volumeBindingMode: WaitForFirstConsumer
 
 And we need to provide OpenShift with a map of mount points for each class
 we define. Here we only have one class so our **ConfigMap** (probably
 in the file `local-volume-configmap.yaml`) will be: -
 
     ---
-	apiVersion: v1
-	kind: ConfigMap
-	metadata:
-	  name: local-volume-config
-	data:
-	  storageClassMap: |
-	    local-ssd: 
-	      hostDir: /mnt/local-storage/ssd
-	      mountDir: /mnt/local-storage/ssd
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: local-volume-config
+    data:
+      storageClassMap: |
+        local-ssd: 
+          hostDir: /mnt/local-storage/ssd
+          mountDir: /mnt/local-storage/ssd
 
 Let's create an OpenShift project (we'll call ours `local-storage`),
 a service account and install our storage classes and class map: -
@@ -190,11 +191,11 @@ From here we can deploy the provisioner (which manifests itself as a
 **DaemonSet** with pods running on each node)...
 
     $ oc new-app \
-	    -p CONFIGMAP=local-volume-config \
-	    -p SERVICE_ACCOUNT=local-storage-admin \
-	    -p NAMESPACE=local-storage \
-	    -p PROVISIONER_IMAGE=quay.io/external_storage/local-volume-provisioner:v2.3.2 \
-	    local-storage-provisioner
+        -p CONFIGMAP=local-volume-config \
+        -p SERVICE_ACCOUNT=local-storage-admin \
+        -p NAMESPACE=local-storage \
+        -p PROVISIONER_IMAGE=quay.io/external_storage/local-volume-provisioner:v2.3.2 \
+        local-storage-provisioner
 
 >   We have to provide a different `PROVISIONER_IMAGE` because the one
     in the OpenShift example (at the time of writing) does not work.
@@ -252,7 +253,7 @@ we need (by name). In our ca`se we could provide the following: -
 >   Remember that a 50Gi logical volume will loose some space to the
     formatting overhead. So, if you do need 50Gi then you will need
     to create a larger volume, say 51Gi. The actual size you
-    need is left to your for experimentation.
+    will need is left for you to find through experimentation.
 
 ---
 

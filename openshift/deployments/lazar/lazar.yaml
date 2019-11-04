@@ -30,7 +30,7 @@ parameters:
     description:
       The name of the service endpoint.
       This is typically *lazar* but if you want different instances
-      you can pass another name like *lazar-2*.
+      you can pass another name like *mylazar*.
     value: lazar
   - name: ROUTES_BASENAME
     description:
@@ -48,19 +48,19 @@ parameters:
   - name: CPU_LIMIT
     description:
       Set CPU limit
-    value: "2000m"
+    value: "4000m"
   - name: CPU_REQUEST
     description:
       Set CPU request
-    value: "1000m"
+    value: "2000m"
   - name: MEMORY_LIMIT
     description:
       Set RAM limit
-    value: "4Gi"
+    value: "8Gi"
   - name: MEMORY_REQUEST
     description:
       Set RAM request
-    value: "2Gi"
+    value: "4Gi"
 objects:
 - kind: ImageStream
   apiVersion: v1
@@ -117,7 +117,7 @@ objects:
             protocol: TCP
           resources: {}
           terminationMessagePath: "/dev/termination-log"
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           securityContext:
             capabilities: {}
             privileged: false
@@ -126,19 +126,21 @@ objects:
               path: "/"
               port: 8088
               scheme: "HTTP"
-            failureTreshold: 20
-            initialDelaySeconds: 90
-            periodSeconds: 30
-            timeoutSeconds: 4
+            initialDelaySeconds: 8
+            periodSeconds: 15
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureTreshold: 3
           livenessProbe:
             exec:
               command:
                 - ls
                 - /home/ist
-            failureTreshold: 10
-            initialDelaySeconds: 60
-            periodSeconds: 30
-            timeoutSeconds: 4
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 60
+            successThreshold: 1
+            failureThreshold: 3
           resources:
             requests:
               cpu: ${CPU_REQUEST}
@@ -155,7 +157,7 @@ objects:
     name: lazar
     namespace: lazar
     annotations:
-      openrisknet-static-services: http://${ROUTE_NAME}.lazar.svc.cluster.local:8088/api/api.json
+      openrisknet-static-services: https://${ROUTE_NAME}.${ROUTES_BASENAME}/api/api.json
   spec:
     ports:
     - name: lazar

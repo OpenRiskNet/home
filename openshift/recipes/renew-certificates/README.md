@@ -73,33 +73,33 @@ accompanying recipes)...
     depending on network performance. 
      
 ...you should be able to renew and fetch new certificates with the following
-playbook command, normally executed from the `site-prd` directory.
+playbook command, normally executed from the `~/site-okd` directory on the
+**Production** bastion.
 
 >   If you have used the *orchestrator* to deploy the cluster you should execute
     the playbook from the appropriate *inventories* directory.
-    For the **Development** site this might be
-    `abc/orchestrator/openshift/inventories/hpc2n-37`.
+    For the **Production** site this is
+    `~/site-okd/okd-orchestrator/okd/inventories/standard-os-3-11`.
+    And, on the **Development** site, this is
+    `~/site-okd/okd-orchestrator/okd/inventories/simple-os-3-11`
     
 Once you have the correct inventory file run the playbook with the following
 command: -
 
-    $ ansible-playbook -i inventory \
+    $ ansible-playbook -i inventory.yaml \
         ~/github/openrisknet/home/openshift/recipes/renew-certificates/site.yml
 
 With this done you should then be able to run the OpenShift-provided certificate
-deployment playbook, which for our 3.7 production deployment can be achieved
-with this play: -
+deployment playbook, which for our 3.11 production and development sites
+can be achieved with this play: -
 
-    $ ansible-playbook -i inventory \
-        ~/github/openshift-ansible-release-3.7/playbooks/byo/openshift-cluster/redeploy-certificates.yml
+    $ ansible-playbook -i inventory.yaml \
+        -e openshift_certificate_expiry_warning_days=1 \
+        ~/site-okd/okd-orchestrator/openshift-ansible/playbooks/redeploy-certificates.yml
 
-In OpenShift 3.9 the certificate redeployment playbook has moved. In 3.9 you'd run: -
-
-    $ ansible-playbook -i inventory \
-        ~/github/openshift-ansible-release-3.9/playbooks/redeploy-certificates.yml
-
->   You might need to adjust the `openshift_certificate_expiry_warning_days`
-    variable for the above playbooks, see the **Redeploying** note above.
+>   As illustrated, you might need to adjust the
+    `openshift_certificate_expiry_warning_days` variable for the above playbook.
+    Here we set it to 1 day. See the **Redeploying** note above.
 
 ## Renewing certificates for a specific node
 You can renew certificates for a specific node by placing the node hostname
@@ -142,7 +142,7 @@ The following playbook produces a report file in `/tmp/cert-expiry-report.json`:
 ---
 
 Alan Christie  
-April 2019
+October 2019
 
 [ansible]: https://docs.ansible.com
 [tls-sni-01]: https://community.letsencrypt.org/t/how-to-stop-using-tls-sni-01-with-certbot/83210
