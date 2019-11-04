@@ -1,3 +1,31 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: registry-service-account
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: service-reader
+rules:
+- apiGroups: [""]
+  resources: ["services", "endpoints"]
+  verbs: ["get", "watch", "list"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: registry-service-reader
+subjects:
+- kind: ServiceAccount
+  name: registry-service-account
+  namespace: openrisknet-infra
+roleRef:
+  kind: ClusterRole
+  name: service-reader
+  apiGroup: rbac.authorization.k8s.io
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -43,3 +71,19 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orn-registry # often the same as the name of the app
+  namespace: openrisknet-infra
+  labels:
+    app: orn-registry # often the same as the name of the app
+spec:
+  ports:
+  - port: 8085 # port at the service ip
+    targetPort: 8085 # port on the container as per the deploymnet
+    protocol: TCP
+    name: http
+  selector:
+    app: orn-registry # often the same as the name of the app
