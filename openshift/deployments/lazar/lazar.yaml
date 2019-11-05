@@ -120,7 +120,7 @@ objects:
           imagePullPolicy: IfNotPresent
           securityContext:
             capabilities: {}
-            privileged: false
+            privileged: true
           readinessProbe:
             httpGet:
               path: "/"
