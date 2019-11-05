@@ -43,7 +43,7 @@ scp notebook-vols.tgz jgu-infra:.
 scp nfs-jupyter.exports jgu-infra:.
 ```
 
-## Export PV and PVC data
+## 2. Export PV and PVC data
 
 From local machine:
 
@@ -59,7 +59,7 @@ grep -v creationTimestamp: pvc.yaml | grep -v resourceVersion: | grep -v selfLin
 
 If the path for the NFS exports differs on the two sites further edits will be needed.
 
-## NFS setup
+## 3. NFS setup
 
 If the path for the NFS exports differs on the two sites edits to the `nfs-jupyter.exports` file will be needed.
 
@@ -71,7 +71,7 @@ systemctl restart nfs
 showmount -e localhost
 ```
 
-## Create PVs and PVCs
+## 4. Create PVs and PVCs
 
 From local machine:
 
