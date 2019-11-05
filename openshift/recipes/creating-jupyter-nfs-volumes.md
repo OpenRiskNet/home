@@ -4,7 +4,8 @@ large numbers of volumes.
 
 ## NFS directory creation
 On the NFS server, assuming your jupyter volume is mounted at
-`/nfs-jupyter` you could run this bash script to create N .. M directories: -
+`/nfs-jupyter` you could run this bash script to create directories
+with the numbers `N` to `M`: -
 
 ```
 #!/bin/bash
@@ -28,22 +29,22 @@ i.e. to create volumes 51 to 100:
 
     ./create-dir-script.sh 51 100
     
-The script also emits lines suitable for inclusion in a `.exports`
+The script also emits lines suitable for inclusion in an `.exports`
 file (typically `/etc/exports.d/nfs-jupyter.exports`).
 
-With the `.exports` file created restart the NFS service
+With the lines ppaced in an `.exports` file restart the NFS service
 with something like: -
 
     sudo systemctl restart nfs-server
     
 ## Volume template
-The foillowing template can be used to create an OpenShift
+The following template can be used to create an OpenShift
 **Persistent Volume** (`pv`).
 
 The volume needs to have an access mode of `ReadWriteOnce`
-and have a label os `pupose=jupyter`.
+and have a label of `pupose=jupyter`.
 
-An working template follows: -
+A working template follows: -
 
 ```
 ---
