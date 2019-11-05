@@ -103,10 +103,10 @@ objects:
             protocol: TCP
           resources: {}
           terminationMessagePath: "/dev/termination-log"
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           securityContext:
             capabilities: {}
-            privileged: false
+            privileged: true
         restartPolicy: Always
         dnsPolicy: ClusterFirst
   status: {}
