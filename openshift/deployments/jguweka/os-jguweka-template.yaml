@@ -145,7 +145,7 @@ objects:
           imagePullPolicy: Always
           securityContext:
             capabilities: {}
-            privileged: false
+            privileged: true
         restartPolicy: Always
         dnsPolicy: ClusterFirst
   status: {}
