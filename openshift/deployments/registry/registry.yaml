@@ -96,6 +96,25 @@ objects:
       name: http
     selector:
       app: orn-registry # often the same as the name of the app
+- apiVersion: v1 # TODO: add annotation, see if we get a proper LE cert; do the same for chemidconvert
+  kind: Route
+  metadata:
+    name: registry
+    annotations:
+        kubernetes.io/tls-acme: "true"
+  spec:
+    host: registry.prod.openrisknet.org
+    port:
+      targetPort: http
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+    to:
+      kind: Service
+      name: orn-registry
+      weight: 100
+    wildcardPolicy: None
+
 parameters:
 labels:
   orn-registry: main
