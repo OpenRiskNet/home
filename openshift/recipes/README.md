@@ -42,6 +42,12 @@ Then learn about CI/CD
 1. [Jenkins deploy](jenkins-example/README.md) - demonstrate how a persistent Jenkins can be deployed and a pipeline run
 1. [Promotion between projects](promotion_between_projects.md) - learn how to deploy an app and promote it from a dev to a test environment
 
+Useful local documents
+
+1. [Creating Jupyter Volumes (NFS)](creating-jupyter-nfs-volumes.md)
+1. [Relocating Jupyter Volumes](relocate-jupyter-volumes.md)
+1. [Deploying a Master API Certificate](master-certificates/master-certificates.md)
+
 Additional information
 
 1. [How DNS works on OpenShift](https://blog.openshift.com/dns-changes-red-hat-openshift-container-platform-3-6/)
