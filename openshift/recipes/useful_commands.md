@@ -63,4 +63,5 @@ This adds sudoer role to the user so that they can add `--as system:admin` or si
 ```
 oc adm policy add-scc-to-group anyuid system:authenticated
 ```
-This allows cotnainers to be run as a image defined user ID (inlcuding root) by any authenticated user. 
+This allows containers to be run as a image defined user ID (including root)
+by any authenticated user. 
