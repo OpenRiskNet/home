@@ -44,7 +44,7 @@ Then learn about CI/CD
 
 Useful local documents
 
-1. [Getting any Docker image running (in OpenSHift)](getting-any-docker-image-running.md)
+1. [Getting any Docker image running (in OpenShift)](getting-any-docker-image-running.md)
 1. [Creating Jupyter Volumes (NFS)](creating-jupyter-nfs-volumes.md)
 1. [Relocating Jupyter Volumes](relocate-jupyter-volumes.md)
 1. [Deploying a Master API Certificate](master-certificates/master-certificates.md)
