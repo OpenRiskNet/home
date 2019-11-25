@@ -134,8 +134,10 @@ objects:
           livenessProbe:
             exec:
               command:
-                - ls
-                - /home/ist
+                - sed
+                - -i
+                - 's/SERVER_URI/https\:\/\/${ROUTE_NAME}.${ROUTES_BASENAME}/g'
+                - /home/ist/lazar-gui/api/api.json
             initialDelaySeconds: 15
             periodSeconds: 15
             timeoutSeconds: 60
