@@ -41,12 +41,18 @@ create and delete.
 
 Let's start by running the partitioning/formatting tool on a clean
 (empty) 4TByte device to create a primary partition. In our device
-the volume size is actually 3841Gi.
-
-You might have to remove any partitions that exist if the device is not clean.
+the volume size is actually 3841Gi, as can be seen via `parted`'s `print`
+instruction: -
 
     $ sudo -i
-    # parted /dev/sdc
+    $ parted /dev/sdc
+    (parted) print
+    [...]
+    Disk /dev/vdb: 3841GB
+    [...]
+    
+> You might have to remove any partitions that exist if the device is not clean.
+
     (parted) mklabel gpt
     [respond to the prompt]
     (parted) mkpart primary 0GB 3841GB
@@ -194,7 +200,7 @@ From here we can deploy the provisioner (which manifests itself as a
         -p CONFIGMAP=local-volume-config \
         -p SERVICE_ACCOUNT=local-storage-admin \
         -p NAMESPACE=local-storage \
-        -p PROVISIONER_IMAGE=quay.io/external_storage/local-volume-provisioner:v2.3.2 \
+        -p PROVISIONER_IMAGE=quay.io/external_storage/local-volume-provisioner:v2.3.3 \
         local-storage-provisioner
 
 >   We have to provide a different `PROVISIONER_IMAGE` because the one
@@ -234,7 +240,7 @@ will automatically create a corresponding **Persistent Volume**.
 ## Using local volumes (by name)
 In order to use a specific local volume in a deployment we simply need to
 provide a suitable **Persistent Volume Claim** that refers to the volume
-we need (by name). In our ca`se we could provide the following: -
+we need (by name). In our case we could provide the following: -
 
 	---
 	kind: PersistentVolumeClaim

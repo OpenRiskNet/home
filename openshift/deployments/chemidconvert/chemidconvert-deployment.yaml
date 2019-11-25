@@ -1,25 +1,73 @@
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: v1
+kind: Template
 metadata:
   name: chemidconvert
-  namespace: chemidconvert
-spec:
-  replicas: 1
-  revisionHistoryLimit: 5
-  template:
-    metadata:
-      labels:
+  annotations:
+    openshift.io/display-name: "ChemIDConvert"
+    description: >-
+      A web service to convert between various chemical identifiers
+    tags: "chemidconvert"
+    openshift.io/provider-display-name: "Edelweiss Connect GmbH"
+    openshift.io/documentation-url: "https://github.com/DouglasConnect/ChemIdConvert"
+objects:
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+     name: chemidconvert
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 5
+    template:
+        metadata:
+            labels:
+                app: chemidconvert
+        spec:
+            containers:
+            - name: chemidconvert
+              image: douglasconnect/chemidconvert:latest
+              ports:
+              - containerPort: 8080
+              resources:
+                requests:
+                    memory: "64Mi"
+                    cpu: "10m"
+                limits:
+                    memory: "256Mi"
+                    cpu: "100m"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: chemidconvert
+    labels:
+      app: chemidconvert
+    annotations:
+      openrisknet-static-services: http://chemidconvert.chemidconvert.svc.cluster.local:8080/v1/swagger.json
+  spec:
+    ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
+    selector:
         app: chemidconvert
-    spec:
-      containers:
-      - name: chemidconvert
-        image: douglasconnect/chemidconvert:latest
-        ports:
-        - containerPort: 8080
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "10m"
-          requests:
-            memory: "256Mi"
-            cpu: "100m"
+- apiVersion: v1 # TODO: add annotation, see if we get a proper LE cert; do the same for chemidconvert
+  kind: Route
+  metadata:
+    name: chemidconvert
+    annotations:
+        kubernetes.io/tls-acme: "true"
+  spec:
+    host: chemidconvert.prod.openrisknet.org
+    port:
+      targetPort: http
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+    to:
+      kind: Service
+      name: chemidconvert
+      weight: 100
+    wildcardPolicy: None
+parameters:
+labels:
+  application: chemidconvert

@@ -22,7 +22,7 @@ never sees your GitHub credentials.
 
 Install the `oc` client on your computer. This can be downloaded from [here](https://github.com/openshift/origin/releases).
 Choose the appropriate `openshift-origin-client-tools-*` package for your computer. Probably best to install the same version as 
-is running on the cluster (currently 3.7.2 but check this in case it's changed) though probably it will do no harm to use a more
+is running on the cluster (currently 3.11 but check this in case it's changed) though probably it will do no harm to use a more
 recent version.
 
 Alternatively we can provide a SSH login to the bastion machine on the SSC where `oc` is already installed and there is fast
