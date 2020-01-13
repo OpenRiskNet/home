@@ -126,21 +126,21 @@ objects:
               path: "/"
               port: 8088
               scheme: "HTTP"
-            initialDelaySeconds: 8
+            initialDelaySeconds: 60
             periodSeconds: 15
-            timeoutSeconds: 2
+            timeoutSeconds: 5
             successThreshold: 1
             failureTreshold: 3
           livenessProbe:
             exec:
-              command:
+             command:
                 - sed
                 - -i
-                - 's/SERVER_URI/https\:\/\/${ROUTE_NAME}.${ROUTES_BASENAME}/g'
+                - 's|SERVER_URI|https\:\/\/${ROUTE_NAME}.${ROUTES_BASENAME}/api|g'
                 - /home/ist/lazar-gui/api/api.json
-            initialDelaySeconds: 15
+            initialDelaySeconds: 90
             periodSeconds: 15
-            timeoutSeconds: 60
+            timeoutSeconds: 6
             successThreshold: 1
             failureThreshold: 3
           resources:
